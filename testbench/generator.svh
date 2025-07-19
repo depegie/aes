@@ -5,9 +5,9 @@ import tb_pkg::*;
 
 class generator;
     task send_pkts(string filename, ref mailbox #(packet_t) mbx, ref event finish_ev);
-        int         file       = $fopen(filename, "r");
-        string      line       = "";
-        logic [7:0] pkt_byte   = 8'h0;
+        int         file     = $fopen(filename, "r");
+        string      line     = "";
+        logic [7:0] pkt_byte = 8'h0;
         packet_t    packet;
 
         packet.id   = 0;
