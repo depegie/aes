@@ -1,6 +1,11 @@
 package tb_pkg;
-    `define TDATA_WIDTH 'd32
-    `define CLK_PERIOD  'd5
+    `define CLK_PERIOD 'd5
+
+    `define S_AXIS_TDATA_WIDTH 'd32
+    `define M_AXIS_TDATA_WIDTH 'd32
+
+    `define S_AXIS_DELAY 'd0
+    `define M_AXIS_DELAY 'd0
 
     typedef struct {
         int         id;

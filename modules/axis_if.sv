@@ -1,8 +1,7 @@
 interface axis_if #(
     parameter int TDATA_WIDTH=32
 )(
-    input bit clk,
-    input bit rst
+    input bit clk
 );
     logic                       tvalid;
     logic                       tready;
