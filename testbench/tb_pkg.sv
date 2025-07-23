@@ -1,11 +1,14 @@
 package tb_pkg;
-    `define CLK_PERIOD 'd5
+    `define AES128_ECB_ITER
+    `define AES128_ECB_COMB
+    `define AES128_ECB_PIPE
+    `define AES256_CTR_PIPE
 
     `define S_AXIS_TDATA_WIDTH 'd32
     `define M_AXIS_TDATA_WIDTH 'd32
 
-    `define S_AXIS_DELAY 'd0
-    `define M_AXIS_DELAY 'd0
+    `define S_AXIS_TRANS_DELAY 'd0
+    `define M_AXIS_TRANS_DELAY 'd0
 
     typedef struct {
         int         id;

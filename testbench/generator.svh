@@ -4,7 +4,11 @@
 import tb_pkg::*;
 
 class generator;
-    task run(string filename, ref mailbox #(packet_t) mbx, ref event receive_ev, ref event finish_ev);
+    task run(string filename,
+             ref mailbox #(packet_t) mbx,
+             ref event receive_ev,
+             ref event finish_ev);
+             
         int         file     = $fopen(filename, "r");
         string      line     = "";
         logic [7:0] pkt_byte = 8'h0;
