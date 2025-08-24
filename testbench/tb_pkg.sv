@@ -2,6 +2,7 @@ package tb_pkg;
     `define AES128_ECB_ITER
     `define AES128_ECB_COMB
     `define AES128_ECB_PIPE
+    `define AES256_ECB_PIPE
     `define AES256_CTR_PIPE
 
     `define S_AXIS_TDATA_WIDTH 'd32

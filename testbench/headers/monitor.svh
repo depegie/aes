@@ -19,8 +19,8 @@ class monitor #(int TDATA_WIDTH=`M_AXIS_TDATA_WIDTH, int TRANS_DELAY=`M_AXIS_TRA
     endfunction
 
     function void init();
-        if (TRANS_DELAY == 0) this.axis.tready = 1'b1;
-        else                  this.axis.tready = 1'b0;
+        if (TRANS_DELAY > 0) this.axis.tready = 1'b0;
+        else                 this.axis.tready = 1'b1;
     endfunction
 
     task run();
@@ -34,9 +34,7 @@ class monitor #(int TDATA_WIDTH=`M_AXIS_TDATA_WIDTH, int TRANS_DELAY=`M_AXIS_TRA
                 @(this.axis.cb);
                 if (this.axis.cb.tvalid) begin
                     if (TRANS_DELAY > 0) begin
-                        repeat (TRANS_DELAY-1) begin
-                            @(this.axis.cb);
-                        end
+                        repeat (TRANS_DELAY-1) @(this.axis.cb);
                         this.axis.tready = 1'b1;
                         
                         @(this.axis.cb);
