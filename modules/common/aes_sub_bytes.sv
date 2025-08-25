@@ -5,11 +5,8 @@ module aes_sub_bytes (
     output [`AES_BLOCK_SIZE-1 : 0] new_state
 );
     generate
-        for (genvar i=0; i<16; i++) begin
-            aes_sbox aes_sbox_inst (
-                .i_byte (     state[8*i +: 8] ),
-                .o_byte ( new_state[8*i +: 8] )
-            );
+        for (genvar i=0; i<`AES_BLOCK_SIZE/8; i++) begin
+            aes_sbox aes_sbox_inst(state[8*i +: 8], new_state[8*i +: 8]);
         end
     endgenerate
     

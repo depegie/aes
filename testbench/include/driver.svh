@@ -3,7 +3,7 @@
 
 import tb_pkg::*;
 
-class driver #(int TDATA_WIDTH=`S_AXIS_TDATA_WIDTH, int TRANS_DELAY=`S_AXIS_TRANS_DELAY);
+class driver #(int TDATA_WIDTH, int TRANS_DELAY);
     virtual axis_if #(TDATA_WIDTH) axis;
     mailbox #(packet_t)            mbx;
     event                          receive_ev;

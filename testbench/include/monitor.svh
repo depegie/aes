@@ -3,7 +3,7 @@
 
 import tb_pkg::*;
 
-class monitor #(int TDATA_WIDTH=`M_AXIS_TDATA_WIDTH, int TRANS_DELAY=`M_AXIS_TRANS_DELAY);
+class monitor #(int TDATA_WIDTH, int TRANS_DELAY);
     virtual axis_if #(TDATA_WIDTH) axis;
     mailbox #(packet_t)            mbx;
     event                          receive_ev;

@@ -1,23 +1,24 @@
 `timescale 1ns/1ps
 
+`include "tb_conf.svh"
 `include "generator.svh"
 `include "driver.svh"
 `include "monitor.svh"
 `include "scoreboard.svh"
 
-module tb;
-    int CLK_PERIOD = 5;
+import tb_pkg::*;
 
+module tb;
     bit clk;
     bit rst;
 
     generator gen;
-    driver drv;
-    monitor mon;
+    driver #(`S_AXIS_WIDTH, `S_AXIS_DELAY) drv;
+    monitor #(`M_AXIS_WIDTH, `M_AXIS_DELAY) mon;
     scoreboard scb;
 
-    axis_if #(`S_AXIS_TDATA_WIDTH) s_axis(clk);
-    axis_if #(`M_AXIS_TDATA_WIDTH) m_axis(clk);
+    axis_if #(`S_AXIS_WIDTH) s_axis(clk);
+    axis_if #(`M_AXIS_WIDTH) m_axis(clk);
 
     mailbox #(packet_t) gen2drv_mbx;
     mailbox #(packet_t) gen2scb_mbx;
@@ -30,9 +31,12 @@ module tb;
     event mon2scb_receive_ev;
     event scb2mon_finish_ev;
 
-    dummy dut (
-        .Clk    ( clk ),
-        .Rst    ( rst ),
+    aes128_ecb_iter_behav #(
+        .S_AXIS_WIDTH ( 32 ),
+        .M_AXIS_WIDTH ( 32 )
+    ) dut (
+        .Clk    ( clk    ),
+        .Rst    ( rst    ),
         .S_axis ( s_axis ),
         .M_axis ( m_axis )
     );

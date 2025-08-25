@@ -1,3 +1,5 @@
+`include "aes_defines.svh"
+
 module aes256_key_expansion_param #(
     parameter int ROUND_NUM = 0
 )(
@@ -25,10 +27,10 @@ module aes256_key_expansion_param #(
             wire [`AES_WORD_SIZE-1 : 0] after_subword;
             wire [`AES_WORD_SIZE-1 : 0] after_rcon;
 
-            assign after_rotword = (halfkey[`AES_4TH_WORD] << 8) | (halfkey[`AES_4TH_WORD] >> `AES_WORD_SIZE-8);
+            assign after_rotword = (halfkey[`AES_4TH_WORD] >> 8) | (halfkey[`AES_4TH_WORD] << `AES_WORD_SIZE-8);
             
             generate
-                for (genvar i=0; i<`AES_BLOCK_SIZE/`AES_WORD_SIZE; i++)
+                for (genvar i=0; i<`AES_WORD_SIZE/8; i++)
                     aes_sbox aes_sbox_inst(after_rotword[8*i +: 8], after_subword[8*i +: 8]);
             endgenerate
 
