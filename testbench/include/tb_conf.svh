@@ -1,12 +1,5 @@
 `define AES128_ECB_ITER_BEHAV
-// `define AES128_ECB_COMB_BEHAV
-// `define AES128_ECB_PIPE_BEHAV
-// `define AES256_ECB_PIPE_BEHAV
-// `define AES256_CTR_PIPE_BEHAV
-// `define AES256_CTR_PIPE_GATE
-
-`define S_AXIS_WIDTH 'd32
-`define M_AXIS_WIDTH 'd32
-
-`define S_AXIS_DELAY 'd0
-`define M_AXIS_DELAY 'd0
+`define S_AXIS_WIDTH 32
+`define M_AXIS_WIDTH 32
+`define S_AXIS_DELAY 0
+`define M_AXIS_DELAY 0

@@ -92,13 +92,11 @@ end
 
 always_comb begin
     case (state)
-        ST_KEY_IN,
-        ST_PLAINTEXT_IN:
+        ST_KEY_IN, ST_PLAINTEXT_IN:
             S_axis.tready = 1'b1;
         
         default:
             S_axis.tready = 1'b0;
-
     endcase
 end
 
@@ -148,9 +146,7 @@ always_ff @(posedge Clk) begin
             ST_PLAINTEXT_IN:
                 text_reg <= {S_axis.tdata, text_reg[S_AXIS_WIDTH +: AES_BLOCK_SIZE-S_AXIS_WIDTH]};
 
-            ST_ZERO_ROUND,
-            ST_MIDDLE_ROUND,
-            ST_FINAL_ROUND:
+            ST_ZERO_ROUND, ST_MIDDLE_ROUND, ST_FINAL_ROUND:
                 text_reg <= ark_new_state;
             
             ST_CIPHERTEXT_OUT:
@@ -167,8 +163,7 @@ always_ff @(posedge Clk)
         in_counter <= AES128_KEY_SIZE/S_AXIS_WIDTH-1;
     else
         case (state)
-            ST_KEY_IN,
-            ST_PLAINTEXT_IN:
+            ST_KEY_IN, ST_PLAINTEXT_IN:
                 if (S_axis.tvalid & S_axis.tready & ~|in_counter)
                     in_counter <= AES128_KEY_SIZE/S_AXIS_WIDTH-1;
                 else if (S_axis.tvalid & S_axis.tready)
@@ -192,8 +187,7 @@ always_ff @(posedge Clk) begin
         round_counter <= 'd0;
     else
         case (state)
-            ST_ZERO_ROUND,
-            ST_MIDDLE_ROUND:
+            ST_ZERO_ROUND, ST_MIDDLE_ROUND:
                 round_counter <= round_counter + 'd1;
             
             default:
