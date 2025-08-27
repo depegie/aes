@@ -1,23 +1,24 @@
 `include "aes_defines.svh"
 
 module aes128_key_expansion_param #(
-    parameter int ROUND_NUM = 0
+    parameter int ROUND_NUM = 1
 )(
     input  [`AES128_KEY_SIZE-1 : 0] key,
     output [`AES128_KEY_SIZE-1 : 0] new_key
 );
+    wire [`AES_WORD_SIZE-1 : 0] rcon;
     generate
         case (ROUND_NUM)
-            1:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_01;
-            2:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_02;
-            3:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_03;
-            4:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_04;
-            5:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_05;
-            6:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_06;
-            7:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_07;
-            8:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_08;
-            9:  localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_09;
-            10: localparam bit [`AES_WORD_SIZE-1 : 0] RCON = `AES_RCON_10;
+            1:  assign rcon = `AES_RCON_01;
+            2:  assign rcon = `AES_RCON_02;
+            3:  assign rcon = `AES_RCON_03;
+            4:  assign rcon = `AES_RCON_04;
+            5:  assign rcon = `AES_RCON_05;
+            6:  assign rcon = `AES_RCON_06;
+            7:  assign rcon = `AES_RCON_07;
+            8:  assign rcon = `AES_RCON_08;
+            9:  assign rcon = `AES_RCON_09;
+            10: assign rcon = `AES_RCON_10;
         endcase
     endgenerate
 
@@ -32,7 +33,7 @@ module aes128_key_expansion_param #(
             aes_sbox aes_sbox_inst(after_rotword[8*i +: 8], after_subword[8*i +: 8]);
     endgenerate
 
-    assign after_rcon = after_subword ^ RCON;
+    assign after_rcon = after_subword ^ rcon;
 
     assign new_key[`AES_1ST_WORD] = key[`AES_1ST_WORD] ^ after_rcon;
     assign new_key[`AES_2ND_WORD] = key[`AES_2ND_WORD] ^ new_key[`AES_1ST_WORD];
