@@ -17,8 +17,8 @@ module tb;
     monitor #(`M_AXIS_WIDTH, `M_AXIS_DELAY) mon;
     scoreboard scb;
 
-    axis_if #(`S_AXIS_WIDTH) s_axis(clk);
-    axis_if #(`M_AXIS_WIDTH) m_axis(clk);
+    axis_if #(`S_AXIS_WIDTH) drv_axis(clk);
+    axis_if #(`M_AXIS_WIDTH) mon_axis(clk);
 
     mailbox #(packet_t) gen2drv_mbx;
     mailbox #(packet_t) gen2scb_mbx;
@@ -31,14 +31,27 @@ module tb;
     event mon2scb_receive_ev;
     event scb2mon_finish_ev;
 
-    aes128_ecb_iter_behav #(
-        .S_AXIS_WIDTH ( 32 ),
-        .M_AXIS_WIDTH ( 32 )
+`ifdef AES128_ECB_ITER_BEHAV
+    aes128_ecb_iter_behav
+`elsif AES128_ECB_COMB_BEHAV
+    aes128_ecb_comb_behav
+`elsif AES128_ECB_PIPE_BEHAV
+    aes128_ecb_pipe_behav
+`elsif AES256_ECB_PIPE_BEHAV
+    aes256_ecb_pipe_behav
+`elsif AES256_CTR_PIPE_BEHAV
+    aes256_ctr_pipe_behav
+`elsif AES256_CTR_PIPE_GATE
+    aes256_ctr_pipe_gate
+`endif
+    #(
+        .S_AXIS_WIDTH ( `S_AXIS_WIDTH ),
+        .M_AXIS_WIDTH ( `M_AXIS_WIDTH )
     ) dut (
-        .Clk    ( clk    ),
-        .Rst    ( rst    ),
-        .S_axis ( s_axis ),
-        .M_axis ( m_axis )
+        .Clk    ( clk      ),
+        .Rst    ( rst      ),
+        .S_axis ( drv_axis ),
+        .M_axis ( mon_axis )
     );
 
     always #(CLK_PERIOD/2) clk = !clk;
@@ -55,8 +68,8 @@ module tb;
                   scb2gen_receive_ev, mon2scb_receive_ev,
                   gen2scb_finish_ev, scb2mon_finish_ev);
 
-        drv.axis = s_axis;
-        mon.axis = m_axis;
+        drv.axis = drv_axis;
+        mon.axis = mon_axis;
 
         drv.init();
         mon.init();

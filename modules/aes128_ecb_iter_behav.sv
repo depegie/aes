@@ -9,31 +9,30 @@ module aes128_ecb_iter_behav #(
     axis_if.slave  S_axis,
     axis_if.master M_axis
 );
+localparam int ROUNDS_NUM = `AES128_ROUNDS_NUM;
+localparam int KEY_SIZE   = `AES128_KEY_SIZE;
+localparam int BLOCK_SIZE = `AES_BLOCK_SIZE;
 
-localparam int AES128_KEY_SIZE   = `AES128_KEY_SIZE;
-localparam int AES_BLOCK_SIZE    = `AES_BLOCK_SIZE;
-localparam int AES128_ROUNDS_NUM = `AES128_ROUNDS_NUM;
+reg   [KEY_SIZE-1 : 0] key_reg   = 'h0;
+reg   [KEY_SIZE-1 : 0] ke_key    = 'h0;
+reg [BLOCK_SIZE-1 : 0] text_reg  = 'h0;
+reg                    tlast_reg = 1'b0;
 
-reg [AES128_KEY_SIZE-1 : 0] key_reg   = 'h0;
-reg [AES128_KEY_SIZE-1 : 0] ke_key    = 'h0;
-reg  [AES_BLOCK_SIZE-1 : 0] text_reg  = 'h0;
-reg                         tlast_reg = 1'b0;
+reg   [$clog2(KEY_SIZE/S_AXIS_WIDTH)-1 : 0] in_counter    = KEY_SIZE/S_AXIS_WIDTH-1;
+reg [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] out_counter   = BLOCK_SIZE/M_AXIS_WIDTH-1;
+reg [int'($ceil($clog2(ROUNDS_NUM)))-1 : 0] round_counter = 'd0;
 
-reg   [$clog2(AES128_KEY_SIZE/S_AXIS_WIDTH)-1 : 0] in_counter    = AES128_KEY_SIZE/S_AXIS_WIDTH-1;
-reg    [$clog2(AES_BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] out_counter   = AES_BLOCK_SIZE/M_AXIS_WIDTH-1;
-reg [int'($ceil($clog2(AES128_ROUNDS_NUM)))-1 : 0] round_counter = 'd0;
+reg [BLOCK_SIZE-1 : 0] sb_state;
+reg [BLOCK_SIZE-1 : 0] sr_state;
+reg [BLOCK_SIZE-1 : 0] mc_state;
+reg [BLOCK_SIZE-1 : 0] ark_state;
+reg   [KEY_SIZE-1 : 0] ark_key;
 
-reg  [AES_BLOCK_SIZE-1 : 0] sb_state;
-reg  [AES_BLOCK_SIZE-1 : 0] sr_state;
-reg  [AES_BLOCK_SIZE-1 : 0] mc_state;
-reg  [AES_BLOCK_SIZE-1 : 0] ark_state;
-reg [AES128_KEY_SIZE-1 : 0] ark_key;
-
-wire [AES128_KEY_SIZE-1 : 0] ke_new_key;
-wire  [AES_BLOCK_SIZE-1 : 0] sb_new_state;
-wire  [AES_BLOCK_SIZE-1 : 0] sr_new_state;
-wire  [AES_BLOCK_SIZE-1 : 0] mc_new_state;
-wire  [AES_BLOCK_SIZE-1 : 0] ark_new_state;
+wire   [KEY_SIZE-1 : 0] ke_new_key;
+wire [BLOCK_SIZE-1 : 0] sb_new_state;
+wire [BLOCK_SIZE-1 : 0] sr_new_state;
+wire [BLOCK_SIZE-1 : 0] mc_new_state;
+wire [BLOCK_SIZE-1 : 0] ark_new_state;
 
 enum reg [5:0] {
     ST_KEY_IN         = 6'b1 << 0,
@@ -68,7 +67,7 @@ always_comb begin
             next_state = ST_MIDDLE_ROUND;
         end
         ST_MIDDLE_ROUND: begin
-            if (round_counter == AES128_ROUNDS_NUM-1)
+            if (round_counter == ROUNDS_NUM-1)
                 next_state = ST_FINAL_ROUND;
             else
                 next_state = ST_MIDDLE_ROUND;
@@ -121,8 +120,14 @@ end
 always_ff @(posedge Clk) begin
     if (Rst)
         key_reg <= 128'h0;
-    else if (state == ST_KEY_IN)
-        key_reg <= {S_axis.tdata, key_reg[S_AXIS_WIDTH +: AES128_KEY_SIZE-S_AXIS_WIDTH]};
+    else
+        case (state)
+            ST_KEY_IN:
+                if (S_axis.tvalid & S_axis.tready & S_AXIS_WIDTH == BLOCK_SIZE)
+                    key_reg <= S_axis.tdata;
+                else if (S_axis.tvalid & S_axis.tready)
+                    key_reg <= {S_axis.tdata, key_reg[S_AXIS_WIDTH +: KEY_SIZE-S_AXIS_WIDTH]};
+        endcase
 end
 
 always_ff @(posedge Clk) begin
@@ -144,42 +149,59 @@ always_ff @(posedge Clk) begin
     else
         case(state)
             ST_PLAINTEXT_IN:
-                text_reg <= {S_axis.tdata, text_reg[S_AXIS_WIDTH +: AES_BLOCK_SIZE-S_AXIS_WIDTH]};
+                if (S_axis.tvalid & S_axis.tready & S_AXIS_WIDTH == BLOCK_SIZE)
+                    text_reg <= S_axis.tdata;
+                else if (S_axis.tvalid & S_axis.tready)
+                    text_reg <= {S_axis.tdata, text_reg[S_AXIS_WIDTH +: BLOCK_SIZE-S_AXIS_WIDTH]};
 
             ST_ZERO_ROUND, ST_MIDDLE_ROUND, ST_FINAL_ROUND:
                 text_reg <= ark_new_state;
             
             ST_CIPHERTEXT_OUT:
-                text_reg <= text_reg >> M_AXIS_WIDTH;
+                if (M_axis.tvalid & M_axis.tready)
+                    text_reg <= text_reg >> M_AXIS_WIDTH;
         endcase
 end
 
 always @(posedge Clk)
-    if (Rst)                                tlast_reg <= 1'b0;
-    else if (S_axis.tvalid & S_axis.tready) tlast_reg <= S_axis.tlast;
+    if (S_axis.tvalid & S_axis.tready)
+        tlast_reg <= S_axis.tlast;
 
 always_ff @(posedge Clk)
     if (Rst)
-        in_counter <= AES128_KEY_SIZE/S_AXIS_WIDTH-1;
+        in_counter <= KEY_SIZE/S_AXIS_WIDTH-1;
     else
         case (state)
-            ST_KEY_IN, ST_PLAINTEXT_IN:
+            ST_KEY_IN:
                 if (S_axis.tvalid & S_axis.tready & ~|in_counter)
-                    in_counter <= AES128_KEY_SIZE/S_AXIS_WIDTH-1;
+                    in_counter <= KEY_SIZE/S_AXIS_WIDTH-1;
                 else if (S_axis.tvalid & S_axis.tready)
                     in_counter <= in_counter - 'd1;
+
+            ST_PLAINTEXT_IN:
+                if (S_axis.tvalid & S_axis.tready & ~|in_counter)
+                    in_counter <= BLOCK_SIZE/S_AXIS_WIDTH-1;
+                else if (S_axis.tvalid & S_axis.tready)
+                    in_counter <= in_counter - 'd1;
+            
+            default:
+                if (tlast_reg)
+                    in_counter <= KEY_SIZE/S_AXIS_WIDTH-1;
+                else
+                    in_counter <= BLOCK_SIZE/S_AXIS_WIDTH-1;
         endcase
 
 always_ff @(posedge Clk)
     if (Rst)
-        out_counter <= AES_BLOCK_SIZE/M_AXIS_WIDTH-1;
+        out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
     else
         case (state)
             ST_CIPHERTEXT_OUT:
-                out_counter <= out_counter - 'd1;
+                if (M_axis.tvalid & M_axis.tready)
+                    out_counter <= out_counter - 'd1;
             
             default:
-                out_counter <= AES_BLOCK_SIZE/M_AXIS_WIDTH-1;
+                out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
         endcase
 
 always_ff @(posedge Clk) begin
