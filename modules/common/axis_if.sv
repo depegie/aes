@@ -1,7 +1,7 @@
 interface axis_if #(
     parameter int TDATA_WIDTH=32
 )(
-    input bit clk
+    input logic aclk
 );
     logic                       tvalid;
     logic                       tready;
@@ -19,7 +19,7 @@ interface axis_if #(
         output tready
     );
 
-    clocking cb @(posedge clk);
+    clocking cb @(posedge aclk);
         inout tvalid, tready, tdata, tkeep, tlast;
     endclocking
 

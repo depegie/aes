@@ -64,7 +64,7 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
                     this.init();
                 end
 
-                $write("[Driver]            time: %8dns, id: %3d, data: ", unsigned'($time), packet_copy.id);
+                $write("[Driver]     Time: %8dns, id: %3d, data: ", unsigned'($time), packet_copy.id);
                 foreach (packet_copy.data[i]) $write("%2h", packet_copy.data[i]);
                 $write("\n");
             end

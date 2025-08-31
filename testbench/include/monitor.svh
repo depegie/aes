@@ -50,7 +50,7 @@ class monitor #(int TDATA_WIDTH, int TRANS_DELAY);
                         ->this.receive_ev;
                         this.mbx.put(packet);
                         
-                        $write("[Monitor]           time: %8dns, id: %3d, data: ", unsigned'($time), packet.id);
+                        $write("[Monitor]    Time: %8dns, id: %3d, data: ", unsigned'($time), packet.id);
                         foreach (packet.data[i]) $write("%2h", packet.data[i]);
                         $write("\n");
                         

@@ -22,10 +22,10 @@ module aes128_ecb_comb_behav #(
     reg [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] out_counter = BLOCK_SIZE/M_AXIS_WIDTH-1;
 
     wire   [KEY_SIZE-1 : 0] ke_output_key    [ROUNDS_NUM];
-    wire [BLOCK_SIZE-1 : 0] sb_output_state  [ROUNDS_NUM];
-    wire [BLOCK_SIZE-1 : 0] sr_output_state  [ROUNDS_NUM];
-    wire [BLOCK_SIZE-1 : 0] mc_output_state  [ROUNDS_NUM-1];
-    wire [BLOCK_SIZE-1 : 0] ark_output_state [ROUNDS_NUM+1];
+    wire [BLOCK_SIZE-1 : 0] sb_output_block  [ROUNDS_NUM];
+    wire [BLOCK_SIZE-1 : 0] sr_output_block  [ROUNDS_NUM];
+    wire [BLOCK_SIZE-1 : 0] mc_output_block  [ROUNDS_NUM-1];
+    wire [BLOCK_SIZE-1 : 0] ark_output_block [ROUNDS_NUM+1];
 
     enum reg [3:0] {
         ST_KEY_IN         = 4'b1 << 0,
@@ -126,7 +126,7 @@ module aes128_ecb_comb_behav #(
         else
             case (state)
                 ST_CIPHER:
-                    ciphertext_reg <= ark_output_state[ROUNDS_NUM];
+                    ciphertext_reg <= ark_output_block[ROUNDS_NUM];
                 
                 ST_CIPHERTEXT_OUT:
                     if (M_axis.tvalid & M_axis.tready)
@@ -179,9 +179,9 @@ module aes128_ecb_comb_behav #(
             // zero round
             if (r == 0) begin
                 aes_add_round_key ark_inst (
-                    .state     ( plaintext_reg ),
+                    .block     ( plaintext_reg ),
                     .key       ( key_reg ),
-                    .new_state ( ark_output_state[r] )
+                    .new_block ( ark_output_block[r] )
                 );
             end
             // final round
@@ -194,19 +194,19 @@ module aes128_ecb_comb_behav #(
                 );
 
                 aes_sub_bytes sb_inst (
-                    .state     ( ark_output_state[r-1] ),
-                    .new_state ( sb_output_state[r-1] )
+                    .block     ( ark_output_block[r-1] ),
+                    .new_block ( sb_output_block[r-1] )
                 );
 
                 aes_shift_rows sr_inst (
-                    .state     ( sb_output_state[r-1] ),
-                    .new_state ( sr_output_state[r-1] )
+                    .block     ( sb_output_block[r-1] ),
+                    .new_block ( sr_output_block[r-1] )
                 );
 
                 aes_add_round_key ark_inst (
-                    .state     ( sr_output_state[r-1] ),
+                    .block     ( sr_output_block[r-1] ),
                     .key       ( ke_output_key[r-1] ),
-                    .new_state ( ark_output_state[r] )
+                    .new_block ( ark_output_block[r] )
                 );
             end
             // middle round
@@ -219,24 +219,24 @@ module aes128_ecb_comb_behav #(
                 );
 
                 aes_sub_bytes sb_inst (
-                    .state     ( ark_output_state[r-1] ),
-                    .new_state ( sb_output_state[r-1] )
+                    .block     ( ark_output_block[r-1] ),
+                    .new_block ( sb_output_block[r-1] )
                 );
 
                 aes_shift_rows sr_inst (
-                    .state     ( sb_output_state[r-1] ),
-                    .new_state ( sr_output_state[r-1] )
+                    .block     ( sb_output_block[r-1] ),
+                    .new_block ( sr_output_block[r-1] )
                 );
 
                 aes_mix_columns mc_inst (
-                    .state     ( sr_output_state[r-1] ),
-                    .new_state ( mc_output_state[r-1] )
+                    .block     ( sr_output_block[r-1] ),
+                    .new_block ( mc_output_block[r-1] )
                 );
 
                 aes_add_round_key ark_inst (
-                    .state     ( mc_output_state[r-1] ),
+                    .block     ( mc_output_block[r-1] ),
                     .key       ( ke_output_key[r-1] ),
-                    .new_state ( ark_output_state[r] )
+                    .new_block ( ark_output_block[r] )
                 );
             end
         end

@@ -42,11 +42,10 @@ class scoreboard;
                 this.mon_mbx.get(recv_packet);
 
                 if (recv_packet.data != exp_packet.data) begin
-                    $write("[Scoreboard] ERROR! time: %8dns, id: %3d, received data: ", unsigned'($time), recv_packet.id);
-                    foreach (recv_packet.data[i]) $write("%2h", recv_packet.data[i]);
-                    $write("\n                                               expected data: ");
+                    $write("[Scoreboard] Time: %8dns, id: %3d, data: ", unsigned'($time), exp_packet.id);
                     foreach (exp_packet.data[i]) $write("%2h", exp_packet.data[i]);
                     $write("\n");
+                    $display("\nERROR!");
                     $finish;
                 end
             end

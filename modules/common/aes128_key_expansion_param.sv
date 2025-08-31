@@ -7,6 +7,10 @@ module aes128_key_expansion_param #(
     output [`AES128_KEY_SIZE-1 : 0] new_key
 );
     wire [`AES_WORD_SIZE-1 : 0] rcon;
+    wire [`AES_WORD_SIZE-1 : 0] after_rotword;
+    wire [`AES_WORD_SIZE-1 : 0] after_subword;
+    wire [`AES_WORD_SIZE-1 : 0] after_rcon;
+
     generate
         case (ROUND_NUM)
             1:  assign rcon = `AES_RCON_01;
@@ -21,10 +25,6 @@ module aes128_key_expansion_param #(
             10: assign rcon = `AES_RCON_10;
         endcase
     endgenerate
-
-    wire [`AES_WORD_SIZE-1 : 0] after_rotword;
-    wire [`AES_WORD_SIZE-1 : 0] after_subword;
-    wire [`AES_WORD_SIZE-1 : 0] after_rcon;
 
     assign after_rotword = (key[`AES_4TH_WORD] >> 8) | (key[`AES_4TH_WORD] << `AES_WORD_SIZE-8);
 

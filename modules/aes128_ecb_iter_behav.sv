@@ -22,17 +22,17 @@ reg   [$clog2(KEY_SIZE/S_AXIS_WIDTH)-1 : 0] in_counter    = KEY_SIZE/S_AXIS_WIDT
 reg [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] out_counter   = BLOCK_SIZE/M_AXIS_WIDTH-1;
 reg [int'($ceil($clog2(ROUNDS_NUM)))-1 : 0] round_counter = 'd0;
 
-reg [BLOCK_SIZE-1 : 0] sb_state;
-reg [BLOCK_SIZE-1 : 0] sr_state;
-reg [BLOCK_SIZE-1 : 0] mc_state;
-reg [BLOCK_SIZE-1 : 0] ark_state;
+reg [BLOCK_SIZE-1 : 0] sb_block;
+reg [BLOCK_SIZE-1 : 0] sr_block;
+reg [BLOCK_SIZE-1 : 0] mc_block;
+reg [BLOCK_SIZE-1 : 0] ark_block;
 reg   [KEY_SIZE-1 : 0] ark_key;
 
 wire   [KEY_SIZE-1 : 0] ke_new_key;
-wire [BLOCK_SIZE-1 : 0] sb_new_state;
-wire [BLOCK_SIZE-1 : 0] sr_new_state;
-wire [BLOCK_SIZE-1 : 0] mc_new_state;
-wire [BLOCK_SIZE-1 : 0] ark_new_state;
+wire [BLOCK_SIZE-1 : 0] sb_new_block;
+wire [BLOCK_SIZE-1 : 0] sr_new_block;
+wire [BLOCK_SIZE-1 : 0] mc_new_block;
+wire [BLOCK_SIZE-1 : 0] ark_new_block;
 
 enum reg [5:0] {
     ST_KEY_IN         = 6'b1 << 0,
@@ -155,7 +155,7 @@ always_ff @(posedge Clk) begin
                     text_reg <= {S_axis.tdata, text_reg[S_AXIS_WIDTH +: BLOCK_SIZE-S_AXIS_WIDTH]};
 
             ST_ZERO_ROUND, ST_MIDDLE_ROUND, ST_FINAL_ROUND:
-                text_reg <= ark_new_state;
+                text_reg <= ark_new_block;
             
             ST_CIPHERTEXT_OUT:
                 if (M_axis.tvalid & M_axis.tready)
@@ -220,27 +220,27 @@ end
 always_comb begin
     case (state)
         ST_ZERO_ROUND: begin
-            ark_state = text_reg;
+            ark_block = text_reg;
             ark_key = key_reg;
         end
         ST_MIDDLE_ROUND: begin
-            sb_state = text_reg;
-            sr_state = sb_new_state;
-            mc_state = sr_new_state;
-            ark_state = mc_new_state;
+            sb_block = text_reg;
+            sr_block = sb_new_block;
+            mc_block = sr_new_block;
+            ark_block = mc_new_block;
             ark_key = ke_new_key;
         end
         ST_FINAL_ROUND: begin
-            sb_state = text_reg;
-            sr_state = sb_new_state;
-            ark_state = sr_new_state;
+            sb_block = text_reg;
+            sr_block = sb_new_block;
+            ark_block = sr_new_block;
             ark_key = ke_new_key;
         end
         default: begin
-            sb_state = 128'h0;
-            sr_state = 128'h0;
-            mc_state = 128'h0;
-            ark_state = 128'h0;
+            sb_block = 128'h0;
+            sr_block = 128'h0;
+            mc_block = 128'h0;
+            ark_block = 128'h0;
             ark_key = 128'h0;
         end
     endcase
@@ -253,24 +253,24 @@ aes128_key_expansion_port ke_inst (
 );
 
 aes_sub_bytes sb_inst (
-    .state     ( sb_state     ),
-    .new_state ( sb_new_state )
+    .block     ( sb_block     ),
+    .new_block ( sb_new_block )
 );
 
 aes_shift_rows sr_inst (
-    .state     ( sr_state     ),
-    .new_state ( sr_new_state )
+    .block     ( sr_block     ),
+    .new_block ( sr_new_block )
 );
 
 aes_mix_columns mc_inst (
-    .state     ( mc_state     ),
-    .new_state ( mc_new_state )
+    .block     ( mc_block     ),
+    .new_block ( mc_new_block )
 );
 
 aes_add_round_key ark_inst (
-    .state     ( ark_state     ),
+    .block     ( ark_block     ),
     .key       ( ark_key       ),
-    .new_state ( ark_new_state )
+    .new_block ( ark_new_block )
 );
 
 endmodule

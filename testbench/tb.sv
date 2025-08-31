@@ -87,7 +87,7 @@ module tb;
             scb.run();
         join
 
-        @(posedge clk) $display("Test completed");
+        @(posedge clk) $display("\nTEST COMPLETED.");
         $finish();
     end
 
