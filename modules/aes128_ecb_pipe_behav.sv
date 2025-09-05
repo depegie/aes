@@ -1,6 +1,6 @@
 `include "aes_defines.svh"
 
-module aes128_ecb_comb_behav #(
+module aes128_ecb_pipe_behav #(
     parameter int S_AXIS_WIDTH = 32,
     parameter int M_AXIS_WIDTH = 32
 )(
@@ -13,13 +13,21 @@ module aes128_ecb_comb_behav #(
     localparam int KEY_SIZE   = `AES128_KEY_SIZE;
     localparam int BLOCK_SIZE = `AES_BLOCK_SIZE;
 
-    reg   [KEY_SIZE-1 : 0] key_reg        = 'h0;
-    reg [BLOCK_SIZE-1 : 0] plaintext_reg  = 'h0;
-    reg [BLOCK_SIZE-1 : 0] ciphertext_reg = 'h0;
-    reg                    tlast_reg      = 1'b0;
-
     reg   [$clog2(KEY_SIZE/S_AXIS_WIDTH)-1 : 0] in_counter  = KEY_SIZE/S_AXIS_WIDTH-1;
     reg [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] out_counter = BLOCK_SIZE/M_AXIS_WIDTH-1;
+
+    reg   [KEY_SIZE-1 : 0] key_reg       = 128'h0;
+    reg [BLOCK_SIZE-1 : 0] plaintext_reg = 128'h0;
+    reg                    tlast_reg     = 1'b0;
+
+    reg  plaintext_valid;
+    wire plaintext_ready;
+
+    reg [BLOCK_SIZE-1 : 0] block_reg   [ROUNDS_NUM+1];
+    reg   [KEY_SIZE-1 : 0] ke_key_reg  [ROUNDS_NUM];
+    reg                    block_valid [ROUNDS_NUM+1];
+    wire                   block_ready [ROUNDS_NUM+1];
+    reg                    block_last  [ROUNDS_NUM+1];
 
     wire   [KEY_SIZE-1 : 0] ke_output_key    [ROUNDS_NUM];
     wire [BLOCK_SIZE-1 : 0] sb_output_block  [ROUNDS_NUM];
@@ -27,11 +35,9 @@ module aes128_ecb_comb_behav #(
     wire [BLOCK_SIZE-1 : 0] mc_output_block  [ROUNDS_NUM-1];
     wire [BLOCK_SIZE-1 : 0] ark_output_block [ROUNDS_NUM+1];
 
-    enum reg [3:0] {
-        ST_KEY_IN         = 4'b1 << 0,
-        ST_PLAINTEXT_IN   = 4'b1 << 1,
-        ST_CIPHER         = 4'b1 << 2,
-        ST_CIPHERTEXT_OUT = 4'b1 << 3
+    enum reg [1:0] {
+        ST_KEY_IN         = 2'b1 << 0,
+        ST_PLAINTEXT_IN   = 2'b1 << 1
     } state=ST_KEY_IN, next_state;
 
     always_ff @(posedge Clk)
@@ -48,53 +54,42 @@ module aes128_ecb_comb_behav #(
                 else
                     next_state = ST_KEY_IN;
             end
+
             ST_PLAINTEXT_IN: begin
-                if (S_axis.tvalid & S_axis.tready & ~|in_counter)
-                    next_state = ST_CIPHER;
-                else
-                    next_state = ST_PLAINTEXT_IN;
-            end
-            ST_CIPHER: begin
-                next_state = ST_CIPHERTEXT_OUT;
-            end
-            ST_CIPHERTEXT_OUT: begin
-                if (M_axis.tvalid & M_axis.tready & M_axis.tlast & ~|out_counter)
+                if (S_axis.tvalid & S_axis.tready & S_axis.tlast)
                     next_state = ST_KEY_IN;
-                else if (M_axis.tvalid & M_axis.tready & ~|out_counter)
-                    next_state = ST_PLAINTEXT_IN;
                 else
-                    next_state = ST_CIPHERTEXT_OUT;
-            end
-            default: begin
-                next_state = ST_KEY_IN;
+                    next_state = ST_PLAINTEXT_IN;
             end
         endcase
 
     always_comb
         case (state)
             ST_KEY_IN, ST_PLAINTEXT_IN:
-                S_axis.tready = 1'b1;
+                S_axis.tready = plaintext_ready;
             
             default:
                 S_axis.tready = 1'b0;
         endcase
+    
+    always_comb begin
+        M_axis.tvalid = block_valid[ROUNDS_NUM];
+        M_axis.tdata = block_reg[ROUNDS_NUM][M_AXIS_WIDTH-1 : 0];
+        M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
+        M_axis.tlast = (~|out_counter) ? block_last[ROUNDS_NUM] : 1'b0;
+    end
 
-    always_comb
-        case (state)
-            ST_CIPHERTEXT_OUT: begin
-                M_axis.tvalid = 1'b1;
-                M_axis.tdata = ciphertext_reg[M_AXIS_WIDTH-1 : 0];
-                M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
-                M_axis.tlast = (~|out_counter) ? tlast_reg : 1'b0;
-            end
+    always @(posedge Clk)
+        if (S_axis.tvalid & S_axis.tready)
+            tlast_reg <= S_axis.tlast;
 
-            default: begin
-                M_axis.tvalid = 1'b0;
-                M_axis.tdata = 128'h0;
-                M_axis.tkeep = 16'b0;
-                M_axis.tlast = 1'b0;
-            end
-        endcase
+    always_ff @(posedge Clk)
+        if (Rst)
+            out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
+        else if (M_axis.tvalid & M_axis.tready & ~|out_counter)
+            out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
+        else if (M_axis.tvalid & M_axis.tready & M_AXIS_WIDTH != BLOCK_SIZE)
+            out_counter <= out_counter - 'd1;
 
     always_ff @(posedge Clk)
         if (Rst)
@@ -122,25 +117,8 @@ module aes128_ecb_comb_behav #(
 
     always_ff @(posedge Clk)
         if (Rst)
-            ciphertext_reg <= 128'h0;
-        else
-            case (state)
-                ST_CIPHER:
-                    ciphertext_reg <= ark_output_block[ROUNDS_NUM];
-                
-                ST_CIPHERTEXT_OUT:
-                    if (M_axis.tvalid & M_axis.tready)
-                        ciphertext_reg <= ciphertext_reg >> M_AXIS_WIDTH;
-            endcase
-
-    always @(posedge Clk)
-        if (S_axis.tvalid & S_axis.tready)
-            tlast_reg <= S_axis.tlast;
-
-    always_ff @(posedge Clk)
-        if (Rst)
             in_counter <= KEY_SIZE/S_AXIS_WIDTH-1;
-        else
+        else if (S_AXIS_WIDTH != BLOCK_SIZE)
             case (state)
                 ST_KEY_IN:
                     if (S_axis.tvalid & S_axis.tready & ~|in_counter)
@@ -149,30 +127,94 @@ module aes128_ecb_comb_behav #(
                         in_counter <= in_counter - 'd1;
 
                 ST_PLAINTEXT_IN:
-                    if (S_axis.tvalid & S_axis.tready & ~|in_counter)
+                    if (S_axis.tvalid & S_axis.tready & S_axis.tlast)
                         in_counter <= BLOCK_SIZE/S_AXIS_WIDTH-1;
                     else if (S_axis.tvalid & S_axis.tready)
                         in_counter <= in_counter - 'd1;
-                
-                default:
-                    if (tlast_reg)
-                        in_counter <= KEY_SIZE/S_AXIS_WIDTH-1;
-                    else
-                        in_counter <= BLOCK_SIZE/S_AXIS_WIDTH-1;
             endcase
+    
+    always_ff @(posedge Clk)
+        if (Rst) begin
+            block_valid[0] <= 1'b0;
+            block_reg[0] <= 128'h0;
+            ke_key_reg[0] <= 128'h0;
+            block_last[0] <= 1'b0;
+        end
+        else if (plaintext_valid & plaintext_ready) begin
+            block_valid[0] <= 1'b1;
+            block_reg[0] <= ark_output_block[0];
+            ke_key_reg[0] <= key_reg;
+            block_last[0] <= tlast_reg;
+        end
+        else if (block_valid[0] & block_ready[0]) begin
+            block_valid[0] <= 1'b0;
+            block_reg[0] <= 128'h0;
+            ke_key_reg[0] <= 128'h0;
+            block_last[0] <= 1'b0;
+        end
+    
+    generate
+        for (genvar r=1; r<ROUNDS_NUM; r++) begin
+            assign block_ready[r-1] = ~block_valid[r] | (block_valid[r] & block_ready[r]);
+
+            always_ff @(posedge Clk)
+                if (Rst) begin
+                    block_valid[r] <= 1'b0;
+                    block_reg[r] <= 128'h0;
+                    ke_key_reg[r] <= 128'h0;
+                    block_last[r] <= 1'b0;
+                end
+                else if (block_valid[r-1] & block_ready[r-1]) begin
+                    block_valid[r] <= block_valid[r-1];
+                    block_reg[r] <= ark_output_block[r];
+                    ke_key_reg[r] <= ke_output_key[r-1];
+                    block_last[r] <= block_last[r-1];
+                end
+                else if (block_valid[r] & block_ready[r]) begin
+                    block_valid[r] <= 1'b0;
+                    block_reg[r] <= 128'h0;
+                    ke_key_reg[r] <= 128'h0;
+                    block_last[r] <= 1'b0;
+                end
+        end
+    endgenerate
+
+    assign block_ready[ROUNDS_NUM-1] = ~block_valid[ROUNDS_NUM] | (block_valid[ROUNDS_NUM] & block_ready[ROUNDS_NUM]);
 
     always_ff @(posedge Clk)
+        if (Rst) begin
+            block_valid[ROUNDS_NUM] <= 1'b0;
+            block_reg[ROUNDS_NUM] <= 128'h0;
+            block_last[ROUNDS_NUM] <= 1'b0;
+        end
+        else if (block_valid[ROUNDS_NUM-1] & block_ready[ROUNDS_NUM-1]) begin
+            block_valid[ROUNDS_NUM] <= block_valid[ROUNDS_NUM-1];
+            block_reg[ROUNDS_NUM] <= ark_output_block[ROUNDS_NUM];
+            block_last[ROUNDS_NUM] <= block_last[ROUNDS_NUM-1];
+        end
+        else if (block_valid[ROUNDS_NUM] & block_ready[ROUNDS_NUM]) begin
+            block_valid[ROUNDS_NUM] <= 1'b0;
+            block_reg[ROUNDS_NUM] <= 128'h0;
+            block_last[ROUNDS_NUM] <= 1'b0;
+        end
+        else if (M_axis.tvalid & M_axis.tready) begin
+            block_valid[ROUNDS_NUM] <= block_valid[ROUNDS_NUM];
+            block_reg[ROUNDS_NUM] <= block_reg[ROUNDS_NUM] >> M_AXIS_WIDTH;
+            block_last[ROUNDS_NUM] <= block_last[ROUNDS_NUM];
+        end
+
+    assign block_ready[ROUNDS_NUM] = M_axis.tvalid & M_axis.tready & ~|out_counter;
+
+    always_ff @(posedge Clk) begin
         if (Rst)
-            out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
-        else
-            case (state)
-                ST_CIPHERTEXT_OUT:
-                    if (M_axis.tvalid & M_axis.tready)
-                        out_counter <= out_counter - 'd1;
-                
-                default:
-                    out_counter <= BLOCK_SIZE/M_AXIS_WIDTH-1;
-            endcase
+            plaintext_valid <= 1'b0;
+        else if (state == ST_PLAINTEXT_IN & S_axis.tvalid & S_axis.tready & ~|in_counter)
+            plaintext_valid <= 1'b1;
+        else if (plaintext_valid & plaintext_ready)
+            plaintext_valid <= 1'b0;
+    end
+
+    assign plaintext_ready = ~block_valid[0] | (block_valid[0] & block_ready[0]);
 
     generate
         for (genvar r=0; r<=ROUNDS_NUM; r++) begin
@@ -189,12 +231,12 @@ module aes128_ecb_comb_behav #(
                 aes128_key_expansion_param #(
                     .ROUND_NUM(r)
                 ) ke_inst (
-                    .key     ( ke_output_key[r-2] ),
+                    .key     ( ke_key_reg[r-1] ),
                     .new_key ( ke_output_key[r-1] )
                 );
 
                 aes_sub_bytes sb_inst (
-                    .block     ( ark_output_block[r-1] ),
+                    .block     ( block_reg[r-1] ),
                     .new_block ( sb_output_block[r-1] )
                 );
 
@@ -214,12 +256,12 @@ module aes128_ecb_comb_behav #(
                 aes128_key_expansion_param #(
                     .ROUND_NUM(r)
                 ) ke_inst (
-                    .key     ( r == 1 ? key_reg : ke_output_key[r-2] ),
+                    .key     ( ke_key_reg[r-1] ),
                     .new_key ( ke_output_key[r-1] )
                 );
 
                 aes_sub_bytes sb_inst (
-                    .block     ( ark_output_block[r-1] ),
+                    .block     ( block_reg[r-1] ),
                     .new_block ( sb_output_block[r-1] )
                 );
 
