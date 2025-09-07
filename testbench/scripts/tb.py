@@ -23,21 +23,27 @@ MODULE_TYPES = [
 ]
 
 def aes128_ecb(vectors_num : int):
-    open(STIMULUS_DIR+'pkts_in.txt', 'w').close()
-    open(STIMULUS_DIR+'pkts_out.txt', 'w').close()
+    file_in = open(STIMULUS_DIR+'pkts_in.txt', 'w')
+    file_out = open(STIMULUS_DIR+'pkts_out.txt', 'w')
     
     mode = AES.MODE_ECB
     
     for n in range(1, vectors_num+1):
         key = get_random_bytes(AES128_KEY_SIZE)
-        plaintext = get_random_bytes(n*AES_BLOCK_SIZE)
+        plaintext = get_random_bytes(AES_BLOCK_SIZE)
         ciphertext = AES.new(key, mode).encrypt(plaintext)
 
-        with open(STIMULUS_DIR+'pkts_in.txt', 'a') as f:
-            f.write(key.hex() + plaintext.hex() + '\n')
-        
-        with open(STIMULUS_DIR+'pkts_out.txt', 'a') as f:
-            f.write(ciphertext.hex() + '\n')
+        file_in.write('1 ' + key.hex() + plaintext.hex() + '\n')
+        file_out.write(ciphertext.hex() + '\n')
+
+        file_in.write('0 ' + key.hex() + ciphertext.hex() + '\n')
+        file_out.write(plaintext.hex() + '\n')
+
+        # file_in.write('0 ' + key.hex() + ciphertext.hex() + '\n')
+        # file_out.write(plaintext.hex() + '\n')
+    
+    file_in.close()
+    file_out.close()
 
 def aes256_ecb(vectors_num : int):
     open(STIMULUS_DIR+'pkts_in.txt', 'w').close()

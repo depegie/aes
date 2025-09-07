@@ -3,6 +3,7 @@ package tb_pkg;
 
     typedef struct {
         int         id;
+        logic       user;
         logic [7:0] data [$];
     } packet_t;
 

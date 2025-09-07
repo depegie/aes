@@ -23,12 +23,12 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
         this.axis.tdata  = 128'h0;
         this.axis.tkeep  = 16'b0;
         this.axis.tlast  = 1'b0;
+        this.axis.tuser  = 1'b0;
     endfunction
 
     task run();
         bit         stimulus_done = 1'b0;
         int         bytes_in_trans_num = 0;
-        logic [7:0] pkt_byte = 8'h0;
         packet_t    packet;
         packet_t    packet_copy;
 
@@ -56,13 +56,16 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
                     end
 
                     this.axis.tvalid = 1'b1;
+                    this.axis.tuser = packet.user;
                     @(this.axis.cb);
                     while (!this.axis.cb.tready) begin
                         @(this.axis.cb);
                     end
 
-                    this.init();
+                    this.axis.tvalid = 1'b0;
+                    this.axis.tlast  = 1'b0;
                 end
+                this.axis.tuser  = 1'b0;
 
                 $write("[Driver]     Time: %8dns, id: %3d, data: ", unsigned'($time), packet_copy.id);
                 foreach (packet_copy.data[i]) $write("%2h", packet_copy.data[i]);

@@ -27,4 +27,12 @@
 `define AES_RCON_09         32'h0000001b
 `define AES_RCON_10         32'h00000036
 
+`define AES_GMUL_01(b) b
+`define AES_GMUL_02(b) (b[7] ? (b<<1 ^ 8'h1b) : b<<1)
+`define AES_GMUL_03(b) (`AES_GMUL_02(b) ^ b)
+`define AES_GMUL_09(b) (`AES_GMUL_02(`AES_GMUL_02(`AES_GMUL_02(b))) ^ b)
+`define AES_GMUL_0B(b) (`AES_GMUL_02(`AES_GMUL_02(`AES_GMUL_02(b))) ^ `AES_GMUL_02(b) ^ b)
+`define AES_GMUL_0D(b) (`AES_GMUL_02(`AES_GMUL_02(`AES_GMUL_02(b))) ^ `AES_GMUL_02(`AES_GMUL_02(b)) ^ b)
+`define AES_GMUL_0E(b) (`AES_GMUL_02(`AES_GMUL_02(`AES_GMUL_02(b))) ^ `AES_GMUL_02(`AES_GMUL_02(b)) ^ `AES_GMUL_02(b))
+
 `endif
