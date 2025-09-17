@@ -9,17 +9,24 @@ module aes_mix_columns (
     assign new_block[`AES_3RD_WORD] = gmul_matrix(block[`AES_3RD_WORD]);
     assign new_block[`AES_4TH_WORD] = gmul_matrix(block[`AES_4TH_WORD]);
 
+    function automatic logic [7 : 0] gmul_01(input logic [7 : 0] b);
+        return b;
+    endfunction
+
+    function automatic logic [7 : 0] gmul_02(input logic [7 : 0] b);
+        return b[7] ? (b<<1 ^ 8'h1b) : b<<1;
+    endfunction
+
+    function automatic logic [7 : 0] gmul_03(input logic [7 : 0] b);
+        return gmul_02(b) ^ b;
+    endfunction
+
     function automatic logic [`AES_WORD_SIZE-1 : 0] gmul_matrix(logic [`AES_WORD_SIZE-1 : 0] w);
-        logic [7 : 0] b0 = w[7 : 0];
-        logic [7 : 0] b1 = w[15 : 8];
-        logic [7 : 0] b2 = w[23 : 16];
-        logic [7 : 0] b3 = w[31 : 24];
-        
         return {
-            `AES_GMUL_03(b0) ^ `AES_GMUL_01(b1) ^ `AES_GMUL_01(b2) ^ `AES_GMUL_02(b3),
-            `AES_GMUL_01(b0) ^ `AES_GMUL_01(b1) ^ `AES_GMUL_02(b2) ^ `AES_GMUL_03(b3),
-            `AES_GMUL_01(b0) ^ `AES_GMUL_02(b1) ^ `AES_GMUL_03(b2) ^ `AES_GMUL_01(b3),
-            `AES_GMUL_02(b0) ^ `AES_GMUL_03(b1) ^ `AES_GMUL_01(b2) ^ `AES_GMUL_01(b3)
+            gmul_03(w[7 : 0]) ^ gmul_01(w[15 : 8]) ^ gmul_01(w[23 : 16]) ^ gmul_02(w[31 : 24]),
+            gmul_01(w[7 : 0]) ^ gmul_01(w[15 : 8]) ^ gmul_02(w[23 : 16]) ^ gmul_03(w[31 : 24]),
+            gmul_01(w[7 : 0]) ^ gmul_02(w[15 : 8]) ^ gmul_03(w[23 : 16]) ^ gmul_01(w[31 : 24]),
+            gmul_02(w[7 : 0]) ^ gmul_03(w[15 : 8]) ^ gmul_01(w[23 : 16]) ^ gmul_01(w[31 : 24])
         };
     endfunction
 

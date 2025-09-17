@@ -3,9 +3,9 @@
 module aes256_key_expansion_param #(
     parameter int ROUND_NUM = 0
 )(
-    input  [`AES256_KEY_SIZE/2-1 : 0] old_halfkey,
-    input  [`AES256_KEY_SIZE/2-1 : 0] halfkey,
-    output [`AES256_KEY_SIZE/2-1 : 0] new_halfkey
+    input  [`AES_256_KEY_LENGTH/2-1 : 0] old_halfkey,
+    input  [`AES_256_KEY_LENGTH/2-1 : 0] halfkey,
+    output [`AES_256_KEY_LENGTH/2-1 : 0] new_halfkey
 );
     localparam bit ROUND_NUM_EVEN = (ROUND_NUM % 2) ? 1'b1 : 1'b0;
 
