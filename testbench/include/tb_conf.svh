@@ -1,5 +1,5 @@
-`define AES128_ECB_ITER_BEHAV
+`define AES256_CBC_ITER
 `define S_AXIS_WIDTH 64
 `define M_AXIS_WIDTH 64
-`define S_AXIS_DELAY 1
-`define M_AXIS_DELAY 1
+`define S_AXIS_DELAY 0
+`define M_AXIS_DELAY 0

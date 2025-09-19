@@ -44,7 +44,7 @@ module tb;
 // `elsif AES256_CTR_PIPE_GATE
 //     aes256_ctr_pipe_gate
 // `endif
-    aes_256_cbc_iter
+    aes256_cbc_iter
     #(
         .S_AXIS_WIDTH ( `S_AXIS_WIDTH ),
         .M_AXIS_WIDTH ( `M_AXIS_WIDTH )

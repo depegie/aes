@@ -1,13 +1,9 @@
 `include "aes_defines.svh"
 
 module aes256_key_expansion_port (
-    input  [int'($ceil($clog2(`AES_256_ROUNDS_NUMBER)))-1 : 0] round_num,
-    input                          [`AES_256_KEY_LENGTH-1 : 0] key,
-    output reg                   [`AES_256_KEY_LENGTH/2-1 : 0] new_key,
-    output                              [`AES_WORD_SIZE-1 : 0] word1,
-    output                              [`AES_WORD_SIZE-1 : 0] word2,
-    output                              [`AES_WORD_SIZE-1 : 0] word3,
-    output                              [`AES_WORD_SIZE-1 : 0] word4
+    input      [int'($ceil($clog2(`AES_256_ROUNDS_NUMBER)))-1 : 0] round_num,
+    input                              [`AES_256_KEY_LENGTH-1 : 0] key,
+    output reg                             [`AES_BLOCK_SIZE-1 : 0] new_key
 );
 
 reg  [`AES_WORD_SIZE-1 : 0] rcon;
@@ -19,11 +15,6 @@ reg [`AES_WORD_SIZE-1 : 0] before_rcon;
 wire [`AES_WORD_SIZE-1 : 0] after_rotword;
 wire [`AES_WORD_SIZE-1 : 0] after_subword;
 wire [`AES_WORD_SIZE-1 : 0] after_rcon;
-
-assign word1 = new_key[`AES_1ST_WORD];
-assign word2 = new_key[`AES_2ND_WORD];
-assign word3 = new_key[`AES_3RD_WORD];
-assign word4 = new_key[`AES_4TH_WORD];
 
 always_comb begin
     if (round_num % 2 == 0) begin
