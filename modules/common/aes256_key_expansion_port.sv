@@ -1,9 +1,9 @@
 `include "aes_defines.svh"
 
 module aes256_key_expansion_port (
-    input      [int'($ceil($clog2(`AES_256_ROUNDS_NUMBER)))-1 : 0] round_num,
-    input                              [`AES_256_KEY_LENGTH-1 : 0] key,
-    output reg                             [`AES_BLOCK_SIZE-1 : 0] new_key
+    input      [int'($ceil($clog2(`AES_256_NUMBER_OF_ROUNDS)))-1 : 0] round_num,
+    input                                 [`AES_256_KEY_LENGTH-1 : 0] key,
+    output reg                                [`AES_BLOCK_SIZE-1 : 0] new_key
 );
 
 reg  [`AES_WORD_SIZE-1 : 0] rcon;
