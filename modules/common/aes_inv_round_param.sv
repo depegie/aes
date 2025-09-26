@@ -9,14 +9,14 @@ module aes_inv_round_param #(
     output [`AES_BLOCK_SIZE-1 : 0] Output_block
 );
 
-reg [`AES_BLOCK_SIZE-1 : 0] sb_input_block;
-reg [`AES_BLOCK_SIZE-1 : 0] sr_input_block;
-reg [`AES_BLOCK_SIZE-1 : 0] ark_input_block;
-reg [`AES_BLOCK_SIZE-1 : 0] ark_round_key;
+logic [`AES_BLOCK_SIZE-1 : 0] sb_input_block;
+logic [`AES_BLOCK_SIZE-1 : 0] sr_input_block;
+logic [`AES_BLOCK_SIZE-1 : 0] ark_input_block;
+logic [`AES_BLOCK_SIZE-1 : 0] ark_round_key;
 
-wire [`AES_BLOCK_SIZE-1 : 0] sb_output_block;
-wire [`AES_BLOCK_SIZE-1 : 0] sr_output_block;
-wire [`AES_BLOCK_SIZE-1 : 0] ark_output_block;
+logic [`AES_BLOCK_SIZE-1 : 0] sb_output_block;
+logic [`AES_BLOCK_SIZE-1 : 0] sr_output_block;
+logic [`AES_BLOCK_SIZE-1 : 0] ark_output_block;
 
 aes_inv_sub_bytes sb_inst (
     .Encrypt      ( Encrypt         ),
@@ -48,8 +48,8 @@ generate
         end
     end
     else begin
-        reg [`AES_BLOCK_SIZE-1 : 0] mc_input_block;
-        wire [`AES_BLOCK_SIZE-1 : 0] mc_output_block;
+        logic [`AES_BLOCK_SIZE-1 : 0] mc_input_block;
+        logic [`AES_BLOCK_SIZE-1 : 0] mc_output_block;
 
         aes_inv_mix_columns mc_inst (
             .Encrypt      ( Encrypt         ),

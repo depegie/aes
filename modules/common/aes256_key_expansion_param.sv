@@ -3,15 +3,15 @@
 module aes256_key_expansion_param #(
     parameter int ROUND_NUMBER = 0
 )(
-    input  [`AES_256_KEY_LENGTH-1 : 0] Input_key,
-    output     [`AES_BLOCK_SIZE-1 : 0] Output_key
+    input  [`AES256_KEY_LENGTH-1 : 0] Input_key,
+    output    [`AES_BLOCK_SIZE-1 : 0] Output_key
 );
     generate
         if (ROUND_NUMBER % 2 == 0) begin
-            wire [`AES_WORD_SIZE-1 : 0] rcon;
-            wire [`AES_WORD_SIZE-1 : 0] after_rotword;
-            wire [`AES_WORD_SIZE-1 : 0] after_subword;
-            wire [`AES_WORD_SIZE-1 : 0] after_rcon;
+            logic [`AES_WORD_SIZE-1 : 0] rcon;
+            logic [`AES_WORD_SIZE-1 : 0] after_rotword;
+            logic [`AES_WORD_SIZE-1 : 0] after_subword;
+            logic [`AES_WORD_SIZE-1 : 0] after_rcon;
 
             case (ROUND_NUMBER)
                 2:  assign rcon = `AES_RCON_01;
@@ -39,8 +39,8 @@ module aes256_key_expansion_param #(
             assign Output_key[`AES_4TH_WORD] = Input_key[`AES_4TH_WORD] ^ Output_key[`AES_3RD_WORD];
         end
         else begin
-            wire [`AES_WORD_SIZE-1 : 0] before_subword;
-            wire [`AES_WORD_SIZE-1 : 0] after_subword;
+            logic [`AES_WORD_SIZE-1 : 0] before_subword;
+            logic [`AES_WORD_SIZE-1 : 0] after_subword;
 
             assign before_subword = Input_key[`AES_8TH_WORD];
 

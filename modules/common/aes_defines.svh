@@ -1,12 +1,13 @@
 `ifndef AES_DEFINES_SVH
 `define AES_DEFINES_SVH
 
-`define AES_128_NUMBER_OF_ROUNDS                10
-`define AES_256_NUMBER_OF_ROUNDS                14
+`define AES128_KEY_LENGTH                      128
+`define AES256_KEY_LENGTH                      256
 
 `define AES_BLOCK_SIZE                         128
-`define AES_128_KEY_LENGTH                     128
-`define AES_256_KEY_LENGTH                     256
+
+`define AES128_NUMBER_OF_ROUNDS                 10
+`define AES256_NUMBER_OF_ROUNDS                 14
 
 `define AES_WORD_SIZE                           32
 `define AES_1ST_WORD                          31:0

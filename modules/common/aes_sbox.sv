@@ -1,6 +1,6 @@
 module aes_sbox (
-    input      [7 : 0] Input_byte,
-    output reg [7 : 0] Output_byte
+    input        [7 : 0] Input_byte,
+    output logic [7 : 0] Output_byte
 );
     always_comb begin
         case (Input_byte)

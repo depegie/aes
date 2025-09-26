@@ -5,8 +5,8 @@ module aes_inv_sub_bytes (
     input  [`AES_BLOCK_SIZE-1 : 0] Input_block,
     output [`AES_BLOCK_SIZE-1 : 0] Output_block
 );
-    wire [`AES_BLOCK_SIZE-1 : 0] enc_block;
-    wire [`AES_BLOCK_SIZE-1 : 0] dec_block;
+    logic [`AES_BLOCK_SIZE-1 : 0] enc_block;
+    logic [`AES_BLOCK_SIZE-1 : 0] dec_block;
 
     assign Output_block = Encrypt ? enc_block : dec_block;
 

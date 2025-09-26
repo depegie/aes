@@ -10,9 +10,9 @@ module aes256_cbc_iter #(
     axis_if.master M_axis
 );
 
-localparam int KEY_LENGTH       = `AES_256_KEY_LENGTH;
+localparam int KEY_LENGTH       = `AES256_KEY_LENGTH;
 localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
-localparam int NUMBER_OF_ROUNDS = `AES_256_NUMBER_OF_ROUNDS;
+localparam int NUMBER_OF_ROUNDS = `AES256_NUMBER_OF_ROUNDS;
 
 logic [$clog2(BLOCK_SIZE/S_AXIS_WIDTH)-1 : 0] input_cnt;
 logic [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] output_cnt;

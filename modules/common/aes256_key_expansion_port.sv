@@ -1,20 +1,20 @@
 `include "aes_defines.svh"
 
 module aes256_key_expansion_port (
-    input      [int'($ceil($clog2(`AES_256_NUMBER_OF_ROUNDS)))-1 : 0] Round_number,
-    input                                 [`AES_256_KEY_LENGTH-1 : 0] Input_key,
-    output reg                                [`AES_BLOCK_SIZE-1 : 0] Output_key
+    input        [int'($ceil($clog2(`AES256_NUMBER_OF_ROUNDS)))-1 : 0] Round_number,
+    input                                   [`AES256_KEY_LENGTH-1 : 0] Input_key,
+    output logic                               [`AES_BLOCK_SIZE-1 : 0] Output_key
 );
 
-reg  [`AES_WORD_SIZE-1 : 0] rcon;
+logic [`AES_WORD_SIZE-1 : 0] rcon;
 
-reg [`AES_WORD_SIZE-1 : 0] before_rotword;
-reg [`AES_WORD_SIZE-1 : 0] before_subword;
-reg [`AES_WORD_SIZE-1 : 0] before_rcon;
+logic [`AES_WORD_SIZE-1 : 0] before_rotword;
+logic [`AES_WORD_SIZE-1 : 0] before_subword;
+logic [`AES_WORD_SIZE-1 : 0] before_rcon;
 
-wire [`AES_WORD_SIZE-1 : 0] after_rotword;
-wire [`AES_WORD_SIZE-1 : 0] after_subword;
-wire [`AES_WORD_SIZE-1 : 0] after_rcon;
+logic [`AES_WORD_SIZE-1 : 0] after_rotword;
+logic [`AES_WORD_SIZE-1 : 0] after_subword;
+logic [`AES_WORD_SIZE-1 : 0] after_rcon;
 
 always_comb begin
     if (Round_number % 2 == 0) begin
