@@ -1,13 +1,13 @@
 `include "aes_defines.svh"
 
 module aes_mix_columns (
-    input  [`AES_BLOCK_SIZE-1 : 0] block,
-    output [`AES_BLOCK_SIZE-1 : 0] new_block
+    input  [`AES_BLOCK_SIZE-1 : 0] Input_block,
+    output [`AES_BLOCK_SIZE-1 : 0] Output_block
 );
-    assign new_block[`AES_1ST_WORD] = gmul_matrix(block[`AES_1ST_WORD]);
-    assign new_block[`AES_2ND_WORD] = gmul_matrix(block[`AES_2ND_WORD]);
-    assign new_block[`AES_3RD_WORD] = gmul_matrix(block[`AES_3RD_WORD]);
-    assign new_block[`AES_4TH_WORD] = gmul_matrix(block[`AES_4TH_WORD]);
+    assign Output_block[`AES_1ST_WORD] = gmul_matrix(Input_block[`AES_1ST_WORD]);
+    assign Output_block[`AES_2ND_WORD] = gmul_matrix(Input_block[`AES_2ND_WORD]);
+    assign Output_block[`AES_3RD_WORD] = gmul_matrix(Input_block[`AES_3RD_WORD]);
+    assign Output_block[`AES_4TH_WORD] = gmul_matrix(Input_block[`AES_4TH_WORD]);
 
     function automatic logic [7 : 0] gmul_01(input logic [7 : 0] b);
         return b;

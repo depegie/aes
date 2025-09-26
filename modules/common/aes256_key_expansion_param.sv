@@ -26,7 +26,10 @@ module aes256_key_expansion_param #(
             assign after_rotword = (Input_key[`AES_8TH_WORD] >> 8) | (Input_key[`AES_8TH_WORD] << `AES_WORD_SIZE-8);
             
             for (genvar i=0; i<`AES_WORD_SIZE/8; i++)
-                aes_sbox aes_sbox_inst(after_rotword[8*i +: 8], after_subword[8*i +: 8]);
+                aes_sbox aes_sbox_inst (
+                    .Input_byte  ( after_rotword[8*i +: 8] ), 
+                    .Output_byte ( after_subword[8*i +: 8] )
+                );
 
             assign after_rcon = after_subword ^ rcon;
 
@@ -42,7 +45,10 @@ module aes256_key_expansion_param #(
             assign before_subword = Input_key[`AES_8TH_WORD];
 
             for (genvar i=0; i<`AES_BLOCK_SIZE/`AES_WORD_SIZE; i++)
-                aes_sbox aes_sbox_inst(before_subword[8*i +: 8], after_subword[8*i +: 8]);
+                aes_sbox aes_sbox_inst (
+                    .Input_byte  ( before_subword[8*i +: 8] ),
+                    .Output_byte (  after_subword[8*i +: 8] )
+                );
 
             assign Output_key[`AES_1ST_WORD] = Input_key[`AES_1ST_WORD] ^ after_subword;
             assign Output_key[`AES_2ND_WORD] = Input_key[`AES_2ND_WORD] ^ Output_key[`AES_1ST_WORD];

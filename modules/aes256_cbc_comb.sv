@@ -21,11 +21,11 @@ logic [KEY_LENGTH-1 : 0] key_reg;
 logic [BLOCK_SIZE-1 : 0] iv_reg;
 logic [BLOCK_SIZE-1 : 0] input_text_reg;
 
-logic [KEY_LENGTH-1 : 0] ke_key[NUMBER_OF_ROUNDS-1];
-logic [BLOCK_SIZE-1 : 0] ke_new_key[NUMBER_OF_ROUNDS-1];
+logic [KEY_LENGTH-1 : 0] key_expansion_key[NUMBER_OF_ROUNDS-1];
+logic [BLOCK_SIZE-1 : 0] key_expansion_new_key[NUMBER_OF_ROUNDS-1];
 
-logic enc_reg;
-logic last_reg;
+logic encrypt_reg;
+logic last_block_reg;
 
 logic [BLOCK_SIZE-1 : 0] round_block[NUMBER_OF_ROUNDS];
 logic [BLOCK_SIZE-1 : 0] round_key[NUMBER_OF_ROUNDS+1];
@@ -33,8 +33,8 @@ logic [BLOCK_SIZE-1 : 0] input_block;
 logic [BLOCK_SIZE-1 : 0] output_block;
 logic [BLOCK_SIZE-1 : 0] output_text;
 
-assign input_block = (enc_reg) ? input_text_reg ^ iv_reg : input_text_reg;
-assign output_text = (enc_reg) ? output_block : output_block ^ iv_reg;
+assign input_block = encrypt_reg ? input_text_reg ^ iv_reg : input_text_reg;
+assign output_text = encrypt_reg ? output_block : output_block ^ iv_reg;
 
 enum logic [5:0] {
     ST_KEY_0    = 6'b1 << 0,
@@ -110,7 +110,7 @@ always_comb
             M_axis.tvalid = 1'b1;
             M_axis.tdata = output_text[output_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
             M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
-            M_axis.tlast = (&output_cnt) ? last_reg : 1'b0;
+            M_axis.tlast = (&output_cnt) ? last_block_reg : 1'b0;
         end
 
         default: begin
@@ -168,7 +168,7 @@ always_ff @(posedge Clk)
         iv_reg[input_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
     end
     else if (state_reg == ST_TEXT_OUT & M_axis.tvalid & M_axis.tready & (&output_cnt)) begin
-        iv_reg <= (enc_reg) ? output_text : input_text_reg;
+        iv_reg <= encrypt_reg ? output_text : input_text_reg;
     end
 
 always_ff @(posedge Clk)
@@ -181,47 +181,47 @@ always_ff @(posedge Clk)
 
 always @(posedge Clk)
     if (Rst) begin
-        enc_reg <= 1'b0;
-        last_reg <= 1'b0;
+        encrypt_reg <= 1'b0;
+        last_block_reg <= 1'b0;
     end
     else if (S_axis.tvalid & S_axis.tready) begin
-        enc_reg <= S_axis.tuser;
-        last_reg <= S_axis.tlast;
+        encrypt_reg <= S_axis.tuser;
+        last_block_reg <= S_axis.tlast;
     end
 
 always_comb begin
-    ke_key[ 0] = key_reg;
-    ke_key[ 1] = { ke_new_key[ 0], key_reg[255:128] };
-    ke_key[ 2] = { ke_new_key[ 1], ke_new_key[ 0]   };
-    ke_key[ 3] = { ke_new_key[ 2], ke_new_key[ 1]   };
-    ke_key[ 4] = { ke_new_key[ 3], ke_new_key[ 2]   };
-    ke_key[ 5] = { ke_new_key[ 4], ke_new_key[ 3]   };
-    ke_key[ 6] = { ke_new_key[ 5], ke_new_key[ 4]   };
-    ke_key[ 7] = { ke_new_key[ 6], ke_new_key[ 5]   };
-    ke_key[ 8] = { ke_new_key[ 7], ke_new_key[ 6]   };
-    ke_key[ 9] = { ke_new_key[ 8], ke_new_key[ 7]   };
-    ke_key[10] = { ke_new_key[ 9], ke_new_key[ 8]   };
-    ke_key[11] = { ke_new_key[10], ke_new_key[ 9]   };
-    ke_key[12] = { ke_new_key[11], ke_new_key[10]   };
+    key_expansion_key[ 0] = key_reg;
+    key_expansion_key[ 1] = { key_expansion_new_key[ 0], key_reg[255:128]            };
+    key_expansion_key[ 2] = { key_expansion_new_key[ 1], key_expansion_new_key[ 0]   };
+    key_expansion_key[ 3] = { key_expansion_new_key[ 2], key_expansion_new_key[ 1]   };
+    key_expansion_key[ 4] = { key_expansion_new_key[ 3], key_expansion_new_key[ 2]   };
+    key_expansion_key[ 5] = { key_expansion_new_key[ 4], key_expansion_new_key[ 3]   };
+    key_expansion_key[ 6] = { key_expansion_new_key[ 5], key_expansion_new_key[ 4]   };
+    key_expansion_key[ 7] = { key_expansion_new_key[ 6], key_expansion_new_key[ 5]   };
+    key_expansion_key[ 8] = { key_expansion_new_key[ 7], key_expansion_new_key[ 6]   };
+    key_expansion_key[ 9] = { key_expansion_new_key[ 8], key_expansion_new_key[ 7]   };
+    key_expansion_key[10] = { key_expansion_new_key[ 9], key_expansion_new_key[ 8]   };
+    key_expansion_key[11] = { key_expansion_new_key[10], key_expansion_new_key[ 9]   };
+    key_expansion_key[12] = { key_expansion_new_key[11], key_expansion_new_key[10]   };
 end
 
 
 always_comb begin
-    round_key[ 0] = (enc_reg) ? key_reg[127:  0] : ke_new_key[12]   ;
-    round_key[ 1] = (enc_reg) ? key_reg[255:128] : ke_new_key[11]   ;
-    round_key[ 2] = (enc_reg) ? ke_new_key[ 0]   : ke_new_key[10]   ;
-    round_key[ 3] = (enc_reg) ? ke_new_key[ 1]   : ke_new_key[ 9]   ;
-    round_key[ 4] = (enc_reg) ? ke_new_key[ 2]   : ke_new_key[ 8]   ;
-    round_key[ 5] = (enc_reg) ? ke_new_key[ 3]   : ke_new_key[ 7]   ;
-    round_key[ 6] = (enc_reg) ? ke_new_key[ 4]   : ke_new_key[ 6]   ;
-    round_key[ 7] = (enc_reg) ? ke_new_key[ 5]   : ke_new_key[ 5]   ;
-    round_key[ 8] = (enc_reg) ? ke_new_key[ 6]   : ke_new_key[ 4]   ;
-    round_key[ 9] = (enc_reg) ? ke_new_key[ 7]   : ke_new_key[ 3]   ;
-    round_key[10] = (enc_reg) ? ke_new_key[ 8]   : ke_new_key[ 2]   ;
-    round_key[11] = (enc_reg) ? ke_new_key[ 9]   : ke_new_key[ 1]   ;
-    round_key[12] = (enc_reg) ? ke_new_key[10]   : ke_new_key[ 0]   ;
-    round_key[13] = (enc_reg) ? ke_new_key[11]   : key_reg[255:128] ;
-    round_key[14] = (enc_reg) ? ke_new_key[12]   : key_reg[127:  0] ;
+    round_key[ 0] = encrypt_reg ? key_reg[127:  0]            : key_expansion_new_key[12]   ;
+    round_key[ 1] = encrypt_reg ? key_reg[255:128]            : key_expansion_new_key[11]   ;
+    round_key[ 2] = encrypt_reg ? key_expansion_new_key[ 0]   : key_expansion_new_key[10]   ;
+    round_key[ 3] = encrypt_reg ? key_expansion_new_key[ 1]   : key_expansion_new_key[ 9]   ;
+    round_key[ 4] = encrypt_reg ? key_expansion_new_key[ 2]   : key_expansion_new_key[ 8]   ;
+    round_key[ 5] = encrypt_reg ? key_expansion_new_key[ 3]   : key_expansion_new_key[ 7]   ;
+    round_key[ 6] = encrypt_reg ? key_expansion_new_key[ 4]   : key_expansion_new_key[ 6]   ;
+    round_key[ 7] = encrypt_reg ? key_expansion_new_key[ 5]   : key_expansion_new_key[ 5]   ;
+    round_key[ 8] = encrypt_reg ? key_expansion_new_key[ 6]   : key_expansion_new_key[ 4]   ;
+    round_key[ 9] = encrypt_reg ? key_expansion_new_key[ 7]   : key_expansion_new_key[ 3]   ;
+    round_key[10] = encrypt_reg ? key_expansion_new_key[ 8]   : key_expansion_new_key[ 2]   ;
+    round_key[11] = encrypt_reg ? key_expansion_new_key[ 9]   : key_expansion_new_key[ 1]   ;
+    round_key[12] = encrypt_reg ? key_expansion_new_key[10]   : key_expansion_new_key[ 0]   ;
+    round_key[13] = encrypt_reg ? key_expansion_new_key[11]   : key_reg[255:128] ;
+    round_key[14] = encrypt_reg ? key_expansion_new_key[12]   : key_reg[127:  0] ;
 end
 
 generate
@@ -229,16 +229,16 @@ generate
         aes256_key_expansion_param #(
             .ROUND_NUMBER ( k )
         ) key_expansion_inst (
-            .Input_key  ( ke_key[k-2] ),
-            .Output_key ( ke_new_key[k-2]  )
+            .Input_key  ( key_expansion_key[k-2]     ),
+            .Output_key ( key_expansion_new_key[k-2] )
         );
     end
 endgenerate
 
 aes_add_round_key add_round_key_inst (
-    .block     ( input_block ),
-    .key       ( round_key[0] ),
-    .new_block ( round_block[0] )
+    .Input_block  ( input_block    ),
+    .Round_key    ( round_key[0]   ),
+    .Output_block ( round_block[0] )
 );
 
 generate
@@ -247,20 +247,20 @@ generate
             aes_inv_round_param #(
                 .LAST ( 1'b1 )
             ) round_inst (
-                .Enc          ( enc_reg ),
-                .Key          ( round_key[r] ),
+                .Encrypt      ( encrypt_reg      ),
+                .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
-                .Output_block ( output_block )
+                .Output_block ( output_block     )
             );
         end
         else begin
             aes_inv_round_param #(
                 .LAST ( 1'b0 )
             ) round_inst (
-                .Enc          ( enc_reg ),
-                .Key          ( round_key[r] ),
+                .Encrypt      ( encrypt_reg      ),
+                .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
-                .Output_block ( round_block[r] )
+                .Output_block ( round_block[r]   )
             );
         end
     end
