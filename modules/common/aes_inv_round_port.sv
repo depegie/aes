@@ -19,6 +19,11 @@ logic [`AES_BLOCK_SIZE-1 : 0] sr_output_block;
 logic [`AES_BLOCK_SIZE-1 : 0] mc_output_block;
 logic [`AES_BLOCK_SIZE-1 : 0] ark_output_block;
 
+assign sb_input_block = Encrypt ? Input_block     : sr_output_block;
+assign sr_input_block = Encrypt ? sb_output_block : Input_block;
+assign mc_input_block = Encrypt ? sr_output_block : ark_output_block;
+assign ark_round_key  = Key;
+
 always_comb begin
     if (Encrypt) begin
         Output_block = ark_output_block;
@@ -32,19 +37,12 @@ always_comb begin
 end
 
 always_comb begin
-    sb_input_block = Encrypt ? Input_block : sr_output_block;
-    sr_input_block = Encrypt ? sb_output_block : Input_block;
-
     if (Last) begin
-        mc_input_block = 0;
         ark_input_block = Encrypt ? sr_output_block : sb_output_block;
     end
     else begin
-        mc_input_block = Encrypt ? sr_output_block : ark_output_block;
         ark_input_block = Encrypt ? mc_output_block : sb_output_block;
     end
-
-    ark_round_key = Key;
 end
 
 aes_inv_sub_bytes sb_inst (
