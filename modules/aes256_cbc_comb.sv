@@ -41,11 +41,11 @@ assign input_block = encrypt_reg ? input_text_reg ^ iv_reg : input_text_reg;
 assign output_text = encrypt_reg ? output_block : output_block ^ iv_reg;
 
 enum logic [4:0] {
-    ST_KEY      = 5'b1 << 0,
-    ST_IV       = 5'b1 << 1,
-    ST_TEXT_IN  = 5'b1 << 2,
-    ST_CIPHER   = 5'b1 << 3,
-    ST_TEXT_OUT = 5'b1 << 4
+    ST_KEY         = 5'b1 << 0,
+    ST_IV          = 5'b1 << 1,
+    ST_INPUT_TEXT  = 5'b1 << 2,
+    ST_CIPHER      = 5'b1 << 3,
+    ST_OUTPUT_TEXT = 5'b1 << 4
 } state_reg, next_state;
 
 always_ff @(posedge Clk)
@@ -65,35 +65,35 @@ always_comb
 
         ST_IV: begin
             if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
-                next_state = ST_TEXT_IN;
+                next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_IV;
         end
 
-        ST_TEXT_IN: begin
+        ST_INPUT_TEXT: begin
             if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
                 next_state = ST_CIPHER;
             else
-                next_state = ST_TEXT_IN;
+                next_state = ST_INPUT_TEXT;
         end
 
         ST_CIPHER: begin
-            next_state = ST_TEXT_OUT;
+            next_state = ST_OUTPUT_TEXT;
         end
 
-        ST_TEXT_OUT: begin
+        ST_OUTPUT_TEXT: begin
             if (M_axis.tvalid & M_axis.tready & M_axis.tlast & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
                 next_state = ST_KEY;
             else if (M_axis.tvalid & M_axis.tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
-                next_state = ST_TEXT_IN;
+                next_state = ST_INPUT_TEXT;
             else
-                next_state = ST_TEXT_OUT;
+                next_state = ST_OUTPUT_TEXT;
         end
     endcase
 
 always_comb
     case (state_reg)
-        ST_KEY, ST_IV, ST_TEXT_IN:
+        ST_KEY, ST_IV, ST_INPUT_TEXT:
             S_axis.tready = 1'b1;
         
         default:
@@ -102,7 +102,7 @@ always_comb
 
 always_comb
     case (state_reg)
-        ST_TEXT_OUT: begin
+        ST_OUTPUT_TEXT: begin
             M_axis.tvalid = 1'b1;
             M_axis.tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
             M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
@@ -128,7 +128,7 @@ always_ff @(posedge Clk)
                 else if (S_axis.tvalid & S_axis.tready)
                     input_word_cnt <= input_word_cnt + 'd1;
 
-            ST_IV, ST_TEXT_IN:
+            ST_IV, ST_INPUT_TEXT:
                 if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
                     input_word_cnt <= 0;
                 else if (S_axis.tvalid & S_axis.tready)
@@ -143,7 +143,7 @@ always_ff @(posedge Clk)
         output_word_cnt <= 0;
     else
         case (state_reg)
-            ST_TEXT_OUT:
+            ST_OUTPUT_TEXT:
                 if (M_axis.tvalid & M_axis.tready)
                     output_word_cnt <= output_word_cnt + 'd1;
             
@@ -166,7 +166,7 @@ always_ff @(posedge Clk)
     else if (state_reg == ST_IV & S_axis.tvalid & S_axis.tready) begin
         iv_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
     end
-    else if (state_reg == ST_TEXT_OUT & M_axis.tvalid & M_axis.tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD) begin
+    else if (state_reg == ST_OUTPUT_TEXT & M_axis.tvalid & M_axis.tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD) begin
         iv_reg <= encrypt_reg ? output_text : input_text_reg;
     end
 
@@ -174,7 +174,7 @@ always_ff @(posedge Clk)
     if (Rst) begin
         input_text_reg <= 128'h0;
     end
-    else if (state_reg == ST_TEXT_IN & S_axis.tvalid & S_axis.tready) begin
+    else if (state_reg == ST_INPUT_TEXT & S_axis.tvalid & S_axis.tready) begin
         input_text_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
     end
 

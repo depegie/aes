@@ -38,10 +38,19 @@ logic [BLOCK_SIZE-1 : 0] output_text;
 logic [KEY_LENGTH-1 : 0] key_expansion_key;
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key;
 
+logic [BLOCK_SIZE-1 : 0] ark_round_key;
+logic [BLOCK_SIZE-1 : 0] ark_output_block;
+
 logic                    round_last;
 logic [BLOCK_SIZE-1 : 0] round_key;
 logic [BLOCK_SIZE-1 : 0] round_input_block;
 logic [BLOCK_SIZE-1 : 0] round_output_block;
+
+assign input_block       = encrypt_reg ? input_text_reg ^ iv_reg : input_text_reg;
+assign output_text       = encrypt_reg ? output_block_reg : output_block_reg ^ iv_reg;
+assign ark_round_key     = encrypt_reg ? key_expansion_reg[127:0] : key_expansion_reg[1919:1792];
+assign round_last        = (round_cnt == NUMBER_OF_ROUNDS);
+assign round_input_block = (round_cnt == 1) ? ark_output_block : output_block_reg;
 
 enum logic [5:0] {
     ST_KEY           = 6'b1 << 0,
@@ -242,15 +251,6 @@ always_ff @(posedge Clk)
     end
 
 always_comb
-    if (round_cnt == 1)
-        input_block = encrypt_reg ? input_text_reg ^ iv_reg : input_text_reg;
-    else
-        input_block = output_block_reg;
-
-always_comb
-    output_text = encrypt_reg ? output_block_reg : output_block_reg ^ iv_reg;
-
-always_comb
     case (key_expansion_cnt)
         2:       key_expansion_key = key_expansion_reg[ 255:   0];
         3:       key_expansion_key = key_expansion_reg[ 383: 128];
@@ -267,9 +267,6 @@ always_comb
         14:      key_expansion_key = key_expansion_reg[1791:1536];
         default: key_expansion_key = 256'h0;
     endcase
-
-always_comb
-    round_last = (round_cnt == NUMBER_OF_ROUNDS) ? 1'b1 : 1'b0;
 
 always_comb
     case (round_cnt)
@@ -289,12 +286,6 @@ always_comb
         14:      round_key = encrypt_reg ? key_expansion_reg[1919:1792] : key_expansion_reg[ 127:   0];
         default: round_key = 128'h0;
     endcase
-
-always_comb
-    if (encrypt_reg)
-        round_input_block = (round_cnt == 1) ? input_block ^ key_expansion_reg[ 127:   0] : input_block;
-    else
-        round_input_block = (round_cnt == 1) ? input_block ^ key_expansion_reg[1919:1792] : input_block;
 
 always @(posedge Clk)
     if (Rst) begin
@@ -321,6 +312,12 @@ aes256_key_expansion_port key_expansion_inst (
     .Round_number ( key_expansion_cnt     ),
     .Input_key    ( key_expansion_key     ),
     .Output_key   ( key_expansion_new_key ) 
+);
+
+aes_add_round_key ark_inst (
+    .Input_block  ( input_block      ),
+    .Round_key    ( ark_round_key    ),
+    .Output_block ( ark_output_block )
 );
 
 aes_inv_round_port round_inst (
