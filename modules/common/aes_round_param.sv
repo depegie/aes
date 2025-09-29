@@ -3,7 +3,6 @@
 module aes_round_param #(
     parameter bit LAST = 1'b0
 )(
-    input                          Encrypt,
     input  [`AES_BLOCK_SIZE-1 : 0] Key,
     input  [`AES_BLOCK_SIZE-1 : 0] Input_block,
     output [`AES_BLOCK_SIZE-1 : 0] Output_block
