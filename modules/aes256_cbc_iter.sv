@@ -29,7 +29,7 @@ logic                            [BLOCK_SIZE-1 : 0] input_text_reg;
 logic                            [BLOCK_SIZE-1 : 0] output_block_reg;
 
 logic                                               encrypt_reg;
-logic                                               last_block_reg;
+logic                                               block_last_reg;
 logic                                               key_expansion_pending_reg;
 
 logic [BLOCK_SIZE-1 : 0] input_block;
@@ -131,7 +131,7 @@ always_comb
             M_axis.tvalid = 1'b1;
             M_axis.tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
             M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
-            M_axis.tlast = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD) ? last_block_reg : 1'b0;
+            M_axis.tlast = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD) ? block_last_reg : 1'b0;
         end
 
         default: begin
@@ -290,11 +290,11 @@ always_comb
 always @(posedge Clk)
     if (Rst) begin
         encrypt_reg <= 1'b0;
-        last_block_reg <= 1'b0;
+        block_last_reg <= 1'b0;
     end
     else if (S_axis.tvalid & S_axis.tready) begin
         encrypt_reg <= S_axis.tuser;
-        last_block_reg <= S_axis.tlast;
+        block_last_reg <= S_axis.tlast;
     end
 
 always_ff @(posedge Clk)

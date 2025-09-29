@@ -63,6 +63,8 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
                     end
 
                     this.axis.tvalid = 1'b0;
+                    this.axis.tdata  = 128'h0;
+                    this.axis.tkeep  = 16'b0;
                     this.axis.tlast  = 1'b0;
                 end
                 this.axis.tuser  = 1'b0;

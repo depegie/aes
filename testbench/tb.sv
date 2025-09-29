@@ -31,20 +31,17 @@ module tb;
     event mon2scb_receive_ev;
     event scb2mon_finish_ev;
 
-// `ifdef AES128_ECB_ITER_BEHAV
-//     aes128_ecb_iter_behav
-// `elsif AES128_ECB_COMB_BEHAV
-//     aes128_ecb_comb_behav
-// `elsif AES128_ECB_PIPE_BEHAV
-//     aes128_ecb_pipe_behav
-// `elsif AES256_ECB_PIPE_BEHAV
-//     aes256_ecb_pipe_behav
-// `elsif AES256_CTR_PIPE_BEHAV
-//     aes256_ctr_pipe_behav
-// `elsif AES256_CTR_PIPE_GATE
-//     aes256_ctr_pipe_gate
-// `endif
+`ifdef AES256_CBC_ITER
     aes256_cbc_iter
+`elsif AES256_CBC_COMB
+    aes256_cbc_comb
+`elsif AES256_CTR_ITER
+    aes256_ctr_iter
+`elsif AES256_CTR_COMB
+    aes256_ctr_comb
+`elsif AES256_CTR_PIPE
+    aes256_ctr_pipe
+`endif
     #(
         .S_AXIS_WIDTH ( `S_AXIS_WIDTH ),
         .M_AXIS_WIDTH ( `M_AXIS_WIDTH )

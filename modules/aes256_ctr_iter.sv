@@ -30,11 +30,12 @@ logic                          [BLOCK_SIZE/8-1 : 0] input_keep_reg;
 logic                            [BLOCK_SIZE-1 : 0] output_block_reg;
 
 logic                                               encrypt_reg;
-logic                                               last_block_reg;
+logic                                               block_last_reg;
 logic                                               key_expansion_pending_reg;
 
 logic [BLOCK_SIZE-1 : 0] input_block;
 logic [BLOCK_SIZE-1 : 0] output_text;
+logic                    output_word_last;
 
 logic [KEY_LENGTH-1 : 0] key_expansion_key;
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key;
@@ -45,12 +46,6 @@ logic                    round_last;
 logic [BLOCK_SIZE-1 : 0] round_key;
 logic [BLOCK_SIZE-1 : 0] round_input_block;
 logic [BLOCK_SIZE-1 : 0] round_output_block;
-
-logic output_block_last;
-
-assign output_block_last = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
-                            ? 1'b1
-                            : !input_keep_reg[(M_AXIS_WIDTH/8)*(output_word_cnt+1)];
 
 assign input_block       = invert_counter_bytes(counter_reg);
 assign output_text       = input_text_reg ^ output_block_reg;
@@ -102,9 +97,9 @@ always_comb
         end
 
         ST_OUTPUT_TEXT: begin
-            if (M_axis.tvalid & M_axis.tready & M_axis.tlast)
+            if (M_axis.tvalid & M_axis.tready & M_axis.tlast & output_word_last)
                 next_state = ST_KEY;
-            else if (M_axis.tvalid & M_axis.tready & output_block_last)
+            else if (M_axis.tvalid & M_axis.tready & output_word_last)
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_OUTPUT_TEXT;
@@ -126,7 +121,7 @@ always_comb
             M_axis.tvalid = 1'b1;
             M_axis.tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
             M_axis.tkeep = input_keep_reg[output_word_cnt*M_AXIS_WIDTH/8 +: M_AXIS_WIDTH/8];
-            M_axis.tlast = output_block_last ? last_block_reg : 1'b0;
+            M_axis.tlast = output_word_last ? block_last_reg : 1'b0;
         end
 
         default: begin
@@ -296,11 +291,11 @@ always_comb
 always @(posedge Clk)
     if (Rst) begin
         encrypt_reg <= 1'b0;
-        last_block_reg <= 1'b0;
+        block_last_reg <= 1'b0;
     end
     else if (S_axis.tvalid & S_axis.tready) begin
         encrypt_reg <= S_axis.tuser;
-        last_block_reg <= S_axis.tlast;
+        block_last_reg <= S_axis.tlast;
     end
 
 always_ff @(posedge Clk)
@@ -313,6 +308,13 @@ always_ff @(posedge Clk)
     else if (state_reg == ST_KEY & S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_KEY_WORD) begin
         key_expansion_pending_reg <= 1'b1;
     end
+
+always_comb begin
+    if (output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
+        output_word_last = 1'b1;
+    else
+        output_word_last = !input_keep_reg[(output_word_cnt+1)*(M_AXIS_WIDTH/8)];
+end
 
 aes256_key_expansion_port key_expansion_inst (
     .Round_number ( key_expansion_cnt     ),
