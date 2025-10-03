@@ -1,8 +1,8 @@
 `include "aes_defines.svh"
 
 module aes256_cbc_iter #(
-    parameter int S_AXIS_WIDTH = 8,
-    parameter int M_AXIS_WIDTH = 8
+    parameter int S_AXIS_WIDTH = 64,
+    parameter int M_AXIS_WIDTH = 64
 )(
     input          Clk,
     input          Rst,
@@ -113,6 +113,10 @@ always_comb
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_OUTPUT_TEXT;
+        end
+
+        default: begin
+            next_state = state_reg;
         end
     endcase
 

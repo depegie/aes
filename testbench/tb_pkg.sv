@@ -1,5 +1,5 @@
 package tb_pkg;
-    int CLK_PERIOD = 5;
+    real CLK_PERIOD = 5;
 
     typedef struct {
         int         id;

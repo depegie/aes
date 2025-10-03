@@ -70,21 +70,21 @@ def aes256_ctr(vectors_num : int):
 
 parser = argparse.ArgumentParser(description='AES Stimulus Generator')
 
-parser.add_argument('-v', type=str, default='aes256_cbc_iter', help='pass module version')
+parser.add_argument('-m', type=str, default='aes256_cbc_iter', help='pass module version')
 parser.add_argument('-n', type=int, default=1, help='pass number of test vectors')
-parser.add_argument('--sw', type=int, default=64, help='pass S_axis.tdata width in bits')
-parser.add_argument('--mw', type=int, default=64, help='pass M_axis.tdata width in bits')
-parser.add_argument('--sd', type=int, default=0, help='pass driver delay in clock periods')
-parser.add_argument('--md', type=int, default=0, help='pass monitor delay in clock periods')
+parser.add_argument('--ws', type=int, default=64, help='pass S_axis.tdata width in bits')
+parser.add_argument('--wm', type=int, default=64, help='pass M_axis.tdata width in bits')
+parser.add_argument('--ds', type=int, default=0, help='pass driver delay in clock periods')
+parser.add_argument('--dm', type=int, default=0, help='pass monitor delay in clock periods')
 
 args = parser.parse_args()
 
-module_type = args.v
+module_type = args.m
 vectors_number = args.n
-slave_axis_width = args.sw
-master_axis_width = args.mw
-slave_axis_delay = args.sd
-master_axis_delay = args.md
+slave_axis_width = args.ws
+master_axis_width = args.wm
+slave_axis_delay = args.ds
+master_axis_delay = args.dm
 
 match module_type:
     case 'aes256_cbc_iter':

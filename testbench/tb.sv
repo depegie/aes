@@ -75,7 +75,8 @@ module tb;
         clk = 0;
         rst = 1;
         
-        #(16*CLK_PERIOD) rst = 0;
+        #(256*CLK_PERIOD) rst = 0;
+        #(256*CLK_PERIOD);
 
         fork
             gen.run("pkts_in.txt",  gen2drv_mbx, drv2gen_receive_ev, gen2drv_finish_ev);
