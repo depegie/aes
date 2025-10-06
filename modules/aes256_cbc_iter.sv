@@ -4,10 +4,21 @@ module aes256_cbc_iter #(
     parameter int S_AXIS_WIDTH = 64,
     parameter int M_AXIS_WIDTH = 64
 )(
-    input          Clk,
-    input          Rst,
-    axis_if.slave  S_axis,
-    axis_if.master M_axis
+    input  logic                        Clk,
+    input  logic                        Rst,
+
+    input  logic                        S_axis_tvalid,
+    output logic                        S_axis_tready,
+    input  logic   [S_AXIS_WIDTH-1 : 0] S_axis_tdata,
+    input  logic [S_AXIS_WIDTH/8-1 : 0] S_axis_tkeep,
+    input  logic                        S_axis_tlast,
+    input  logic                        S_axis_tuser,
+    
+    output logic                        M_axis_tvalid,
+    input  logic                        M_axis_tready,
+    output logic   [M_AXIS_WIDTH-1 : 0] M_axis_tdata,
+    output logic [M_AXIS_WIDTH/8-1 : 0] M_axis_tkeep,
+    output logic                        M_axis_tlast
 );
 
 localparam int KEY_LENGTH             = `AES256_KEY_LENGTH;
@@ -70,23 +81,23 @@ always_ff @(posedge Clk)
 always_comb
     case (state_reg)
         ST_KEY: begin
-            if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_KEY_WORD)
+            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD)
                 next_state = ST_IV;
             else
                 next_state = ST_KEY;
         end
 
         ST_IV: begin
-            if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
+            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_IV;
         end
 
         ST_INPUT_TEXT: begin
-            if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD & key_expansion_cnt == NUMBER_OF_ROUNDS)
+            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD & key_expansion_cnt == NUMBER_OF_ROUNDS)
                 next_state = ST_CIPHER;
-            else if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
+            else if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
                 next_state = ST_KEY_EXPANSION;
             else
                 next_state = ST_INPUT_TEXT;
@@ -107,9 +118,9 @@ always_comb
         end
 
         ST_OUTPUT_TEXT: begin
-            if (M_axis.tvalid & M_axis.tready & M_axis.tlast & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
+            if (M_axis_tvalid & M_axis_tready & M_axis_tlast & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
                 next_state = ST_KEY;
-            else if (M_axis.tvalid & M_axis.tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
+            else if (M_axis_tvalid & M_axis_tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_OUTPUT_TEXT;
@@ -123,26 +134,26 @@ always_comb
 always_comb
     case (state_reg)
         ST_KEY, ST_IV, ST_INPUT_TEXT:
-            S_axis.tready = 1'b1;
+            S_axis_tready = 1'b1;
         
         default:
-            S_axis.tready = 1'b0;
+            S_axis_tready = 1'b0;
     endcase
 
 always_comb
     case (state_reg)
         ST_OUTPUT_TEXT: begin
-            M_axis.tvalid = 1'b1;
-            M_axis.tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
-            M_axis.tkeep = {(M_AXIS_WIDTH/8){1'b1}};
-            M_axis.tlast = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD) ? block_last_reg : 1'b0;
+            M_axis_tvalid = 1'b1;
+            M_axis_tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
+            M_axis_tkeep = {(M_AXIS_WIDTH/8){1'b1}};
+            M_axis_tlast = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD) ? block_last_reg : 1'b0;
         end
 
         default: begin
-            M_axis.tvalid = 1'b0;
-            M_axis.tdata = 128'h0;
-            M_axis.tkeep = 16'b0;
-            M_axis.tlast = 1'b0;
+            M_axis_tvalid = 1'b0;
+            M_axis_tdata = 128'h0;
+            M_axis_tkeep = 16'b0;
+            M_axis_tlast = 1'b0;
         end
     endcase
 
@@ -152,15 +163,15 @@ always_ff @(posedge Clk)
     else
         case (state_reg)
             ST_KEY:
-                if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_KEY_WORD)
+                if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD)
                     input_word_cnt <= 0;
-                else if (S_axis.tvalid & S_axis.tready)
+                else if (S_axis_tvalid & S_axis_tready)
                     input_word_cnt <= input_word_cnt + 'd1;
 
             ST_IV, ST_INPUT_TEXT:
-                if (S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
+                if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
                     input_word_cnt <= 0;
-                else if (S_axis.tvalid & S_axis.tready)
+                else if (S_axis_tvalid & S_axis_tready)
                     input_word_cnt <= input_word_cnt + 'd1;
             
             default:
@@ -173,7 +184,7 @@ always_ff @(posedge Clk)
     else
         case (state_reg)
             ST_OUTPUT_TEXT:
-                if (M_axis.tvalid & M_axis.tready)
+                if (M_axis_tvalid & M_axis_tready)
                     output_word_cnt <= output_word_cnt + 'd1;
             
             default:
@@ -206,8 +217,8 @@ always_ff @(posedge Clk)
     if (Rst) begin
         key_expansion_reg <= 1920'h0;
     end
-    else if (state_reg == ST_KEY & S_axis.tvalid & S_axis.tready) begin
-        key_expansion_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready) begin
+        key_expansion_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
     end
     else if (key_expansion_pending_reg) begin
         case (key_expansion_cnt)
@@ -231,10 +242,10 @@ always_ff @(posedge Clk)
     if (Rst) begin
         iv_reg <= 128'h0;
     end
-    else if (state_reg == ST_IV & S_axis.tvalid & S_axis.tready) begin
-        iv_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
+    else if (state_reg == ST_IV & S_axis_tvalid & S_axis_tready) begin
+        iv_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
     end
-    else if (state_reg == ST_OUTPUT_TEXT & M_axis.tvalid & M_axis.tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD) begin
+    else if (state_reg == ST_OUTPUT_TEXT & M_axis_tvalid & M_axis_tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD) begin
         iv_reg <= encrypt_reg ? output_text : input_text_reg;
     end
 
@@ -242,8 +253,8 @@ always_ff @(posedge Clk)
     if (Rst) begin
         input_text_reg <= 128'h0;
     end
-    else if (state_reg == ST_INPUT_TEXT & S_axis.tvalid & S_axis.tready) begin
-        input_text_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis.tdata;
+    else if (state_reg == ST_INPUT_TEXT & S_axis_tvalid & S_axis_tready) begin
+        input_text_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
     end
 
 always_ff @(posedge Clk)
@@ -296,9 +307,9 @@ always @(posedge Clk)
         encrypt_reg <= 1'b0;
         block_last_reg <= 1'b0;
     end
-    else if (S_axis.tvalid & S_axis.tready) begin
-        encrypt_reg <= S_axis.tuser;
-        block_last_reg <= S_axis.tlast;
+    else if (S_axis_tvalid & S_axis_tready) begin
+        encrypt_reg <= S_axis_tuser;
+        block_last_reg <= S_axis_tlast;
     end
 
 always_ff @(posedge Clk)
@@ -308,7 +319,7 @@ always_ff @(posedge Clk)
     else if (key_expansion_cnt == NUMBER_OF_ROUNDS) begin
         key_expansion_pending_reg <= 1'b0;
     end
-    else if (state_reg == ST_KEY & S_axis.tvalid & S_axis.tready & input_word_cnt == LAST_KEY_WORD) begin
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD) begin
         key_expansion_pending_reg <= 1'b1;
     end
 
