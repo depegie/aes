@@ -1,2 +1,2 @@
-PL: Porównanie implementacji szyfru blokowego AES w języku SystemVerilog <br>
-EN: Comparison of Implementations of the AES Block Cipher in SystemVerilog Language
+PL: Porównanie implementacji szyfrów symetrycznych AES-256-CBC i AES-256-CTR w układzie FPGA <br>
+EN: Comparison of AES-256-CBC and AES-256-CTR Symmetric Cipher Implementations in an FPGA Circuit
