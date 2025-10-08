@@ -35,6 +35,7 @@ logic                      [KEY_LENGTH-1 : 0] key_reg;
 logic                      [BLOCK_SIZE-1 : 0] counter_reg;
 logic                      [BLOCK_SIZE-1 : 0] input_text_reg;
 logic                    [BLOCK_SIZE/8-1 : 0] input_keep_reg;
+logic                      [BLOCK_SIZE-1 : 0] output_block_reg;
 
 logic                                         encrypt_reg;
 logic                                         block_last_reg;
@@ -51,7 +52,7 @@ logic [BLOCK_SIZE-1 : 0] output_text;
 logic                    output_word_last;
 
 assign input_block = invert_counter_bytes(counter_reg);
-assign output_text = input_text_reg ^ output_block;
+assign output_text = input_text_reg ^ output_block_reg;
 
 enum logic [4:0] {
     ST_KEY         = 5'b1 << 0,
@@ -206,6 +207,12 @@ always_ff @(posedge Clk)
         input_keep_reg <= 16'b0;
     end
 
+always_ff @(posedge Clk)
+    if (Rst)
+        output_block_reg <= 128'h0;
+    else if (state_reg == ST_CIPHER)
+        output_block_reg <= output_block;
+
 always @(posedge Clk)
     if (Rst) begin
         encrypt_reg <= 1'b0;
@@ -278,18 +285,18 @@ aes_add_round_key add_round_key_inst (
 generate
     for (genvar r=1; r<=NUMBER_OF_ROUNDS; r++) begin
         if (r == NUMBER_OF_ROUNDS) begin
-            aes_round_param #(
-                .LAST ( 1'b1 )
-            ) round_inst (
+            aes_round round_inst (
+                .Encrypt      ( 1'b1             ),
+                .Last         ( 1'b1             ),
                 .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
                 .Output_block ( output_block     )
             );
         end
         else begin
-            aes_round_param #(
-                .LAST ( 1'b0 )
-            ) round_inst (
+            aes_round round_inst (
+                .Encrypt      ( 1'b1             ),
+                .Last         ( 1'b0             ),
                 .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
                 .Output_block ( round_block[r]   )
