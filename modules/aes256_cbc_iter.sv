@@ -49,6 +49,9 @@ logic [BLOCK_SIZE-1 : 0] output_text;
 logic [KEY_LENGTH-1 : 0] key_expansion_key;
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key;
 
+logic [BLOCK_SIZE-1 : 0] eic_key_before_mc;
+logic [BLOCK_SIZE-1 : 0] eic_key_after_mc;
+
 logic [BLOCK_SIZE-1 : 0] ark_round_key;
 logic [BLOCK_SIZE-1 : 0] ark_output_block;
 
@@ -285,19 +288,37 @@ always_comb
 
 always_comb
     case (round_cnt)
-        1:       round_key = encrypt_reg ? key_expansion_reg[ 255: 128] : key_expansion_reg[1791:1664];
-        2:       round_key = encrypt_reg ? key_expansion_reg[ 383: 256] : key_expansion_reg[1663:1536];
-        3:       round_key = encrypt_reg ? key_expansion_reg[ 511: 384] : key_expansion_reg[1535:1408];
-        4:       round_key = encrypt_reg ? key_expansion_reg[ 639: 512] : key_expansion_reg[1407:1280];
-        5:       round_key = encrypt_reg ? key_expansion_reg[ 767: 640] : key_expansion_reg[1279:1152];
-        6:       round_key = encrypt_reg ? key_expansion_reg[ 895: 768] : key_expansion_reg[1151:1024];
-        7:       round_key = encrypt_reg ? key_expansion_reg[1023: 896] : key_expansion_reg[1023: 896];
-        8:       round_key = encrypt_reg ? key_expansion_reg[1151:1024] : key_expansion_reg[ 895: 768];
-        9:       round_key = encrypt_reg ? key_expansion_reg[1279:1152] : key_expansion_reg[ 767: 640];
-        10:      round_key = encrypt_reg ? key_expansion_reg[1407:1280] : key_expansion_reg[ 639: 512];
-        11:      round_key = encrypt_reg ? key_expansion_reg[1535:1408] : key_expansion_reg[ 511: 384];
-        12:      round_key = encrypt_reg ? key_expansion_reg[1663:1536] : key_expansion_reg[ 383: 256];
-        13:      round_key = encrypt_reg ? key_expansion_reg[1791:1664] : key_expansion_reg[ 255: 128];
+        1:       eic_key_before_mc = key_expansion_reg[1791:1664];
+        2:       eic_key_before_mc = key_expansion_reg[1663:1536];
+        3:       eic_key_before_mc = key_expansion_reg[1535:1408];
+        4:       eic_key_before_mc = key_expansion_reg[1407:1280];
+        5:       eic_key_before_mc = key_expansion_reg[1279:1152];
+        6:       eic_key_before_mc = key_expansion_reg[1151:1024];
+        7:       eic_key_before_mc = key_expansion_reg[1023: 896];
+        8:       eic_key_before_mc = key_expansion_reg[ 895: 768];
+        9:       eic_key_before_mc = key_expansion_reg[ 767: 640];
+        10:      eic_key_before_mc = key_expansion_reg[ 639: 512];
+        11:      eic_key_before_mc = key_expansion_reg[ 511: 384];
+        12:      eic_key_before_mc = key_expansion_reg[ 383: 256];
+        13:      eic_key_before_mc = key_expansion_reg[ 255: 128];
+        default: eic_key_before_mc = 128'h0;
+    endcase
+
+always_comb
+    case (round_cnt)
+        1:       round_key = encrypt_reg ? key_expansion_reg[ 255: 128] : eic_key_after_mc;
+        2:       round_key = encrypt_reg ? key_expansion_reg[ 383: 256] : eic_key_after_mc;
+        3:       round_key = encrypt_reg ? key_expansion_reg[ 511: 384] : eic_key_after_mc;
+        4:       round_key = encrypt_reg ? key_expansion_reg[ 639: 512] : eic_key_after_mc;
+        5:       round_key = encrypt_reg ? key_expansion_reg[ 767: 640] : eic_key_after_mc;
+        6:       round_key = encrypt_reg ? key_expansion_reg[ 895: 768] : eic_key_after_mc;
+        7:       round_key = encrypt_reg ? key_expansion_reg[1023: 896] : eic_key_after_mc;
+        8:       round_key = encrypt_reg ? key_expansion_reg[1151:1024] : eic_key_after_mc;
+        9:       round_key = encrypt_reg ? key_expansion_reg[1279:1152] : eic_key_after_mc;
+        10:      round_key = encrypt_reg ? key_expansion_reg[1407:1280] : eic_key_after_mc;
+        11:      round_key = encrypt_reg ? key_expansion_reg[1535:1408] : eic_key_after_mc;
+        12:      round_key = encrypt_reg ? key_expansion_reg[1663:1536] : eic_key_after_mc;
+        13:      round_key = encrypt_reg ? key_expansion_reg[1791:1664] : eic_key_after_mc;
         14:      round_key = encrypt_reg ? key_expansion_reg[1919:1792] : key_expansion_reg[ 127:   0];
         default: round_key = 128'h0;
     endcase
@@ -329,13 +350,19 @@ aes256_key_expansion_port key_expansion_inst (
     .Output_key   ( key_expansion_new_key ) 
 );
 
+aes_mix_columns mc_inst (
+    .Encrypt      ( 1'b0              ),
+    .Input_block  ( eic_key_before_mc ),
+    .Output_block ( eic_key_after_mc  )
+);
+
 aes_add_round_key ark_inst (
     .Input_block  ( input_block      ),
     .Round_key    ( ark_round_key    ),
     .Output_block ( ark_output_block )
 );
 
-aes_inv_round_port round_inst (
+aes_round round_inst (
     .Encrypt      ( encrypt_reg        ),
     .Last         ( round_last         ),
     .Key          ( round_key          ),
