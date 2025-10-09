@@ -41,6 +41,9 @@ logic                                         block_last_reg;
 logic [KEY_LENGTH-1 : 0] key_expansion_key[NUMBER_OF_ROUNDS-1];
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key[NUMBER_OF_ROUNDS-1];
 
+logic [BLOCK_SIZE-1 : 0] eic_key_before_mc[NUMBER_OF_ROUNDS-1];
+logic [BLOCK_SIZE-1 : 0] eic_key_after_mc [NUMBER_OF_ROUNDS-1];
+
 logic [BLOCK_SIZE-1 : 0] round_block[NUMBER_OF_ROUNDS];
 logic [BLOCK_SIZE-1 : 0] round_key[NUMBER_OF_ROUNDS+1];
 
@@ -219,23 +222,39 @@ always_comb begin
     key_expansion_key[12] = { key_expansion_new_key[11], key_expansion_new_key[10]   };
 end
 
+always_comb begin
+    eic_key_before_mc[ 0] = key_expansion_new_key[11]   ;
+    eic_key_before_mc[ 1] = key_expansion_new_key[10]   ;
+    eic_key_before_mc[ 2] = key_expansion_new_key[ 9]   ;
+    eic_key_before_mc[ 3] = key_expansion_new_key[ 8]   ;
+    eic_key_before_mc[ 4] = key_expansion_new_key[ 7]   ;
+    eic_key_before_mc[ 5] = key_expansion_new_key[ 6]   ;
+    eic_key_before_mc[ 6] = key_expansion_new_key[ 5]   ;
+    eic_key_before_mc[ 7] = key_expansion_new_key[ 4]   ;
+    eic_key_before_mc[ 8] = key_expansion_new_key[ 3]   ;
+    eic_key_before_mc[ 9] = key_expansion_new_key[ 2]   ;
+    eic_key_before_mc[10] = key_expansion_new_key[ 1]   ;
+    eic_key_before_mc[11] = key_expansion_new_key[ 0]   ;
+    eic_key_before_mc[12] = key_reg[255:128] ;
+end
+
 
 always_comb begin
-    round_key[ 0] = encrypt_reg ? key_reg[127:  0]            : key_expansion_new_key[12]   ;
-    round_key[ 1] = encrypt_reg ? key_reg[255:128]            : key_expansion_new_key[11]   ;
-    round_key[ 2] = encrypt_reg ? key_expansion_new_key[ 0]   : key_expansion_new_key[10]   ;
-    round_key[ 3] = encrypt_reg ? key_expansion_new_key[ 1]   : key_expansion_new_key[ 9]   ;
-    round_key[ 4] = encrypt_reg ? key_expansion_new_key[ 2]   : key_expansion_new_key[ 8]   ;
-    round_key[ 5] = encrypt_reg ? key_expansion_new_key[ 3]   : key_expansion_new_key[ 7]   ;
-    round_key[ 6] = encrypt_reg ? key_expansion_new_key[ 4]   : key_expansion_new_key[ 6]   ;
-    round_key[ 7] = encrypt_reg ? key_expansion_new_key[ 5]   : key_expansion_new_key[ 5]   ;
-    round_key[ 8] = encrypt_reg ? key_expansion_new_key[ 6]   : key_expansion_new_key[ 4]   ;
-    round_key[ 9] = encrypt_reg ? key_expansion_new_key[ 7]   : key_expansion_new_key[ 3]   ;
-    round_key[10] = encrypt_reg ? key_expansion_new_key[ 8]   : key_expansion_new_key[ 2]   ;
-    round_key[11] = encrypt_reg ? key_expansion_new_key[ 9]   : key_expansion_new_key[ 1]   ;
-    round_key[12] = encrypt_reg ? key_expansion_new_key[10]   : key_expansion_new_key[ 0]   ;
-    round_key[13] = encrypt_reg ? key_expansion_new_key[11]   : key_reg[255:128] ;
-    round_key[14] = encrypt_reg ? key_expansion_new_key[12]   : key_reg[127:  0] ;
+    round_key[ 0] = encrypt_reg ? key_reg[127:  0]          : key_expansion_new_key[12] ;
+    round_key[ 1] = encrypt_reg ? key_reg[255:128]          : eic_key_after_mc[ 0]      ;
+    round_key[ 2] = encrypt_reg ? key_expansion_new_key[ 0] : eic_key_after_mc[ 1]      ;
+    round_key[ 3] = encrypt_reg ? key_expansion_new_key[ 1] : eic_key_after_mc[ 2]      ;
+    round_key[ 4] = encrypt_reg ? key_expansion_new_key[ 2] : eic_key_after_mc[ 3]      ;
+    round_key[ 5] = encrypt_reg ? key_expansion_new_key[ 3] : eic_key_after_mc[ 4]      ;
+    round_key[ 6] = encrypt_reg ? key_expansion_new_key[ 4] : eic_key_after_mc[ 5]      ;
+    round_key[ 7] = encrypt_reg ? key_expansion_new_key[ 5] : eic_key_after_mc[ 6]      ;
+    round_key[ 8] = encrypt_reg ? key_expansion_new_key[ 6] : eic_key_after_mc[ 7]      ;
+    round_key[ 9] = encrypt_reg ? key_expansion_new_key[ 7] : eic_key_after_mc[ 8]      ;
+    round_key[10] = encrypt_reg ? key_expansion_new_key[ 8] : eic_key_after_mc[ 9]      ;
+    round_key[11] = encrypt_reg ? key_expansion_new_key[ 9] : eic_key_after_mc[10]      ;
+    round_key[12] = encrypt_reg ? key_expansion_new_key[10] : eic_key_after_mc[11]      ;
+    round_key[13] = encrypt_reg ? key_expansion_new_key[11] : eic_key_after_mc[12]      ;
+    round_key[14] = encrypt_reg ? key_expansion_new_key[12] : key_reg[127:  0]          ;
 end
 
 generate
@@ -245,6 +264,14 @@ generate
         ) key_expansion_inst (
             .Input_key  ( key_expansion_key[k-2]     ),
             .Output_key ( key_expansion_new_key[k-2] )
+        );
+    end
+
+    for (genvar i=0; i<NUMBER_OF_ROUNDS-1; i++) begin
+        aes_mix_columns mc_inst (
+            .Encrypt      ( 1'b0                 ),
+            .Input_block  ( eic_key_before_mc[i] ),
+            .Output_block ( eic_key_after_mc[i]  )
         );
     end
 endgenerate
@@ -258,20 +285,18 @@ aes_add_round_key add_round_key_inst (
 generate
     for (genvar r=1; r<=NUMBER_OF_ROUNDS; r++) begin
         if (r == NUMBER_OF_ROUNDS) begin
-            aes_inv_round_param #(
-                .LAST ( 1'b1 )
-            ) round_inst (
+            aes_round round_inst (
                 .Encrypt      ( encrypt_reg      ),
+                .Last         ( 1'b1             ),
                 .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
                 .Output_block ( output_block     )
             );
         end
         else begin
-            aes_inv_round_param #(
-                .LAST ( 1'b0 )
-            ) round_inst (
+            aes_round round_inst (
                 .Encrypt      ( encrypt_reg      ),
+                .Last         ( 1'b0             ),
                 .Key          ( round_key[r]     ),
                 .Input_block  ( round_block[r-1] ),
                 .Output_block ( round_block[r]   )
