@@ -31,10 +31,10 @@ localparam int LAST_OUTPUT_BLOCK_WORD = BLOCK_SIZE/M_AXIS_WIDTH-1;
 logic       [$clog2(KEY_LENGTH/S_AXIS_WIDTH)-1 : 0] input_word_cnt;
 logic       [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] output_word_cnt;
 
-logic [int'($ceil($clog2(NUMBER_OF_ROUNDS)))-1 : 0] key_expansion_cnt;
 logic [int'($ceil($clog2(NUMBER_OF_ROUNDS)))-1 : 0] round_cnt;
 
-logic       [(NUMBER_OF_ROUNDS+1)*BLOCK_SIZE-1 : 0] key_expansion_reg;
+logic                            [KEY_LENGTH-1 : 0] key_reg;
+logic                            [KEY_LENGTH-1 : 0] key_expansion_key_reg;
 logic                            [BLOCK_SIZE-1 : 0] counter_reg;
 logic                            [BLOCK_SIZE-1 : 0] input_text_reg;
 logic                          [BLOCK_SIZE/8-1 : 0] input_keep_reg;
@@ -42,13 +42,11 @@ logic                            [BLOCK_SIZE-1 : 0] output_block_reg;
 
 logic                                               encrypt_reg;
 logic                                               block_last_reg;
-logic                                               key_expansion_pending_reg;
 
 logic [BLOCK_SIZE-1 : 0] input_block;
 logic [BLOCK_SIZE-1 : 0] output_text;
 logic                    output_word_last;
 
-logic [KEY_LENGTH-1 : 0] key_expansion_key;
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key;
 
 logic [BLOCK_SIZE-1 : 0] ark_output_block;
@@ -61,6 +59,7 @@ logic [BLOCK_SIZE-1 : 0] round_output_block;
 assign input_block       = invert_counter_bytes(counter_reg);
 assign output_text       = input_text_reg ^ output_block_reg;
 assign round_last        = (round_cnt == NUMBER_OF_ROUNDS);
+assign round_key         = (round_cnt == 1) ? key_reg[255:128] : key_expansion_new_key;
 assign round_input_block = (round_cnt == 1) ? ark_output_block : output_block_reg;
 
 enum logic [4:0] {
@@ -183,17 +182,6 @@ always_ff @(posedge Clk)
 
 always_ff @(posedge Clk)
     if (Rst) begin
-        key_expansion_cnt <= 2;
-    end
-    else if (state_reg == ST_KEY) begin
-        key_expansion_cnt <= 2;
-    end
-    else if (key_expansion_pending_reg & key_expansion_cnt < NUMBER_OF_ROUNDS) begin
-        key_expansion_cnt <= key_expansion_cnt + 1;
-    end
-
-always_ff @(posedge Clk)
-    if (Rst) begin
         round_cnt <= 1;
     end
     else if (state_reg == ST_CIPHER) begin
@@ -205,28 +193,19 @@ always_ff @(posedge Clk)
 
 always_ff @(posedge Clk)
     if (Rst) begin
-        key_expansion_reg <= 1920'h0;
+        key_reg <= 256'h0;
     end
     else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready) begin
-        key_expansion_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
+        key_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
     end
-    else if (key_expansion_pending_reg) begin
-        case (key_expansion_cnt)
-            2:  key_expansion_reg[ 383: 256] <= key_expansion_new_key;
-            3:  key_expansion_reg[ 511: 384] <= key_expansion_new_key;
-            4:  key_expansion_reg[ 639: 512] <= key_expansion_new_key;
-            5:  key_expansion_reg[ 767: 640] <= key_expansion_new_key;
-            6:  key_expansion_reg[ 895: 768] <= key_expansion_new_key;
-            7:  key_expansion_reg[1023: 896] <= key_expansion_new_key;
-            8:  key_expansion_reg[1151:1024] <= key_expansion_new_key;
-            9:  key_expansion_reg[1279:1152] <= key_expansion_new_key;
-            10: key_expansion_reg[1407:1280] <= key_expansion_new_key;
-            11: key_expansion_reg[1535:1408] <= key_expansion_new_key;
-            12: key_expansion_reg[1663:1536] <= key_expansion_new_key;
-            13: key_expansion_reg[1791:1664] <= key_expansion_new_key;
-            14: key_expansion_reg[1919:1792] <= key_expansion_new_key;
-        endcase
-    end
+
+always_ff @(posedge Clk)
+    if (Rst)
+        key_expansion_key_reg <= 16'h0;
+    else if (state_reg == ST_INPUT_TEXT & S_axis_tvalid & S_axis_tready & (S_axis_tlast | input_word_cnt == LAST_INPUT_BLOCK_WORD))
+        key_expansion_key_reg <= key_reg;
+    else if (state_reg == ST_CIPHER & round_cnt != 1)
+        key_expansion_key_reg <= {key_expansion_new_key, key_expansion_key_reg[255:128]};
 
 always_ff @(posedge Clk)
     if (Rst) begin
@@ -266,43 +245,6 @@ always_ff @(posedge Clk)
         output_block_reg <= round_output_block;
     end
 
-always_comb
-    case (key_expansion_cnt)
-        2:       key_expansion_key = key_expansion_reg[ 255:   0];
-        3:       key_expansion_key = key_expansion_reg[ 383: 128];
-        4:       key_expansion_key = key_expansion_reg[ 511: 256];
-        5:       key_expansion_key = key_expansion_reg[ 639: 384];
-        6:       key_expansion_key = key_expansion_reg[ 767: 512];
-        7:       key_expansion_key = key_expansion_reg[ 895: 640];
-        8:       key_expansion_key = key_expansion_reg[1023: 768];
-        9:       key_expansion_key = key_expansion_reg[1151: 896];
-        10:      key_expansion_key = key_expansion_reg[1279:1024];
-        11:      key_expansion_key = key_expansion_reg[1407:1152];
-        12:      key_expansion_key = key_expansion_reg[1535:1280];
-        13:      key_expansion_key = key_expansion_reg[1663:1408];
-        14:      key_expansion_key = key_expansion_reg[1791:1536];
-        default: key_expansion_key = 256'h0;
-    endcase
-
-always_comb
-    case (round_cnt)
-        1:       round_key = key_expansion_reg[ 255: 128];
-        2:       round_key = key_expansion_reg[ 383: 256];
-        3:       round_key = key_expansion_reg[ 511: 384];
-        4:       round_key = key_expansion_reg[ 639: 512];
-        5:       round_key = key_expansion_reg[ 767: 640];
-        6:       round_key = key_expansion_reg[ 895: 768];
-        7:       round_key = key_expansion_reg[1023: 896];
-        8:       round_key = key_expansion_reg[1151:1024];
-        9:       round_key = key_expansion_reg[1279:1152];
-        10:      round_key = key_expansion_reg[1407:1280];
-        11:      round_key = key_expansion_reg[1535:1408];
-        12:      round_key = key_expansion_reg[1663:1536];
-        13:      round_key = key_expansion_reg[1791:1664];
-        14:      round_key = key_expansion_reg[1919:1792];
-        default: round_key = 128'h0;
-    endcase
-
 always @(posedge Clk)
     if (Rst) begin
         encrypt_reg <= 1'b0;
@@ -313,17 +255,6 @@ always @(posedge Clk)
         block_last_reg <= S_axis_tlast;
     end
 
-always_ff @(posedge Clk)
-    if (Rst) begin
-        key_expansion_pending_reg <= 1'b0;
-    end
-    else if (key_expansion_cnt == NUMBER_OF_ROUNDS) begin
-        key_expansion_pending_reg <= 1'b0;
-    end
-    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD) begin
-        key_expansion_pending_reg <= 1'b1;
-    end
-
 always_comb begin
     if (output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
         output_word_last = 1'b1;
@@ -332,18 +263,19 @@ always_comb begin
 end
 
 aes256_key_expansion_port key_expansion_inst (
-    .Round_number ( key_expansion_cnt     ),
-    .Input_key    ( key_expansion_key     ),
+    .Round_number ( round_cnt             ),
+    .Input_key    ( key_expansion_key_reg ),
     .Output_key   ( key_expansion_new_key ) 
 );
 
 aes_add_round_key ark_inst (
-    .Input_block  ( input_block              ),
-    .Round_key    ( key_expansion_reg[127:0] ),
-    .Output_block ( ark_output_block         )
+    .Input_block  ( input_block      ),
+    .Round_key    ( key_reg[127:0]   ),
+    .Output_block ( ark_output_block )
 );
 
-aes_round_port round_inst (
+aes_round round_inst (
+    .Encrypt      ( 1'b1               ),
     .Last         ( round_last         ),
     .Key          ( round_key          ),
     .Input_block  ( round_input_block  ),
