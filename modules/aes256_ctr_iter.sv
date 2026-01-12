@@ -226,7 +226,7 @@ always @(posedge Clk)
         block_last_reg <= S_axis_tlast;
     end
 
-aes256_key_expansion_port key_expansion_inst (
+aes_key_expansion key_expansion_inst (
     .Round_number ( round_cnt             ),
     .Input_key    ( key_expansion_key_reg ),
     .Output_key   ( key_expansion_new_key ) 

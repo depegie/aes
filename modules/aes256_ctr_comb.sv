@@ -231,11 +231,10 @@ end
 
 generate
     for (genvar k=2; k<=NUMBER_OF_ROUNDS; k++) begin
-        aes256_key_expansion_param #(
-            .ROUND_NUMBER ( k )
-        ) key_expansion_inst (
-            .Input_key  ( key_expansion_key[k-2]     ),
-            .Output_key ( key_expansion_new_key[k-2] )
+        aes_key_expansion key_expansion_inst_11 (
+            .Round_number ( k                          ),
+            .Input_key    ( key_expansion_key[k-2]     ),
+            .Output_key   ( key_expansion_new_key[k-2] ) 
         );
     end
 endgenerate

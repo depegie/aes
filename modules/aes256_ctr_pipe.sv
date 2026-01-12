@@ -252,79 +252,79 @@ generate
     end
 endgenerate
 
-aes256_key_expansion_port key_expansion_inst_0 (
+aes_key_expansion key_expansion_inst_0 (
     .Round_number ( 2 ),
     .Input_key    ( key_reg ),
     .Output_key   ( key_expansion_new_key[0] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_1 (
+aes_key_expansion key_expansion_inst_1 (
     .Round_number ( 3 ),
     .Input_key    ( {key_expansion_reg[0], key_reg[255:128]} ),
     .Output_key   ( key_expansion_new_key[1] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_2 (
+aes_key_expansion key_expansion_inst_2 (
     .Round_number ( 4 ),
     .Input_key    ( {key_expansion_reg[1], key_expansion_reg[0]} ),
     .Output_key   ( key_expansion_new_key[2] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_3 (
+aes_key_expansion key_expansion_inst_3 (
     .Round_number ( 5 ),
     .Input_key    ( {key_expansion_reg[2], key_expansion_reg[1]} ),
     .Output_key   ( key_expansion_new_key[3] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_4 (
+aes_key_expansion key_expansion_inst_4 (
     .Round_number ( 6 ),
     .Input_key    ( {key_expansion_reg[3], key_expansion_reg[2]} ),
     .Output_key   ( key_expansion_new_key[4] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_5 (
+aes_key_expansion key_expansion_inst_5 (
     .Round_number ( 7 ),
     .Input_key    ( {key_expansion_reg[4], key_expansion_reg[3]} ),
     .Output_key   ( key_expansion_new_key[5] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_6 (
+aes_key_expansion key_expansion_inst_6 (
     .Round_number ( 8 ),
     .Input_key    ( {key_expansion_reg[5], key_expansion_reg[4]} ),
     .Output_key   ( key_expansion_new_key[6] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_7 (
+aes_key_expansion key_expansion_inst_7 (
     .Round_number ( 9 ),
     .Input_key    ( {key_expansion_reg[6], key_expansion_reg[5]} ),
     .Output_key   ( key_expansion_new_key[7] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_8 (
+aes_key_expansion key_expansion_inst_8 (
     .Round_number ( 10 ),
     .Input_key    ( {key_expansion_reg[7], key_expansion_reg[6]} ),
     .Output_key   ( key_expansion_new_key[8] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_9 (
+aes_key_expansion key_expansion_inst_9 (
     .Round_number ( 11 ),
     .Input_key    ( {key_expansion_reg[8], key_expansion_reg[7]} ),
     .Output_key   ( key_expansion_new_key[9] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_10 (
+aes_key_expansion key_expansion_inst_10 (
     .Round_number ( 12 ),
     .Input_key    ( {key_expansion_reg[9], key_expansion_reg[8]} ),
     .Output_key   ( key_expansion_new_key[10] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_11 (
+aes_key_expansion key_expansion_inst_11 (
     .Round_number ( 13 ),
     .Input_key    ( {key_expansion_reg[10], key_expansion_reg[9]} ),
     .Output_key   ( key_expansion_new_key[11] ) 
 );
 
-aes256_key_expansion_port key_expansion_inst_12 (
+aes_key_expansion key_expansion_inst_12 (
     .Round_number ( 14 ),
     .Input_key    ( {key_expansion_reg[11], key_expansion_reg[10]} ),
     .Output_key   ( key_expansion_new_key[12] ) 

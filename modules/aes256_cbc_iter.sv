@@ -313,7 +313,7 @@ always_ff @(posedge Clk)
         key_expansion_pending_reg <= 1'b1;
     end
 
-aes256_key_expansion_port key_expansion_inst (
+aes_key_expansion key_expansion_inst (
     .Round_number ( key_expansion_cnt     ),
     .Input_key    ( key_expansion_key     ),
     .Output_key   ( key_expansion_new_key ) 

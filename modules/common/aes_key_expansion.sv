@@ -1,6 +1,6 @@
 `include "aes_defines.svh"
 
-module aes256_key_expansion_port (
+module aes_key_expansion (
     input        [int'($ceil($clog2(`AES256_NUMBER_OF_ROUNDS)))-1 : 0] Round_number,
     input                                   [`AES256_KEY_LENGTH-1 : 0] Input_key,
     output logic                               [`AES_BLOCK_SIZE-1 : 0] Output_key
