@@ -13,8 +13,8 @@ module tb;
     bit rst;
 
     generator gen;
-    driver #(`S_AXIS_WIDTH, `S_AXIS_DELAY) drv;
-    monitor #(`M_AXIS_WIDTH, `M_AXIS_DELAY) mon;
+    driver #(`S_AXIS_DELAY) drv;
+    monitor #(`M_AXIS_DELAY) mon;
     scoreboard scb;
 
     axis_if #(`S_AXIS_WIDTH) s_axis(clk);

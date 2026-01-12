@@ -3,11 +3,11 @@
 
 import tb_pkg::*;
 
-class driver #(int TDATA_WIDTH, int TRANS_DELAY);
-    virtual axis_if #(TDATA_WIDTH) axis;
-    mailbox #(packet_t)            mbx;
-    event                          receive_ev;
-    event                          finish_ev;
+class driver #(int TRANS_DELAY);
+    virtual axis_if     axis;
+    mailbox #(packet_t) mbx;
+    event               receive_ev;
+    event               finish_ev;
 
     function new(ref mailbox #(packet_t) mbx,
                  ref event receive_ev,
@@ -27,6 +27,7 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
     endfunction
 
     task run();
+        int         block_size = 128;
         bit         stimulus_done = 1'b0;
         int         bytes_in_trans_num = 0;
         packet_t    packet;
@@ -46,9 +47,9 @@ class driver #(int TDATA_WIDTH, int TRANS_DELAY);
                 while (packet.data.size() > 0) begin
                     repeat(TRANS_DELAY) @(this.axis.cb);
                     
-                    bytes_in_trans_num = (packet.data.size() >= TDATA_WIDTH/8) ? TDATA_WIDTH/8 : packet.data.size();
+                    bytes_in_trans_num = (packet.data.size() >= block_size/8) ? block_size/8 : packet.data.size();
 
-                    this.axis.tlast = (packet.data.size() <= TDATA_WIDTH/8) ? 1'b1 : 1'b0;
+                    this.axis.tlast = (packet.data.size() <= block_size/8) ? 1'b1 : 1'b0;
 
                     for (int b=0; b<bytes_in_trans_num; b++) begin
                         this.axis.tdata[8*b +: 8] = packet.data.pop_front();

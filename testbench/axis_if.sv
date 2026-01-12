@@ -1,5 +1,5 @@
 interface axis_if #(
-    parameter int TDATA_WIDTH=64
+    parameter int TDATA_WIDTH=128
 )(
     input logic clk
 );

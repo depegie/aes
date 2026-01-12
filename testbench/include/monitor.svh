@@ -3,11 +3,11 @@
 
 import tb_pkg::*;
 
-class monitor #(int TDATA_WIDTH, int TRANS_DELAY);
-    virtual axis_if #(TDATA_WIDTH) axis;
-    mailbox #(packet_t)            mbx;
-    event                          receive_ev;
-    event                          finish_ev;
+class monitor #(int TRANS_DELAY);
+    virtual axis_if     axis;
+    mailbox #(packet_t) mbx;
+    event               receive_ev;
+    event               finish_ev;
 
     function new(ref mailbox #(packet_t) mbx,
                  ref event receive_ev,
@@ -24,6 +24,7 @@ class monitor #(int TDATA_WIDTH, int TRANS_DELAY);
     endfunction
 
     task run();
+        int block_size = 128;
         packet_t packet;
         
         packet.id   = 0;
@@ -40,7 +41,7 @@ class monitor #(int TDATA_WIDTH, int TRANS_DELAY);
                         @(this.axis.cb);
                     end
                     
-                    for (int b=0; b<TDATA_WIDTH/8; b++) begin
+                    for (int b=0; b<block_size/8; b++) begin
                         if (this.axis.cb.tkeep[b]) begin
                             packet.data.push_back(this.axis.cb.tdata[8*b +: 8]);
                         end
