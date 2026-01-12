@@ -1,35 +1,26 @@
 `include "aes_defines.svh"
 
-module aes256_cbc_comb #(
-    parameter int S_AXIS_WIDTH = 64,
-    parameter int M_AXIS_WIDTH = 64
-)(
-    input  logic                        Clk,
-    input  logic                        Rst,
+module aes256_cbc_comb (
+    input  logic                           Clk,
+    input  logic                           Rst,
 
-    input  logic                        S_axis_tvalid,
-    output logic                        S_axis_tready,
-    input  logic   [S_AXIS_WIDTH-1 : 0] S_axis_tdata,
-    input  logic [S_AXIS_WIDTH/8-1 : 0] S_axis_tkeep,
-    input  logic                        S_axis_tlast,
-    input  logic                        S_axis_tuser,
+    input  logic                           S_axis_tvalid,
+    output logic                           S_axis_tready,
+    input  logic   [`AES_BLOCK_SIZE-1 : 0] S_axis_tdata,
+    input  logic [`AES_BLOCK_SIZE/8-1 : 0] S_axis_tkeep,
+    input  logic                           S_axis_tlast,
+    input  logic                           S_axis_tuser,
     
-    output logic                        M_axis_tvalid,
-    input  logic                        M_axis_tready,
-    output logic   [M_AXIS_WIDTH-1 : 0] M_axis_tdata,
-    output logic [M_AXIS_WIDTH/8-1 : 0] M_axis_tkeep,
-    output logic                        M_axis_tlast
+    output logic                           M_axis_tvalid,
+    input  logic                           M_axis_tready,
+    output logic   [`AES_BLOCK_SIZE-1 : 0] M_axis_tdata,
+    output logic [`AES_BLOCK_SIZE/8-1 : 0] M_axis_tkeep,
+    output logic                           M_axis_tlast
 );
 
-localparam int KEY_LENGTH             = `AES256_KEY_LENGTH;
-localparam int BLOCK_SIZE             = `AES_BLOCK_SIZE;
-localparam int NUMBER_OF_ROUNDS       = `AES256_NUMBER_OF_ROUNDS;
-localparam int LAST_KEY_WORD          = KEY_LENGTH/S_AXIS_WIDTH-1;
-localparam int LAST_INPUT_BLOCK_WORD  = BLOCK_SIZE/S_AXIS_WIDTH-1;
-localparam int LAST_OUTPUT_BLOCK_WORD = BLOCK_SIZE/M_AXIS_WIDTH-1;
-
-logic [$clog2(KEY_LENGTH/S_AXIS_WIDTH)-1 : 0] input_word_cnt;
-logic [$clog2(BLOCK_SIZE/M_AXIS_WIDTH)-1 : 0] output_word_cnt;
+localparam int KEY_LENGTH       = `AES256_KEY_LENGTH;
+localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
+localparam int NUMBER_OF_ROUNDS = `AES256_NUMBER_OF_ROUNDS;
 
 logic                      [KEY_LENGTH-1 : 0] key_reg;
 logic                      [BLOCK_SIZE-1 : 0] iv_reg;
@@ -37,6 +28,7 @@ logic                      [BLOCK_SIZE-1 : 0] input_text_reg;
 
 logic                                         encrypt_reg;
 logic                                         block_last_reg;
+logic                                         most_sig_halfkey_reg;
 
 logic [KEY_LENGTH-1 : 0] key_expansion_key[NUMBER_OF_ROUNDS-1];
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key[NUMBER_OF_ROUNDS-1];
@@ -71,21 +63,21 @@ always_ff @(posedge Clk)
 always_comb
     case (state_reg)
         ST_KEY: begin
-            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD)
+            if (S_axis_tvalid & S_axis_tready & most_sig_halfkey_reg)
                 next_state = ST_IV;
             else
                 next_state = ST_KEY;
         end
 
         ST_IV: begin
-            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
+            if (S_axis_tvalid & S_axis_tready)
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_IV;
         end
 
         ST_INPUT_TEXT: begin
-            if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
+            if (S_axis_tvalid & S_axis_tready)
                 next_state = ST_CIPHER;
             else
                 next_state = ST_INPUT_TEXT;
@@ -96,9 +88,9 @@ always_comb
         end
 
         ST_OUTPUT_TEXT: begin
-            if (M_axis_tvalid & M_axis_tready & M_axis_tlast & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
+            if (M_axis_tvalid & M_axis_tready & M_axis_tlast)
                 next_state = ST_KEY;
-            else if (M_axis_tvalid & M_axis_tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD)
+            else if (M_axis_tvalid & M_axis_tready)
                 next_state = ST_INPUT_TEXT;
             else
                 next_state = ST_OUTPUT_TEXT;
@@ -122,9 +114,9 @@ always_comb
     case (state_reg)
         ST_OUTPUT_TEXT: begin
             M_axis_tvalid = 1'b1;
-            M_axis_tdata = output_text[output_word_cnt*M_AXIS_WIDTH +: M_AXIS_WIDTH];
-            M_axis_tkeep = {(M_AXIS_WIDTH/8){1'b1}};
-            M_axis_tlast = (output_word_cnt == LAST_OUTPUT_BLOCK_WORD) ? block_last_reg : 1'b0;
+            M_axis_tdata = output_text;
+            M_axis_tkeep = {(BLOCK_SIZE/8){1'b1}};
+            M_axis_tlast = block_last_reg;
         end
 
         default: begin
@@ -136,45 +128,25 @@ always_comb
     endcase
 
 always_ff @(posedge Clk)
-    if (Rst)
-        input_word_cnt <= 0;
-    else
-        case (state_reg)
-            ST_KEY:
-                if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_KEY_WORD)
-                    input_word_cnt <= 0;
-                else if (S_axis_tvalid & S_axis_tready)
-                    input_word_cnt <= input_word_cnt + 'd1;
-
-            ST_IV, ST_INPUT_TEXT:
-                if (S_axis_tvalid & S_axis_tready & input_word_cnt == LAST_INPUT_BLOCK_WORD)
-                    input_word_cnt <= 0;
-                else if (S_axis_tvalid & S_axis_tready)
-                    input_word_cnt <= input_word_cnt + 'd1;
-            
-            default:
-                input_word_cnt <= 0;
-        endcase
-
-always_ff @(posedge Clk)
-    if (Rst)
-        output_word_cnt <= 0;
-    else
-        case (state_reg)
-            ST_OUTPUT_TEXT:
-                if (M_axis_tvalid & M_axis_tready)
-                    output_word_cnt <= output_word_cnt + 'd1;
-            
-            default:
-                output_word_cnt <= 0;
-        endcase
+    if (Rst) begin
+        most_sig_halfkey_reg <= 1'b0;
+    end
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready & most_sig_halfkey_reg) begin
+        most_sig_halfkey_reg <= 1'b0;
+    end
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready) begin
+        most_sig_halfkey_reg <= 1'b1;
+    end
 
 always_ff @(posedge Clk)
     if (Rst) begin
         key_reg <= 256'h0;
     end
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready & most_sig_halfkey_reg) begin
+        key_reg[255:128] <= S_axis_tdata;
+    end
     else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready) begin
-        key_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
+        key_reg[127:0] <= S_axis_tdata;
     end
 
 always_ff @(posedge Clk)
@@ -182,9 +154,9 @@ always_ff @(posedge Clk)
         iv_reg <= 128'h0;
     end
     else if (state_reg == ST_IV & S_axis_tvalid & S_axis_tready) begin
-        iv_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
+        iv_reg <= S_axis_tdata;
     end
-    else if (state_reg == ST_OUTPUT_TEXT & M_axis_tvalid & M_axis_tready & output_word_cnt == LAST_OUTPUT_BLOCK_WORD) begin
+    else if (state_reg == ST_OUTPUT_TEXT & M_axis_tvalid & M_axis_tready) begin
         iv_reg <= encrypt_reg ? output_text : input_text_reg;
     end
 
@@ -193,7 +165,7 @@ always_ff @(posedge Clk)
         input_text_reg <= 128'h0;
     end
     else if (state_reg == ST_INPUT_TEXT & S_axis_tvalid & S_axis_tready) begin
-        input_text_reg[input_word_cnt*S_AXIS_WIDTH +: S_AXIS_WIDTH] <= S_axis_tdata;
+        input_text_reg <= S_axis_tdata;
     end
 
 always @(posedge Clk)

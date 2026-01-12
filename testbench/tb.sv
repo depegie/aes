@@ -42,10 +42,7 @@ module tb;
 `elsif AES256_CTR_PIPE
     aes256_ctr_pipe
 `endif
-    #(
-        .S_AXIS_WIDTH ( `S_AXIS_WIDTH ),
-        .M_AXIS_WIDTH ( `M_AXIS_WIDTH )
-    ) dut (
+    dut (
         .Clk           ( clk           ),
         .Rst           ( rst           ),
         .S_axis_tvalid ( s_axis.tvalid ),
