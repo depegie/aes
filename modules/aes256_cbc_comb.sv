@@ -231,7 +231,7 @@ end
 
 generate
     for (genvar k=2; k<=NUMBER_OF_ROUNDS; k++) begin
-        aes_key_expansion key_expansion_inst_11 (
+        aes_key_expander key_expansion_inst_11 (
             .Round_number ( k                          ),
             .Input_key    ( key_expansion_key[k-2]     ),
             .Output_key   ( key_expansion_new_key[k-2] ) 
@@ -239,7 +239,7 @@ generate
     end
 
     for (genvar i=0; i<NUMBER_OF_ROUNDS-1; i++) begin
-        aes_mix_columns mc_inst (
+        aes_columns_mixer mc_inst (
             .Encrypt      ( 1'b0                 ),
             .Input_block  ( eic_key_before_mc[i] ),
             .Output_block ( eic_key_after_mc[i]  )
@@ -247,7 +247,7 @@ generate
     end
 endgenerate
 
-aes_add_round_key add_round_key_inst (
+aes_round_key_adder add_round_key_inst (
     .Input_block  ( input_block    ),
     .Round_key    ( round_key[0]   ),
     .Output_block ( round_block[0] )

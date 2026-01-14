@@ -313,19 +313,19 @@ always_ff @(posedge Clk)
         key_expansion_pending_reg <= 1'b1;
     end
 
-aes_key_expansion key_expansion_inst (
+aes_key_expander key_expansion_inst (
     .Round_number ( key_expansion_cnt     ),
     .Input_key    ( key_expansion_key     ),
     .Output_key   ( key_expansion_new_key ) 
 );
 
-aes_mix_columns mc_inst (
+aes_columns_mixer mc_inst (
     .Encrypt      ( 1'b0              ),
     .Input_block  ( eic_key_before_mc ),
     .Output_block ( eic_key_after_mc  )
 );
 
-aes_add_round_key ark_inst (
+aes_round_key_adder ark_inst (
     .Input_block  ( input_block      ),
     .Round_key    ( ark_round_key    ),
     .Output_block ( ark_output_block )

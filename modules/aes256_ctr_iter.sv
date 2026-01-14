@@ -226,13 +226,13 @@ always @(posedge Clk)
         block_last_reg <= S_axis_tlast;
     end
 
-aes_key_expansion key_expansion_inst (
+aes_key_expander key_expansion_inst (
     .Round_number ( round_cnt             ),
     .Input_key    ( key_expansion_key_reg ),
     .Output_key   ( key_expansion_new_key ) 
 );
 
-aes_add_round_key ark_inst (
+aes_round_key_adder ark_inst (
     .Input_block  ( input_block      ),
     .Round_key    ( key_reg[127:0]   ),
     .Output_block ( ark_output_block )

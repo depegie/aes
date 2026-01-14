@@ -1,6 +1,6 @@
 `include "aes_defines.svh"
 
-module aes_mix_columns (
+module aes_columns_mixer (
     input                          Encrypt,
     input  [`AES_BLOCK_SIZE-1 : 0] Input_block,
     output [`AES_BLOCK_SIZE-1 : 0] Output_block
