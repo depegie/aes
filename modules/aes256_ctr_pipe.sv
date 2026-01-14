@@ -18,9 +18,9 @@ module aes256_ctr_pipe (
     output logic                           M_axis_tlast
 );
 
-localparam int KEY_LENGTH       = `AES256_KEY_LENGTH;
+localparam int KEY_LENGTH       = `AES_KEY_LENGTH;
 localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
-localparam int NUMBER_OF_ROUNDS = `AES256_NUMBER_OF_ROUNDS;
+localparam int NUMBER_OF_ROUNDS = `AES_NUMBER_OF_ROUNDS;
 
 logic                      most_sig_halfkey_reg;
 logic                      encrypt_reg;

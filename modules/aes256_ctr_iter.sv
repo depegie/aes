@@ -18,9 +18,9 @@ module aes256_ctr_iter (
     output logic                           M_axis_tlast
 );
 
-localparam int KEY_LENGTH       = `AES256_KEY_LENGTH;
+localparam int KEY_LENGTH       = `AES_KEY_LENGTH;
 localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
-localparam int NUMBER_OF_ROUNDS = `AES256_NUMBER_OF_ROUNDS;
+localparam int NUMBER_OF_ROUNDS = `AES_NUMBER_OF_ROUNDS;
 
 logic [int'($ceil($clog2(NUMBER_OF_ROUNDS)))-1 : 0] round_cnt;
 

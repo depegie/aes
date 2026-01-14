@@ -18,9 +18,9 @@ module aes256_ctr_comb (
     output logic                           M_axis_tlast
 );
 
-localparam int KEY_LENGTH       = `AES256_KEY_LENGTH;
+localparam int KEY_LENGTH       = `AES_KEY_LENGTH;
 localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
-localparam int NUMBER_OF_ROUNDS = `AES256_NUMBER_OF_ROUNDS;
+localparam int NUMBER_OF_ROUNDS = `AES_NUMBER_OF_ROUNDS;
 
 logic   [KEY_LENGTH-1 : 0] key_reg;
 logic   [BLOCK_SIZE-1 : 0] counter_reg;
