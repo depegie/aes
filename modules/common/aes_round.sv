@@ -8,46 +8,35 @@ module aes_round (
     output logic [`AES_BLOCK_SIZE-1 : 0] Output_block
 );
 
-logic [`AES_BLOCK_SIZE-1 : 0] sb_input_block;
-logic [`AES_BLOCK_SIZE-1 : 0] sr_input_block;
-logic [`AES_BLOCK_SIZE-1 : 0] mc_input_block;
-logic [`AES_BLOCK_SIZE-1 : 0] ark_input_block;
-logic [`AES_BLOCK_SIZE-1 : 0] ark_round_key;
-
-logic [`AES_BLOCK_SIZE-1 : 0] sb_output_block;
+logic [`AES_BLOCK_SIZE-1 : 0] sb_to_sr_block;
 logic [`AES_BLOCK_SIZE-1 : 0] sr_output_block;
 logic [`AES_BLOCK_SIZE-1 : 0] mc_output_block;
-logic [`AES_BLOCK_SIZE-1 : 0] ark_output_block;
+logic [`AES_BLOCK_SIZE-1 : 0] ark_input_block;
 
-assign sb_input_block  = Input_block;
-assign sr_input_block  = sb_output_block;
-assign mc_input_block  = sr_output_block;
 assign ark_input_block = Last ? sr_output_block : mc_output_block;
-assign ark_round_key   = Key;
-assign Output_block    = ark_output_block;
 
 aes_bytes_substitutor sb_inst (
-    .Encrypt      ( Encrypt         ),
-    .Input_block  ( sb_input_block  ),
-    .Output_block ( sb_output_block )
+    .Encrypt      ( Encrypt        ),
+    .Input_block  ( Input_block    ),
+    .Output_block ( sb_to_sr_block )
 );
 
 aes_rows_shifter sr_inst (
     .Encrypt      ( Encrypt         ),
-    .Input_block  ( sr_input_block  ),
+    .Input_block  ( sb_to_sr_block  ),
     .Output_block ( sr_output_block )
 );
 
 aes_columns_mixer mc_inst (
     .Encrypt      ( Encrypt         ),
-    .Input_block  ( mc_input_block  ),
+    .Input_block  ( sr_output_block ),
     .Output_block ( mc_output_block )
 );
 
 aes_round_key_adder ark_inst (
     .Input_block  ( ark_input_block  ),
-    .Round_key    ( ark_round_key    ),
-    .Output_block ( ark_output_block )
+    .Round_key    ( Key    ),
+    .Output_block ( Output_block )
 );
 
 endmodule

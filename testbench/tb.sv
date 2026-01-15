@@ -17,8 +17,8 @@ module tb;
     monitor #(`M_AXIS_DELAY) mon;
     scoreboard scb;
 
-    axis_if #(`S_AXIS_WIDTH) s_axis(clk);
-    axis_if #(`M_AXIS_WIDTH) m_axis(clk);
+    axis_if #(128) s_axis(clk);
+    axis_if #(128) m_axis(clk);
 
     mailbox #(packet_t) gen2drv_mbx;
     mailbox #(packet_t) gen2scb_mbx;

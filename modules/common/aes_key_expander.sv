@@ -8,19 +8,14 @@ module aes_key_expander (
 
 logic [`AES_WORD_SIZE-1 : 0] rcon;
 
-logic [`AES_WORD_SIZE-1 : 0] before_rotword;
 logic [`AES_WORD_SIZE-1 : 0] before_subword;
-logic [`AES_WORD_SIZE-1 : 0] before_rcon;
-
-logic [`AES_WORD_SIZE-1 : 0] after_rotword;
 logic [`AES_WORD_SIZE-1 : 0] after_subword;
+logic [`AES_WORD_SIZE-1 : 0] after_rotword;
 logic [`AES_WORD_SIZE-1 : 0] after_rcon;
 
 always_comb begin
     if (Round_number % 2 == 0) begin
-        before_rotword = Input_key[`AES_8TH_WORD];
         before_subword = after_rotword;
-        before_rcon    = after_subword;
 
         Output_key[`AES_1ST_WORD] = Input_key[`AES_1ST_WORD] ^ after_rcon;
         Output_key[`AES_2ND_WORD] = Input_key[`AES_2ND_WORD] ^ Output_key[`AES_1ST_WORD];
@@ -28,9 +23,7 @@ always_comb begin
         Output_key[`AES_4TH_WORD] = Input_key[`AES_4TH_WORD] ^ Output_key[`AES_3RD_WORD];
     end
     else begin
-        before_rotword = 0;
         before_subword = Input_key[`AES_8TH_WORD];
-        before_rcon = 0;
 
         Output_key[`AES_1ST_WORD] = Input_key[`AES_1ST_WORD] ^ after_subword;
         Output_key[`AES_2ND_WORD] = Input_key[`AES_2ND_WORD] ^ Output_key[`AES_1ST_WORD];
@@ -51,7 +44,7 @@ always_comb
         default: rcon = 32'h0;
     endcase
 
-assign after_rotword = (before_rotword >> 8) | (before_rotword << `AES_WORD_SIZE-8);
+assign after_rotword = (Input_key[`AES_8TH_WORD] >> 8) | (Input_key[`AES_8TH_WORD] << `AES_WORD_SIZE-8);
 
 generate
     for (genvar i=0; i<`AES_WORD_SIZE/8; i++)
@@ -61,6 +54,6 @@ generate
         );
 endgenerate
 
-assign after_rcon = before_rcon ^ rcon;
+assign after_rcon = after_subword ^ rcon;
 
 endmodule

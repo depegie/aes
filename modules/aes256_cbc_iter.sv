@@ -190,8 +190,11 @@ always_ff @(posedge Clk)
     if (Rst) begin
         key_expansion_reg[255:0] <= 256'h0;
     end
+    else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready & most_sig_halfkey_reg) begin
+        key_expansion_reg[255:128] <= S_axis_tdata;
+    end
     else if (state_reg == ST_KEY & S_axis_tvalid & S_axis_tready) begin
-        key_expansion_reg[255:0] <= {S_axis_tdata, key_expansion_reg[255:128]};
+        key_expansion_reg[127:0] <= S_axis_tdata;
     end
 
 generate
