@@ -1,0 +1,1477 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Sun Jan 18 20:54:39 2026
+| Host         : laptop running 64-bit Ubuntu 24.04.3 LTS
+| Command      : report_utilization -file aes256_cbc_comb_encdec.rpt -append
+| Design       : synth_wrapper
+| Device       : xczu7ev-ffvf1517-1LV-i
+| Speed File   : -1LV
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. CLB Logic
+1.1 Summary of Registers by Type
+2. CLB Logic Distribution
+3. BLOCKRAM
+4. ARITHMETIC
+5. I/O
+6. CLOCK
+7. ADVANCED
+8. CONFIGURATION
+9. Primitives
+10. Black Boxes
+11. Instantiated Netlists
+
+1. CLB Logic
+------------
+
++-------------------------+-------+-------+------------+-----------+-------+
+|        Site Type        |  Used | Fixed | Prohibited | Available | Util% |
++-------------------------+-------+-------+------------+-----------+-------+
+| CLB LUTs                | 29397 |     0 |          0 |    230400 | 12.76 |
+|   LUT as Logic          | 29397 |     0 |          0 |    230400 | 12.76 |
+|   LUT as Memory         |     0 |     0 |          0 |    101760 |  0.00 |
+| CLB Registers           |   648 |     0 |          0 |    460800 |  0.14 |
+|   Register as Flip Flop |   648 |     0 |          0 |    460800 |  0.14 |
+|   Register as Latch     |     0 |     0 |          0 |    460800 |  0.00 |
+| CARRY8                  |     0 |     0 |          0 |     28800 |  0.00 |
+| F7 Muxes                |  7780 |     0 |          0 |    115200 |  6.75 |
+| F8 Muxes                |  2284 |     0 |          0 |     57600 |  3.97 |
+| F9 Muxes                |     0 |     0 |          0 |     28800 |  0.00 |
++-------------------------+-------+-------+------------+-----------+-------+
+* Warning! LUT value is adjusted to account for LUT combining.
+
+
+1.1 Summary of Registers by Type
+--------------------------------
+
++-------+--------------+-------------+--------------+
+| Total | Clock Enable | Synchronous | Asynchronous |
++-------+--------------+-------------+--------------+
+| 0     |            _ |           - |            - |
+| 0     |            _ |           - |          Set |
+| 0     |            _ |           - |        Reset |
+| 0     |            _ |         Set |            - |
+| 0     |            _ |       Reset |            - |
+| 0     |          Yes |           - |            - |
+| 0     |          Yes |           - |          Set |
+| 0     |          Yes |           - |        Reset |
+| 1     |          Yes |         Set |            - |
+| 647   |          Yes |       Reset |            - |
++-------+--------------+-------------+--------------+
+
+
+2. CLB Logic Distribution
+-------------------------
+
++--------------------------------------------+-------+-------+------------+-----------+-------+
+|                  Site Type                 |  Used | Fixed | Prohibited | Available | Util% |
++--------------------------------------------+-------+-------+------------+-----------+-------+
+| CLB                                        |  5294 |     0 |          0 |     28800 | 18.38 |
+|   CLBL                                     |  2725 |     0 |            |           |       |
+|   CLBM                                     |  2569 |     0 |            |           |       |
+| LUT as Logic                               | 29397 |     0 |          0 |    230400 | 12.76 |
+|   using O5 output only                     |     5 |       |            |           |       |
+|   using O6 output only                     | 27885 |       |            |           |       |
+|   using O5 and O6                          |  1507 |       |            |           |       |
+| LUT as Memory                              |     0 |     0 |          0 |    101760 |  0.00 |
+|   LUT as Distributed RAM                   |     0 |     0 |            |           |       |
+|     using O5 output only                   |     0 |       |            |           |       |
+|     using O6 output only                   |     0 |       |            |           |       |
+|     using O5 and O6                        |     0 |       |            |           |       |
+|   LUT as Shift Register                    |     0 |     0 |            |           |       |
+|     using O5 output only                   |     0 |       |            |           |       |
+|     using O6 output only                   |     0 |       |            |           |       |
+|     using O5 and O6                        |     0 |       |            |           |       |
+| CLB Registers                              |   648 |     0 |          0 |    460800 |  0.14 |
+|   Register driven from within the CLB      |   263 |       |            |           |       |
+|   Register driven from outside the CLB     |   385 |       |            |           |       |
+|     LUT in front of the register is unused |   157 |       |            |           |       |
+|     LUT in front of the register is used   |   228 |       |            |           |       |
+| Unique Control Sets                        |     7 |       |          0 |     57600 |  0.01 |
++--------------------------------------------+-------+-------+------------+-----------+-------+
+* * Note: Available Control Sets calculated as Slices * 2, Review the Control Sets Report for more information regarding control sets.
+
+
+3. BLOCKRAM
+-----------
+
++----------------+------+-------+------------+-----------+-------+
+|    Site Type   | Used | Fixed | Prohibited | Available | Util% |
++----------------+------+-------+------------+-----------+-------+
+| Block RAM Tile |    0 |     0 |          0 |       312 |  0.00 |
+|   RAMB36/FIFO* |    0 |     0 |          0 |       312 |  0.00 |
+|   RAMB18       |    0 |     0 |          0 |       624 |  0.00 |
+| URAM           |    0 |     0 |          0 |        96 |  0.00 |
++----------------+------+-------+------------+-----------+-------+
+* Note: Each Block RAM Tile only has one FIFO logic available and therefore can accommodate only one FIFO36E2 or one FIFO18E2. However, if a FIFO18E2 occupies a Block RAM Tile, that tile can still accommodate a RAMB18E2
+
+
+4. ARITHMETIC
+-------------
+
++-----------+------+-------+------------+-----------+-------+
+| Site Type | Used | Fixed | Prohibited | Available | Util% |
++-----------+------+-------+------------+-----------+-------+
+| DSPs      |    0 |     0 |          0 |      1728 |  0.00 |
++-----------+------+-------+------------+-----------+-------+
+
+
+5. I/O
+------
+
++------------------+------+-------+------------+-----------+-------+
+|     Site Type    | Used | Fixed | Prohibited | Available | Util% |
++------------------+------+-------+------------+-----------+-------+
+| Bonded IOB       |    0 |     0 |          0 |       464 |  0.00 |
+| HPIOB_M          |    0 |     0 |          0 |       192 |  0.00 |
+| HPIOB_S          |    0 |     0 |          0 |       192 |  0.00 |
+| HDIOB_M          |    0 |     0 |          0 |        24 |  0.00 |
+| HDIOB_S          |    0 |     0 |          0 |        24 |  0.00 |
+| HPIOB_SNGL       |    0 |     0 |          0 |        32 |  0.00 |
+| HPIOBDIFFINBUF   |    0 |     0 |          0 |       192 |  0.00 |
+| HPIOBDIFFOUTBUF  |    0 |     0 |          0 |       192 |  0.00 |
+| HDIOBDIFFINBUF   |    0 |     0 |          0 |        48 |  0.00 |
+| BITSLICE_CONTROL |    0 |     0 |          0 |        64 |  0.00 |
+| BITSLICE_RX_TX   |    0 |     0 |          0 |      2496 |  0.00 |
+| BITSLICE_TX      |    0 |     0 |          0 |        64 |  0.00 |
+| RIU_OR           |    0 |     0 |          0 |        32 |  0.00 |
++------------------+------+-------+------------+-----------+-------+
+
+
+6. CLOCK
+--------
+
++------------+------+-------+------------+-----------+-------+
+|  Site Type | Used | Fixed | Prohibited | Available | Util% |
++------------+------+-------+------------+-----------+-------+
+| BUFGCE     |    0 |     0 |          0 |       208 |  0.00 |
+| BUFGCE_DIV |    0 |     0 |          0 |        32 |  0.00 |
+| BUFG_GT    |    0 |     0 |          0 |       144 |  0.00 |
+| BUFG_PS    |    0 |     0 |          0 |        96 |  0.00 |
+| BUFGCTRL*  |    0 |     0 |          0 |        64 |  0.00 |
+| PLL        |    0 |     0 |          0 |        16 |  0.00 |
+| MMCM       |    0 |     0 |          0 |         8 |  0.00 |
++------------+------+-------+------------+-----------+-------+
+* Note: Each used BUFGCTRL counts as two GLOBAL CLOCK BUFFERs. This table does not include global clocking resources, only buffer cell usage. See the Clock Utilization Report (report_clock_utilization) for detailed accounting of global clocking resource availability.
+
+
+7. ADVANCED
+-----------
+
++-----------------+------+-------+------------+-----------+-------+
+|    Site Type    | Used | Fixed | Prohibited | Available | Util% |
++-----------------+------+-------+------------+-----------+-------+
+| GTHE4_CHANNEL   |    0 |     0 |          0 |        24 |  0.00 |
+| GTHE4_COMMON    |    0 |     0 |          0 |         6 |  0.00 |
+| OBUFDS_GTE4     |    0 |     0 |          0 |        12 |  0.00 |
+| OBUFDS_GTE4_ADV |    0 |     0 |          0 |        12 |  0.00 |
+| PCIE40E4        |    0 |     0 |          0 |         2 |  0.00 |
+| PS8             |    0 |     0 |          0 |         1 |  0.00 |
+| SYSMONE4        |    0 |     0 |          0 |         1 |  0.00 |
+| VCU             |    0 |     0 |          0 |         1 |  0.00 |
++-----------------+------+-------+------------+-----------+-------+
+
+
+8. CONFIGURATION
+----------------
+
++-------------+------+-------+------------+-----------+-------+
+|  Site Type  | Used | Fixed | Prohibited | Available | Util% |
++-------------+------+-------+------------+-----------+-------+
+| BSCANE2     |    0 |     0 |          0 |         4 |  0.00 |
+| DNA_PORTE2  |    0 |     0 |          0 |         1 |  0.00 |
+| EFUSE_USR   |    0 |     0 |          0 |         1 |  0.00 |
+| FRAME_ECCE4 |    0 |     0 |          0 |         1 |  0.00 |
+| ICAPE3      |    0 |     0 |          0 |         2 |  0.00 |
+| MASTER_JTAG |    0 |     0 |          0 |         1 |  0.00 |
+| STARTUPE3   |    0 |     0 |          0 |         1 |  0.00 |
++-------------+------+-------+------------+-----------+-------+
+
+
+9. Primitives
+-------------
+
++----------+-------+---------------------+
+| Ref Name |  Used | Functional Category |
++----------+-------+---------------------+
+| LUT6     | 21472 |                 CLB |
+| MUXF7    |  7780 |                 CLB |
+| LUT5     |  3094 |                 CLB |
+| LUT4     |  2404 |                 CLB |
+| MUXF8    |  2284 |                 CLB |
+| LUT2     |  2264 |                 CLB |
+| LUT3     |  1670 |                 CLB |
+| FDRE     |   647 |            Register |
+| FDSE     |     1 |            Register |
++----------+-------+---------------------+
+
+
+10. Black Boxes
+---------------
+
++----------+------+
+| Ref Name | Used |
++----------+------+
+
+
+11. Instantiated Netlists
+-------------------------
+
++----------+------+
+| Ref Name | Used |
++----------+------+
+
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date              : Sun Jan 18 20:54:47 2026
+| Host              : laptop running 64-bit Ubuntu 24.04.3 LTS
+| Command           : report_timing_summary -file aes256_cbc_comb_encdec.rpt -append
+| Design            : synth_wrapper
+| Device            : xczu7ev-ffvf1517
+| Speed File        : -1LV  PRODUCTION 1.30 05-15-2022
+| Design State      : Routed
+| Temperature Grade : I
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+  Inter-SLR Compensation                     :  Conservative
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+Rule       Severity  Description                    Violations  
+---------  --------  -----------------------------  ----------  
+TIMING-18  Warning   Missing input or output delay  280         
+
+Note: This report is based on the most recent report_methodology run and may not be up-to-date. Run report_methodology on the current design for the latest report.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (0)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (0)
+5. checking no_input_delay (133)
+6. checking no_output_delay (147)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (0)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (0)
+------------------------
+ There are 0 register/latch pins with no clock.
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (0)
+------------------------------------------------
+ There are 0 pins that are not constrained for maximum delay.
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (133)
+--------------------------------
+ There are 133 input ports with no input delay specified. (HIGH)
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (147)
+---------------------------------
+ There are 147 ports with no output delay specified. (HIGH)
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (0)
+------------------------------------
+ There are 0 input ports with partial input delay specified.
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+      0.545        0.000                      0                  909        0.101        0.000                      0                  909       47.725        0.000                       0                   648  
+
+
+All user specified timing constraints are met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+Clock  Waveform(ns)       Period(ns)      Frequency(MHz)
+-----  ------------       ----------      --------------
+clk    {0.000 48.000}     96.000          10.417          
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+clk                 0.545        0.000                      0                  909        0.101        0.000                      0                  909       47.725        0.000                       0                   648  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    ----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk
+  To Clock:  clk
+
+Setup :            0  Failing Endpoints,  Worst Slack        0.545ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.101ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack       47.725ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.545ns  (required time - arrival time)
+  Source:                 inst/key_reg_reg[224]/C
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@48.000ns period=96.000ns})
+  Destination:            inst/output_block_reg_reg[86]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@48.000ns period=96.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            96.000ns  (clk rise@96.000ns - clk rise@0.000ns)
+  Data Path Delay:        95.446ns  (logic 26.558ns (27.825%)  route 68.888ns (72.175%))
+  Logic Levels:           173  (LUT2=43 LUT3=10 LUT4=15 LUT5=8 LUT6=61 MUXF7=27 MUXF8=9)
+  Clock Path Skew:        -0.015ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.035ns = ( 96.035 - 96.000 ) 
+    Source Clock Delay      (SCD):    0.050ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  Clk (IN)
+                         net (fo=647, unset)          0.050     0.050    inst/Clk
+    SLICE_X87Y139        FDRE                                         r  inst/key_reg_reg[224]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X87Y139        FDRE (Prop_HFF_SLICEL_C_Q)
+                                                      0.133     0.183 r  inst/key_reg_reg[224]/Q
+                         net (fo=41, routed)          0.697     0.880    inst/eic_key_before_mc[12]_29[96]
+    SLICE_X80Y141        LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.248     1.128 r  inst/g1_b1__2/O
+                         net (fo=1, routed)           0.015     1.143    inst/genblk1[2].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__298_i_10_0
+    SLICE_X80Y141        MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.119     1.262 r  inst/genblk1[2].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__6_i_15/O
+                         net (fo=6, routed)           0.000     1.262    inst/genblk1[2].key_expansion_inst/genblk1[3].aes_sbox_inst/key_reg_reg[230]_1
+    SLICE_X80Y141        MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.035     1.297 r  inst/genblk1[2].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__6_i_8/O
+                         net (fo=5, routed)           0.338     1.635    inst/after_subword[25]
+    SLICE_X84Y142        LUT5 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.170     1.805 r  inst/g0_b0__6_i_2/O
+                         net (fo=38, routed)          0.687     2.492    inst/key_expansion_new_key[0]_30[121]
+    SLICE_X74Y155        LUT6 (Prop_D6LUT_SLICEM_I1_O)
+                                                      0.247     2.739 r  inst/g0_b1__6/O
+                         net (fo=1, routed)           0.032     2.771    inst/genblk1[3].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__9_i_8
+    SLICE_X74Y155        MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132     2.903 r  inst/genblk1[3].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__9_i_16/O
+                         net (fo=1, routed)           0.263     3.166    inst/genblk1[3].key_expansion_inst_n_46
+    SLICE_X74Y155        LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.061     3.227 r  inst/g0_b0__9_i_8/O
+                         net (fo=10, routed)          0.540     3.768    inst/key_expansion_new_key[1]_31[25]
+    SLICE_X80Y138        LUT4 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.059     3.827 r  inst/g0_b0__9_i_2/O
+                         net (fo=38, routed)          0.517     4.344    inst/key_expansion_new_key[1]_31[121]
+    SLICE_X85Y132        LUT6 (Prop_C6LUT_SLICEL_I1_O)
+                                                      0.248     4.592 r  inst/g1_b0__9/O
+                         net (fo=1, routed)           0.015     4.607    inst/genblk1[4].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__293_i_7_2
+    SLICE_X85Y132        MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.119     4.726 r  inst/genblk1[4].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__293_i_25/O
+                         net (fo=1, routed)           0.436     5.162    inst/genblk1[4].key_expansion_inst_n_41
+    SLICE_X85Y132        LUT5 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.172     5.334 r  inst/g0_b0__293_i_7/O
+                         net (fo=10, routed)          0.296     5.630    inst/key_expansion_new_key[2]_32[16]
+    SLICE_X85Y139        LUT6 (Prop_H6LUT_SLICEL_I5_O)
+                                                      0.060     5.690 r  inst/g0_b0__297_i_7/O
+                         net (fo=10, routed)          0.320     6.010    inst/key_expansion_new_key[2]_32[48]
+    SLICE_X85Y134        LUT5 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.094     6.104 r  inst/g0_b0__249_i_7/O
+                         net (fo=10, routed)          0.542     6.646    inst/key_expansion_new_key[2]_32[80]
+    SLICE_X81Y117        LUT2 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.094     6.740 r  inst/g0_b0__249_i_1/O
+                         net (fo=41, routed)          0.344     7.084    inst/key_expansion_new_key[2]_32[112]
+    SLICE_X78Y116        LUT6 (Prop_C6LUT_SLICEM_I0_O)
+                                                      0.247     7.331 r  inst/g3_b2__249/O
+                         net (fo=2, routed)           0.029     7.360    inst/genblk1[5].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__252_i_9_0
+    SLICE_X78Y116        MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.132     7.492 r  inst/genblk1[5].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__252_i_18/O
+                         net (fo=2, routed)           0.328     7.820    inst/genblk1[5].key_expansion_inst_n_45
+    SLICE_X78Y116        LUT5 (Prop_G6LUT_SLICEM_I4_O)
+                                                      0.151     7.971 r  inst/g0_b0__252_i_9/O
+                         net (fo=10, routed)          0.400     8.371    inst/key_expansion_new_key[3]_39[82]
+    SLICE_X75Y106        LUT2 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.172     8.543 r  inst/g0_b0__252_i_3/O
+                         net (fo=41, routed)          0.707     9.250    inst/key_expansion_new_key[3]_39[114]
+    SLICE_X86Y103        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.149     9.399 r  inst/g0_b2__252/O
+                         net (fo=1, routed)           0.032     9.431    inst/genblk1[6].key_expansion_inst/genblk1[1].aes_sbox_inst/g0_b0__404_i_13
+    SLICE_X86Y103        MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132     9.563 r  inst/genblk1[6].key_expansion_inst/genblk1[1].aes_sbox_inst/g0_b0__404_i_35/O
+                         net (fo=1, routed)           0.300     9.863    inst/genblk1[6].key_expansion_inst_n_20
+    SLICE_X86Y103        LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.256    10.119 r  inst/g0_b0__404_i_13/O
+                         net (fo=10, routed)          0.433    10.552    inst/key_expansion_new_key[4]_40[10]
+    SLICE_X85Y94         LUT2 (Prop_E5LUT_SLICEL_I1_O)
+                                                      0.189    10.741 r  inst/g0_b0__408_i_16/O
+                         net (fo=10, routed)          0.179    10.920    inst/key_expansion_new_key[4]_40[42]
+    SLICE_X84Y94         LUT2 (Prop_G5LUT_SLICEM_I0_O)
+                                                      0.234    11.154 r  inst/g0_b0__256_i_9/O
+                         net (fo=10, routed)          0.322    11.476    inst/key_expansion_new_key[4]_40[74]
+    SLICE_X83Y94         LUT2 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.091    11.567 r  inst/g0_b0__256_i_3/O
+                         net (fo=41, routed)          0.815    12.383    inst/key_expansion_new_key[4]_40[106]
+    SLICE_X85Y51         LUT6 (Prop_D6LUT_SLICEL_I2_O)
+                                                      0.173    12.556 r  inst/g0_b1__256/O
+                         net (fo=1, routed)           0.013    12.569    inst/genblk1[7].key_expansion_inst/genblk1[1].aes_sbox_inst/g0_b0__436_i_10
+    SLICE_X85Y51         MUXF7 (Prop_F7MUX_CD_SLICEL_I0_O)
+                                                      0.117    12.686 r  inst/genblk1[7].key_expansion_inst/genblk1[1].aes_sbox_inst/g0_b0__436_i_31/O
+                         net (fo=1, routed)           0.259    12.945    inst/genblk1[7].key_expansion_inst_n_19
+    SLICE_X84Y51         LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.096    13.041 r  inst/g0_b0__436_i_10/O
+                         net (fo=7, routed)           0.575    13.616    inst/key_expansion_new_key[5]_41[9]
+    SLICE_X82Y81         LUT2 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.059    13.675 r  inst/g0_b0__440_i_10/O
+                         net (fo=7, routed)           0.439    14.114    inst/key_expansion_new_key[5]_41[41]
+    SLICE_X80Y87         LUT2 (Prop_H5LUT_SLICEL_I1_O)
+                                                      0.161    14.275 r  inst/g0_b0__399_i_8/O
+                         net (fo=7, routed)           0.629    14.904    inst/key_expansion_new_key[5]_41[73]
+    SLICE_X85Y94         LUT2 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.152    15.056 r  inst/g0_b0__399_i_2/O
+                         net (fo=38, routed)          0.702    15.759    inst/key_expansion_new_key[5]_41[105]
+    SLICE_X86Y75         LUT6 (Prop_D6LUT_SLICEM_I1_O)
+                                                      0.213    15.972 r  inst/g0_b0__399/O
+                         net (fo=1, routed)           0.032    16.004    inst/genblk1[8].key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0__467_i_7
+    SLICE_X86Y75         MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132    16.136 r  inst/genblk1[8].key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0__467_i_25/O
+                         net (fo=1, routed)           0.263    16.399    inst/genblk1[8].key_expansion_inst_n_17
+    SLICE_X86Y75         LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.061    16.460 r  inst/g0_b0__467_i_7/O
+                         net (fo=10, routed)          0.635    17.095    inst/key_expansion_new_key[6]_45[0]
+    SLICE_X81Y90         LUT2 (Prop_D5LUT_SLICEM_I1_O)
+                                                      0.165    17.260 r  inst/g0_b0__471_i_7/O
+                         net (fo=10, routed)          0.284    17.544    inst/key_expansion_new_key[6]_45[32]
+    SLICE_X81Y91         LUT2 (Prop_F5LUT_SLICEM_I0_O)
+                                                      0.280    17.824 r  inst/g0_b0__395_i_7/O
+                         net (fo=10, routed)          0.357    18.181    inst/key_expansion_new_key[6]_45[64]
+    SLICE_X82Y86         LUT2 (Prop_H6LUT_SLICEL_I0_O)
+                                                      0.060    18.241 r  inst/g0_b0__395_i_1/O
+                         net (fo=41, routed)          0.894    19.135    inst/key_expansion_new_key[6]_45[96]
+    SLICE_X79Y51         LUT6 (Prop_D6LUT_SLICEM_I0_O)
+                                                      0.247    19.382 r  inst/g0_b0__395/O
+                         net (fo=1, routed)           0.032    19.414    inst/genblk1[9].key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0__215_i_7
+    SLICE_X79Y51         MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132    19.546 r  inst/genblk1[9].key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0__215_i_25/O
+                         net (fo=1, routed)           0.263    19.809    inst/genblk1[9].key_expansion_inst_n_0
+    SLICE_X79Y51         LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.061    19.870 r  inst/g0_b0__215_i_7/O
+                         net (fo=10, routed)          0.696    20.566    inst/key_expansion_new_key[7]_44[0]
+    SLICE_X78Y95         LUT2 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.153    20.719 r  inst/g0_b0__219_i_7/O
+                         net (fo=10, routed)          0.220    20.939    inst/key_expansion_new_key[7]_44[32]
+    SLICE_X77Y98         LUT2 (Prop_D5LUT_SLICEL_I1_O)
+                                                      0.185    21.124 r  inst/g0_b0__223_i_7/O
+                         net (fo=10, routed)          0.627    21.751    inst/key_expansion_new_key[7]_44[64]
+    SLICE_X79Y89         LUT2 (Prop_C6LUT_SLICEM_I1_O)
+                                                      0.058    21.809 r  inst/g0_b0__394_i_1/O
+                         net (fo=41, routed)          0.873    22.681    inst/key_expansion_new_key[7]_44[96]
+    SLICE_X84Y102        LUT6 (Prop_D6LUT_SLICEM_I0_O)
+                                                      0.247    22.928 r  inst/g0_b3__394/O
+                         net (fo=1, routed)           0.032    22.960    inst/genblk1[10].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__186_i_16
+    SLICE_X84Y102        MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132    23.092 r  inst/genblk1[10].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__186_i_40/O
+                         net (fo=1, routed)           0.383    23.475    inst/genblk1[10].key_expansion_inst_n_41
+    SLICE_X84Y102        LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.153    23.628 r  inst/g0_b0__186_i_16/O
+                         net (fo=10, routed)          0.349    23.977    inst/key_expansion_new_key[8]_43[27]
+    SLICE_X84Y97         LUT2 (Prop_A6LUT_SLICEM_I1_O)
+                                                      0.173    24.150 r  inst/g0_b0__190_i_17/O
+                         net (fo=10, routed)          0.358    24.508    inst/key_expansion_new_key[8]_43[59]
+    SLICE_X85Y100        LUT2 (Prop_A5LUT_SLICEL_I0_O)
+                                                      0.189    24.697 r  inst/g0_b0__194_i_16/O
+                         net (fo=10, routed)          0.342    25.039    inst/key_expansion_new_key[8]_43[91]
+    SLICE_X85Y100        LUT2 (Prop_A6LUT_SLICEL_I0_O)
+                                                      0.094    25.133 r  inst/g0_b0__390_i_4/O
+                         net (fo=41, routed)          0.397    25.530    inst/key_expansion_new_key[8]_43[123]
+    SLICE_X81Y100        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.256    25.786 r  inst/g0_b2__390/O
+                         net (fo=1, routed)           0.020    25.806    inst/genblk1[11].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__154_i_13
+    SLICE_X81Y100        MUXF7 (Prop_F7MUX_GH_SLICEM_I0_O)
+                                                      0.125    25.931 r  inst/genblk1[11].key_expansion_inst/genblk1[3].aes_sbox_inst/g0_b0__154_i_36/O
+                         net (fo=1, routed)           0.244    26.175    inst/genblk1[11].key_expansion_inst_n_40
+    SLICE_X81Y100        LUT6 (Prop_D6LUT_SLICEM_I1_O)
+                                                      0.091    26.266 r  inst/g0_b0__154_i_13/O
+                         net (fo=10, routed)          0.364    26.630    inst/key_expansion_new_key[9]_42[26]
+    SLICE_X78Y106        LUT2 (Prop_A6LUT_SLICEM_I1_O)
+                                                      0.217    26.847 r  inst/g0_b0__158_i_14/O
+                         net (fo=10, routed)          0.479    27.326    inst/key_expansion_new_key[9]_42[58]
+    SLICE_X76Y117        LUT2 (Prop_E5LUT_SLICEL_I1_O)
+                                                      0.189    27.515 r  inst/g0_b0__13_i_9/O
+                         net (fo=10, routed)          0.343    27.858    inst/key_expansion_new_key[9]_42[90]
+    SLICE_X76Y117        LUT2 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.215    28.073 r  inst/g0_b0__13_i_3/O
+                         net (fo=42, routed)          0.584    28.657    inst/key_expansion_new_key[9]_42[122]
+    SLICE_X83Y119        LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.247    28.904 r  inst/g1_b3__13/O
+                         net (fo=1, routed)           0.029    28.933    inst/genblk1[12].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__89_i_16_0
+    SLICE_X83Y119        MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.132    29.065 r  inst/genblk1[12].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__89_i_38/O
+                         net (fo=1, routed)           0.276    29.341    inst/genblk1[12].key_expansion_inst_n_31
+    SLICE_X83Y119        LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.218    29.559 r  inst/g0_b0__89_i_16/O
+                         net (fo=12, routed)          0.430    29.989    inst/key_expansion_new_key[10]_33[19]
+    SLICE_X81Y109        LUT2 (Prop_H5LUT_SLICEM_I1_O)
+                                                      0.230    30.219 r  inst/g0_b0__93_i_17/O
+                         net (fo=11, routed)          0.518    30.737    inst/key_expansion_new_key[10]_33[51]
+    SLICE_X81Y130        LUT2 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.058    30.795 r  inst/g0_b0__17_i_10/O
+                         net (fo=10, routed)          0.575    31.370    inst/key_expansion_new_key[10]_33[83]
+    SLICE_X79Y147        LUT2 (Prop_E5LUT_SLICEM_I0_O)
+                                                      0.172    31.542 r  inst/g0_b0__17_i_4/O
+                         net (fo=42, routed)          0.929    32.472    inst/key_expansion_new_key[10]_33[115]
+    SLICE_X69Y179        LUT6 (Prop_H6LUT_SLICEL_I3_O)
+                                                      0.255    32.727 r  inst/g0_b2__17/O
+                         net (fo=1, routed)           0.015    32.742    inst/genblk1[13].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__121_i_29
+    SLICE_X69Y179        MUXF7 (Prop_F7MUX_GH_SLICEL_I0_O)
+                                                      0.120    32.862 r  inst/genblk1[13].key_expansion_inst/genblk1[2].aes_sbox_inst/g0_b0__121_i_36/O
+                         net (fo=1, routed)           0.215    33.077    inst/genblk1[13].key_expansion_inst_n_28
+    SLICE_X69Y180        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.255    33.332 r  inst/g0_b0__121_i_29/O
+                         net (fo=9, routed)           0.828    34.160    inst/key_expansion_new_key[11]_34[18]
+    SLICE_X76Y159        LUT2 (Prop_E5LUT_SLICEL_I1_O)
+                                                      0.189    34.349 r  inst/g0_b0__20_i_14/O
+                         net (fo=9, routed)           0.310    34.659    inst/key_expansion_new_key[11]_34[50]
+    SLICE_X77Y159        LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.153    34.812 r  inst/g0_b0__20_i_9/O
+                         net (fo=10, routed)          0.417    35.229    inst/key_expansion_new_key[11]_34[82]
+    SLICE_X82Y161        LUT2 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.059    35.288 r  inst/g0_b0__20_i_3/O
+                         net (fo=39, routed)          0.801    36.089    inst/key_expansion_new_key[11]_34[114]
+    SLICE_X90Y171        LUT6 (Prop_D6LUT_SLICEL_I2_O)
+                                                      0.248    36.337 r  inst/g2_b2__20/O
+                         net (fo=2, routed)           0.013    36.350    inst/genblk1[14].key_expansion_inst/genblk1[1].aes_sbox_inst/output_block_reg[106]_i_2_1
+    SLICE_X90Y171        MUXF7 (Prop_F7MUX_CD_SLICEL_I0_O)
+                                                      0.117    36.467 r  inst/genblk1[14].key_expansion_inst/genblk1[1].aes_sbox_inst/output_block_reg_reg[106]_i_6/O
+                         net (fo=2, routed)           0.216    36.683    inst/genblk1[14].key_expansion_inst_n_21
+    SLICE_X90Y172        LUT6 (Prop_H6LUT_SLICEL_I3_O)
+                                                      0.255    36.938 r  inst/output_block_reg[106]_i_2/O
+                         net (fo=4, routed)           0.335    37.273    inst/key_expansion_new_key[12]_35[74]
+    SLICE_X86Y176        LUT5 (Prop_G6LUT_SLICEM_I4_O)
+                                                      0.059    37.332 r  inst/g0_b0__32_i_3/O
+                         net (fo=64, routed)          0.524    37.856    inst/round_block[0]_17[74]
+    SLICE_X90Y174        LUT6 (Prop_F6LUT_SLICEL_I2_O)
+                                                      0.215    38.071 r  inst/g2_b2__32/O
+                         net (fo=1, routed)           0.016    38.087    inst/genblk3[1].round_inst/sb_inst/genblk1[9].aes_inv_sbox_inst/g0_b0__67_i_140_2
+    SLICE_X90Y174        MUXF7 (Prop_F7MUX_EF_SLICEL_I0_O)
+                                                      0.111    38.198 r  inst/genblk3[1].round_inst/sb_inst/genblk1[9].aes_inv_sbox_inst/g0_b0__67_i_208/O
+                         net (fo=1, routed)           0.000    38.198    inst/genblk3[1].round_inst/sb_inst/genblk1[9].aes_inv_sbox_inst/g0_b0__67_i_208_n_0
+    SLICE_X90Y174        MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.037    38.235 r  inst/genblk3[1].round_inst/sb_inst/genblk1[9].aes_inv_sbox_inst/g0_b0__67_i_140/O
+                         net (fo=1, routed)           1.397    39.632    inst/genblk3[1].round_inst_n_121
+    SLICE_X73Y89         LUT3 (Prop_C5LUT_SLICEM_I2_O)
+                                                      0.114    39.746 r  inst/g0_b0__67_i_65/O
+                         net (fo=3, routed)           1.420    41.166    inst/sr_output_block[106]
+    SLICE_X94Y160        LUT2 (Prop_E6LUT_SLICEM_I1_O)
+                                                      0.172    41.338 r  inst/g0_b0__67_i_76/O
+                         net (fo=3, routed)           0.142    41.481    inst/mc_inst/x_times_return104_in[3]
+    SLICE_X94Y159        LUT2 (Prop_E5LUT_SLICEM_I1_O)
+                                                      0.236    41.717 r  inst/g0_b0__68_i_26/O
+                         net (fo=4, routed)           0.296    42.013    inst/mc_inst/b5_in[4]
+    SLICE_X93Y159        LUT4 (Prop_D5LUT_SLICEM_I0_O)
+                                                      0.269    42.282 r  inst/g0_b0__68_i_23/O
+                         net (fo=2, routed)           0.204    42.486    inst/mc_inst/p_119_in_111[4]
+    SLICE_X92Y159        LUT6 (Prop_D6LUT_SLICEL_I3_O)
+                                                      0.151    42.637 r  inst/g0_b0__68_i_5/O
+                         net (fo=64, routed)          0.539    43.176    inst/round_block[1]_11[108]
+    SLICE_X92Y130        LUT6 (Prop_G6LUT_SLICEL_I4_O)
+                                                      0.172    43.348 r  inst/g1_b7__84/O
+                         net (fo=1, routed)           0.013    43.361    inst/genblk3[2].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__364_i_49_1
+    SLICE_X92Y130        MUXF7 (Prop_F7MUX_GH_SLICEL_I1_O)
+                                                      0.110    43.471 r  inst/genblk3[2].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__364_i_71/O
+                         net (fo=1, routed)           0.000    43.471    inst/genblk3[2].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__364_i_71_n_0
+    SLICE_X92Y130        MUXF8 (Prop_F8MUX_TOP_SLICEL_I0_O)
+                                                      0.038    43.509 r  inst/genblk3[2].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__364_i_49/O
+                         net (fo=1, routed)           0.993    44.502    inst/genblk3[2].round_inst_n_388
+    SLICE_X73Y98         LUT3 (Prop_H5LUT_SLICEM_I0_O)
+                                                      0.163    44.665 r  inst/g0_b0__364_i_30/O
+                         net (fo=11, routed)          1.048    45.712    inst/sr_output_block_160[79]
+    SLICE_X90Y131        LUT2 (Prop_B5LUT_SLICEL_I0_O)
+                                                      0.194    45.906 r  inst/g0_b0__363_i_51/O
+                         net (fo=4, routed)           0.349    46.255    inst/mc_inst/x_times_return84_in_140[3]
+    SLICE_X88Y133        LUT2 (Prop_E6LUT_SLICEM_I1_O)
+                                                      0.094    46.349 r  inst/g0_b0__364_i_44/O
+                         net (fo=3, routed)           0.340    46.689    inst/mc_inst/b17_in_142[4]
+    SLICE_X90Y130        LUT4 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.170    46.859 r  inst/g0_b0__363_i_75/O
+                         net (fo=2, routed)           0.065    46.923    inst/g0_b0__363_i_75_n_0
+    SLICE_X90Y130        LUT6 (Prop_G6LUT_SLICEL_I4_O)
+                                                      0.093    47.016 r  inst/g0_b0__365_i_18/O
+                         net (fo=1, routed)           0.070    47.086    inst/mc_output_block_112[85]
+    SLICE_X90Y130        LUT2 (Prop_E5LUT_SLICEL_I1_O)
+                                                      0.189    47.275 r  inst/g0_b0__365_i_6/O
+                         net (fo=64, routed)          0.553    47.829    inst/round_block[2]_12[85]
+    SLICE_X94Y129        LUT6 (Prop_D6LUT_SLICEM_I5_O)
+                                                      0.149    47.978 r  inst/g2_b7__381/O
+                         net (fo=1, routed)           0.032    48.010    inst/genblk3[3].round_inst/sb_inst/genblk1[10].aes_sbox_inst/g0_b0__323_i_77_1
+    SLICE_X94Y129        MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.132    48.142 r  inst/genblk3[3].round_inst/sb_inst/genblk1[10].aes_sbox_inst/g0_b0__323_i_142/O
+                         net (fo=1, routed)           0.320    48.462    inst/genblk3[3].round_inst_n_353
+    SLICE_X94Y128        LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.174    48.636 r  inst/g0_b0__323_i_77/O
+                         net (fo=11, routed)          0.699    49.335    inst/sb_to_sr_block_500[87]
+    SLICE_X92Y121        LUT6 (Prop_G6LUT_SLICEL_I0_O)
+                                                      0.059    49.394 r  inst/g0_b0__323_i_108/O
+                         net (fo=5, routed)           0.499    49.894    inst/mc_inst/x_times_return51_in_533[4]
+    SLICE_X89Y115        LUT2 (Prop_A6LUT_SLICEM_I1_O)
+                                                      0.060    49.954 r  inst/g0_b0__295_i_242/O
+                         net (fo=2, routed)           0.237    50.190    inst/g0_b0__295_i_242_n_0
+    SLICE_X88Y115        LUT6 (Prop_H6LUT_SLICEM_I1_O)
+                                                      0.218    50.408 r  inst/g0_b0__295_i_224/O
+                         net (fo=1, routed)           0.491    50.899    inst/mc_output_block_68[30]
+    SLICE_X77Y115        LUT4 (Prop_G6LUT_SLICEL_I3_O)
+                                                      0.093    50.992 r  inst/g0_b0__295_i_195/O
+                         net (fo=32, routed)          1.664    52.656    inst/genblk3[4].round_inst/sb_inst/genblk1[3].aes_inv_sbox_inst/round_block[3]_6[0]
+    SLICE_X61Y99         MUXF7 (Prop_F7MUX_AB_SLICEM_S_O)
+                                                      0.126    52.782 r  inst/genblk3[4].round_inst/sb_inst/genblk1[3].aes_inv_sbox_inst/g0_b0__303_i_205/O
+                         net (fo=1, routed)           0.000    52.782    inst/genblk3[4].round_inst/sb_inst/genblk1[3].aes_inv_sbox_inst/g0_b0__303_i_205_n_0
+    SLICE_X61Y99         MUXF8 (Prop_F8MUX_BOT_SLICEM_I1_O)
+                                                      0.041    52.823 r  inst/genblk3[4].round_inst/sb_inst/genblk1[3].aes_inv_sbox_inst/g0_b0__303_i_148/O
+                         net (fo=1, routed)           0.284    53.107    inst/genblk3[4].round_inst_n_40
+    SLICE_X61Y100        LUT3 (Prop_H6LUT_SLICEM_I2_O)
+                                                      0.174    53.281 r  inst/g0_b0__303_i_82/O
+                         net (fo=4, routed)           0.362    53.643    inst/sr_output_block_497[120]
+    SLICE_X63Y100        LUT2 (Prop_F6LUT_SLICEM_I1_O)
+                                                      0.149    53.792 r  inst/g0_b0__303_i_123/O
+                         net (fo=4, routed)           0.751    54.543    inst/mc_inst/x_times_return115_in_467[1]
+    SLICE_X66Y102        LUT2 (Prop_B5LUT_SLICEL_I1_O)
+                                                      0.238    54.781 r  inst/g0_b0__303_i_48/O
+                         net (fo=2, routed)           0.250    55.031    inst/mc_inst/x_times_return3_in_466[3]
+    SLICE_X66Y102        LUT6 (Prop_D6LUT_SLICEL_I3_O)
+                                                      0.092    55.123 r  inst/g0_b0__303_i_15/O
+                         net (fo=2, routed)           0.541    55.664    inst/g0_b0__303_i_15_n_0
+    SLICE_X64Y102        LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.091    55.755 r  inst/g0_b0__305_i_4/O
+                         net (fo=64, routed)          0.819    56.575    inst/round_block[4]_5[115]
+    SLICE_X59Y83         LUT6 (Prop_G6LUT_SLICEL_I3_O)
+                                                      0.254    56.829 r  inst/g3_b7__321/O
+                         net (fo=1, routed)           0.013    56.842    inst/genblk3[5].round_inst/sb_inst/genblk1[14].aes_sbox_inst/g0_b0__264_i_47_2
+    SLICE_X59Y83         MUXF7 (Prop_F7MUX_GH_SLICEL_I1_O)
+                                                      0.118    56.960 r  inst/genblk3[5].round_inst/sb_inst/genblk1[14].aes_sbox_inst/g0_b0__264_i_85/O
+                         net (fo=1, routed)           0.413    57.373    inst/genblk3[5].round_inst_n_407
+    SLICE_X59Y83         LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.060    57.433 r  inst/g0_b0__264_i_47/O
+                         net (fo=11, routed)          1.123    58.556    inst/sb_to_sr_block_408[119]
+    SLICE_X66Y78         LUT5 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.252    58.808 r  inst/g0_b0__263_i_41/O
+                         net (fo=2, routed)           0.529    59.337    inst/g0_b0__263_i_41_n_0
+    SLICE_X65Y78         LUT5 (Prop_D6LUT_SLICEL_I3_O)
+                                                      0.092    59.429 r  inst/g0_b0__263_i_12/O
+                         net (fo=1, routed)           0.905    60.334    inst/mc_output_block_50[33]
+    SLICE_X73Y78         LUT4 (Prop_A6LUT_SLICEM_I3_O)
+                                                      0.152    60.486 r  inst/g0_b0__263_i_2/O
+                         net (fo=64, routed)          0.942    61.428    inst/round_block[5]_4[33]
+    SLICE_X80Y46         LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.152    61.580 r  inst/g2_b7__263/O
+                         net (fo=1, routed)           0.015    61.595    inst/genblk3[6].round_inst/sb_inst/genblk1[4].aes_inv_sbox_inst/g0_b0__407_i_38_1
+    SLICE_X80Y46         MUXF7 (Prop_F7MUX_GH_SLICEL_I0_O)
+                                                      0.120    61.715 r  inst/genblk3[6].round_inst/sb_inst/genblk1[4].aes_inv_sbox_inst/g0_b0__407_i_94/O
+                         net (fo=1, routed)           0.330    62.045    inst/genblk3[6].round_inst_n_64
+    SLICE_X80Y46         LUT6 (Prop_D6LUT_SLICEL_I3_O)
+                                                      0.248    62.293 r  inst/g0_b0__407_i_38/O
+                         net (fo=12, routed)          0.389    62.682    inst/sb_to_sr_block_359[39]
+    SLICE_X79Y54         LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.174    62.856 r  inst/g0_b0__407_i_48/O
+                         net (fo=4, routed)           0.363    63.219    inst/mc_inst/x_times_return66_in_376[1]
+    SLICE_X80Y57         LUT2 (Prop_A5LUT_SLICEL_I1_O)
+                                                      0.168    63.387 r  inst/g0_b0__408_i_56/O
+                         net (fo=1, routed)           0.257    63.644    inst/mc_inst/x_times_return24_in_375[3]
+    SLICE_X80Y57         LUT6 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.248    63.892 r  inst/g0_b0__408_i_20/O
+                         net (fo=2, routed)           0.197    64.089    inst/g0_b0__408_i_20_n_0
+    SLICE_X80Y60         LUT6 (Prop_C6LUT_SLICEL_I2_O)
+                                                      0.150    64.239 r  inst/g0_b0__410_i_4/O
+                         net (fo=64, routed)          1.083    65.322    inst/round_block[6]_3[59]
+    SLICE_X94Y98         LUT6 (Prop_D6LUT_SLICEM_I3_O)
+                                                      0.170    65.492 r  inst/g0_b7__426/O
+                         net (fo=1, routed)           0.032    65.524    inst/genblk3[7].round_inst/sb_inst/genblk1[7].aes_sbox_inst/g0_b0__443_i_163_0
+    SLICE_X94Y98         MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.124    65.648 r  inst/genblk3[7].round_inst/sb_inst/genblk1[7].aes_sbox_inst/g0_b0__443_i_235/O
+                         net (fo=1, routed)           0.000    65.648    inst/genblk3[7].round_inst/sb_inst/genblk1[7].aes_sbox_inst/g0_b0__443_i_235_n_0
+    SLICE_X94Y98         MUXF8 (Prop_F8MUX_BOT_SLICEM_I0_O)
+                                                      0.043    65.691 r  inst/genblk3[7].round_inst/sb_inst/genblk1[7].aes_sbox_inst/g0_b0__443_i_163/O
+                         net (fo=1, routed)           0.285    65.976    inst/genblk3[7].round_inst_n_307
+    SLICE_X94Y101        LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.215    66.191 r  inst/g0_b0__443_i_97/O
+                         net (fo=14, routed)          0.183    66.373    inst/sr_output_block_595[95]
+    SLICE_X93Y101        LUT5 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.174    66.548 r  inst/g0_b0__445_i_34/O
+                         net (fo=2, routed)           0.270    66.818    inst/g0_b0__445_i_34_n_0
+    SLICE_X95Y100        LUT3 (Prop_E6LUT_SLICEL_I0_O)
+                                                      0.152    66.970 r  inst/g0_b0__446_i_20/O
+                         net (fo=1, routed)           0.120    67.090    inst/g0_b0__446_i_20_n_0
+    SLICE_X95Y100        LUT6 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.151    67.241 r  inst/g0_b0__446_i_8/O
+                         net (fo=1, routed)           0.346    67.587    inst/mc_output_block_77[88]
+    SLICE_X93Y97         LUT4 (Prop_E6LUT_SLICEM_I3_O)
+                                                      0.172    67.759 r  inst/g0_b0__446_i_1/O
+                         net (fo=64, routed)          0.767    68.526    inst/round_block[7]_2[88]
+    SLICE_X93Y62         LUT6 (Prop_D6LUT_SLICEM_I0_O)
+                                                      0.247    68.773 r  inst/g0_b6__462/O
+                         net (fo=1, routed)           0.032    68.805    inst/genblk3[8].round_inst/sb_inst/genblk1[11].aes_sbox_inst/g0_b0__479_i_159_0
+    SLICE_X93Y62         MUXF7 (Prop_F7MUX_CD_SLICEM_I0_O)
+                                                      0.124    68.929 r  inst/genblk3[8].round_inst/sb_inst/genblk1[11].aes_sbox_inst/g0_b0__479_i_218/O
+                         net (fo=1, routed)           0.000    68.929    inst/genblk3[8].round_inst/sb_inst/genblk1[11].aes_sbox_inst/g0_b0__479_i_218_n_0
+    SLICE_X93Y62         MUXF8 (Prop_F8MUX_BOT_SLICEM_I0_O)
+                                                      0.043    68.972 r  inst/genblk3[8].round_inst/sb_inst/genblk1[11].aes_sbox_inst/g0_b0__479_i_159/O
+                         net (fo=1, routed)           0.261    69.233    inst/genblk3[8].round_inst_n_360
+    SLICE_X93Y62         LUT3 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.096    69.329 r  inst/g0_b0__479_i_91/O
+                         net (fo=11, routed)          0.582    69.910    inst/sr_output_block_641[126]
+    SLICE_X89Y52         LUT2 (Prop_H5LUT_SLICEM_I0_O)
+                                                      0.230    70.140 r  inst/g0_b0__479_i_100/O
+                         net (fo=2, routed)           0.188    70.328    inst/mc_inst/b2_in_612[1]
+    SLICE_X91Y52         LUT6 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.151    70.479 r  inst/g0_b0__480_i_33/O
+                         net (fo=2, routed)           0.070    70.550    inst/g0_b0__480_i_33_n_0
+    SLICE_X91Y52         LUT6 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.173    70.723 r  inst/g0_b0__480_i_12/O
+                         net (fo=1, routed)           0.294    71.017    inst/mc_output_block_86[106]
+    SLICE_X87Y53         LUT4 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.172    71.189 r  inst/g0_b0__480_i_3/O
+                         net (fo=64, routed)          0.499    71.687    inst/round_block[8]_1[106]
+    SLICE_X81Y54         LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.247    71.934 r  inst/g1_b7__496/O
+                         net (fo=1, routed)           0.029    71.963    inst/genblk3[9].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__224_i_66_1
+    SLICE_X81Y54         MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.124    72.087 r  inst/genblk3[9].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__224_i_74/O
+                         net (fo=1, routed)           0.000    72.087    inst/genblk3[9].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__224_i_74_n_0
+    SLICE_X81Y54         MUXF8 (Prop_F8MUX_BOT_SLICEM_I0_O)
+                                                      0.043    72.130 r  inst/genblk3[9].round_inst/sb_inst/genblk1[13].aes_sbox_inst/g0_b0__224_i_66/O
+                         net (fo=1, routed)           0.407    72.537    inst/genblk3[9].round_inst_n_388
+    SLICE_X79Y62         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.093    72.630 r  inst/g0_b0__224_i_29/O
+                         net (fo=12, routed)          0.704    73.335    inst/sr_output_block_690[79]
+    SLICE_X78Y85         LUT2 (Prop_A6LUT_SLICEM_I0_O)
+                                                      0.217    73.552 r  inst/g0_b0__223_i_106/O
+                         net (fo=4, routed)           0.218    73.770    inst/mc_inst/x_times_return84_in_666[3]
+    SLICE_X77Y84         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.153    73.923 r  inst/g0_b0__224_i_54/O
+                         net (fo=3, routed)           0.081    74.004    inst/mc_inst/b17_in_668[4]
+    SLICE_X77Y84         LUT4 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.250    74.254 r  inst/g0_b0__223_i_69/O
+                         net (fo=2, routed)           0.137    74.391    inst/g0_b0__223_i_69_n_0
+    SLICE_X77Y84         LUT6 (Prop_G6LUT_SLICEL_I4_O)
+                                                      0.172    74.563 r  inst/g0_b0__225_i_24/O
+                         net (fo=1, routed)           0.396    74.959    inst/mc_output_block_95[85]
+    SLICE_X76Y90         LUT4 (Prop_A6LUT_SLICEL_I3_O)
+                                                      0.094    75.053 r  inst/g0_b0__225_i_6/O
+                         net (fo=64, routed)          1.394    76.447    inst/round_block[9]_0[85]
+    SLICE_X54Y88         LUT6 (Prop_B6LUT_SLICEM_I5_O)
+                                                      0.172    76.619 r  inst/g2_b7__225/O
+                         net (fo=1, routed)           0.022    76.641    inst/genblk3[10].round_inst/sb_inst/genblk1[10].aes_inv_sbox_inst/g0_b0__183_i_93_1
+    SLICE_X54Y88         MUXF7 (Prop_F7MUX_AB_SLICEM_I0_O)
+                                                      0.127    76.768 r  inst/genblk3[10].round_inst/sb_inst/genblk1[10].aes_inv_sbox_inst/g0_b0__183_i_156/O
+                         net (fo=1, routed)           0.199    76.967    inst/genblk3[10].round_inst_n_145
+    SLICE_X54Y89         LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.174    77.141 r  inst/g0_b0__183_i_93/O
+                         net (fo=11, routed)          1.195    78.336    inst/sb_to_sr_block_309[87]
+    SLICE_X68Y92         LUT6 (Prop_G6LUT_SLICEL_I0_O)
+                                                      0.093    78.429 r  inst/g0_b0__183_i_124/O
+                         net (fo=5, routed)           0.548    78.977    inst/mc_inst/x_times_return51_in_342[4]
+    SLICE_X69Y99         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.153    79.130 r  inst/g0_b0__183_i_75/O
+                         net (fo=2, routed)           0.142    79.272    inst/mc_inst/p_56_in_341[5]
+    SLICE_X70Y99         LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.169    79.441 r  inst/g0_b0__183_i_24/O
+                         net (fo=1, routed)           0.125    79.566    inst/mc_output_block_32[5]
+    SLICE_X70Y99         LUT4 (Prop_G6LUT_SLICEM_I3_O)
+                                                      0.151    79.717 r  inst/g0_b0__183_i_6/O
+                         net (fo=64, routed)          1.601    81.318    inst/round_block[10]_15[5]
+    SLICE_X59Y54         LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.248    81.566 r  inst/g0_b7__183/O
+                         net (fo=1, routed)           0.013    81.579    inst/genblk3[11].round_inst/sb_inst/genblk1[0].aes_inv_sbox_inst/g0_b0__151_i_85
+    SLICE_X59Y54         MUXF7 (Prop_F7MUX_CD_SLICEL_I0_O)
+                                                      0.117    81.696 r  inst/genblk3[11].round_inst/sb_inst/genblk1[0].aes_inv_sbox_inst/g0_b0__151_i_139/O
+                         net (fo=1, routed)           0.264    81.960    inst/genblk3[11].round_inst_n_14
+    SLICE_X59Y54         LUT6 (Prop_H6LUT_SLICEL_I5_O)
+                                                      0.216    82.176 r  inst/g0_b0__151_i_85/O
+                         net (fo=16, routed)          1.270    83.445    inst/sb_to_sr_block_263[7]
+    SLICE_X62Y118        LUT3 (Prop_B6LUT_SLICEL_I2_O)
+                                                      0.152    83.597 r  inst/g0_b0__151_i_73/O
+                         net (fo=3, routed)           0.225    83.822    inst/mc_inst/b35_in_264[4]
+    SLICE_X64Y118        LUT2 (Prop_A5LUT_SLICEM_I0_O)
+                                                      0.190    84.012 r  inst/g0_b0__152_i_65/O
+                         net (fo=2, routed)           0.320    84.332    inst/g0_b0__152_i_65_n_0
+    SLICE_X64Y118        LUT6 (Prop_C6LUT_SLICEM_I1_O)
+                                                      0.091    84.423 r  inst/g0_b0__154_i_24/O
+                         net (fo=1, routed)           0.747    85.170    inst/mc_output_block_23[29]
+    SLICE_X70Y120        LUT4 (Prop_E6LUT_SLICEM_I3_O)
+                                                      0.215    85.385 r  inst/g0_b0__154_i_6/O
+                         net (fo=64, routed)          1.065    86.450    inst/round_block[11]_16[29]
+    SLICE_X63Y139        LUT6 (Prop_C6LUT_SLICEM_I5_O)
+                                                      0.247    86.697 r  inst/g1_b6__170/O
+                         net (fo=1, routed)           0.029    86.726    inst/genblk3[12].round_inst/sb_inst/genblk1[3].aes_sbox_inst/g0_b0__92_i_74_1
+    SLICE_X63Y139        MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.124    86.850 r  inst/genblk3[12].round_inst/sb_inst/genblk1[3].aes_sbox_inst/g0_b0__92_i_112/O
+                         net (fo=1, routed)           0.000    86.850    inst/genblk3[12].round_inst/sb_inst/genblk1[3].aes_sbox_inst/g0_b0__92_i_112_n_0
+    SLICE_X63Y139        MUXF8 (Prop_F8MUX_BOT_SLICEM_I0_O)
+                                                      0.043    86.893 r  inst/genblk3[12].round_inst/sb_inst/genblk1[3].aes_sbox_inst/g0_b0__92_i_74/O
+                         net (fo=1, routed)           0.283    87.176    inst/genblk3[12].round_inst_n_252
+    SLICE_X65Y139        LUT3 (Prop_G6LUT_SLICEL_I0_O)
+                                                      0.093    87.269 r  inst/g0_b0__92_i_41/O
+                         net (fo=12, routed)          1.176    88.445    inst/sr_output_block_260[62]
+    SLICE_X75Y148        LUT2 (Prop_F5LUT_SLICEL_I1_O)
+                                                      0.121    88.566 r  inst/g0_b0__92_i_33/O
+                         net (fo=3, routed)           0.324    88.890    inst/mc_inst/x_times_return27_in_18[1]
+    SLICE_X75Y148        LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.092    88.982 r  inst/g0_b0__92_i_9/O
+                         net (fo=1, routed)           0.298    89.280    inst/mc_output_block[40]
+    SLICE_X79Y148        LUT4 (Prop_G6LUT_SLICEM_I3_O)
+                                                      0.151    89.431 r  inst/g0_b0__92_i_1/O
+                         net (fo=64, routed)          1.126    90.557    inst/round_block[12]_14[40]
+    SLICE_X70Y180        LUT6 (Prop_C6LUT_SLICEM_I0_O)
+                                                      0.214    90.771 r  inst/g1_b7__108/O
+                         net (fo=1, routed)           0.029    90.800    inst/genblk3[13].round_inst/sb_inst/genblk1[5].aes_sbox_inst/g0_b0__119_i_131_1
+    SLICE_X70Y180        MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.124    90.924 r  inst/genblk3[13].round_inst/sb_inst/genblk1[5].aes_sbox_inst/g0_b0__119_i_221/O
+                         net (fo=1, routed)           0.000    90.924    inst/genblk3[13].round_inst/sb_inst/genblk1[5].aes_sbox_inst/g0_b0__119_i_221_n_0
+    SLICE_X70Y180        MUXF8 (Prop_F8MUX_BOT_SLICEM_I0_O)
+                                                      0.043    90.967 r  inst/genblk3[13].round_inst/sb_inst/genblk1[5].aes_sbox_inst/g0_b0__119_i_131/O
+                         net (fo=1, routed)           0.244    91.211    inst/genblk3[13].round_inst_n_280
+    SLICE_X70Y180        LUT3 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.256    91.467 r  inst/g0_b0__119_i_57/O
+                         net (fo=11, routed)          0.370    91.838    inst/sr_output_block_210[15]
+    SLICE_X71Y182        LUT2 (Prop_F5LUT_SLICEM_I0_O)
+                                                      0.280    92.118 r  inst/g0_b0__119_i_70/O
+                         net (fo=4, routed)           0.295    92.413    inst/mc_inst/x_times_return46_in_187[3]
+    SLICE_X73Y180        LUT2 (Prop_A6LUT_SLICEM_I1_O)
+                                                      0.060    92.473 r  inst/g0_b0__120_i_57/O
+                         net (fo=3, routed)           0.135    92.607    inst/mc_inst/b41_in_190[4]
+    SLICE_X73Y181        LUT4 (Prop_B6LUT_SLICEM_I3_O)
+                                                      0.151    92.758 r  inst/g0_b0__119_i_92/O
+                         net (fo=2, routed)           0.264    93.022    inst/g0_b0__119_i_92_n_0
+    SLICE_X72Y182        LUT6 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.092    93.114 r  inst/g0_b0__121_i_21/O
+                         net (fo=1, routed)           0.352    93.466    inst/mc_output_block_161[21]
+    SLICE_X74Y183        LUT4 (Prop_E6LUT_SLICEM_I3_O)
+                                                      0.172    93.638 r  inst/g0_b0__121_i_6/O
+                         net (fo=64, routed)          0.578    94.216    inst/round_block[13]_13[21]
+    SLICE_X81Y196        LUT6 (Prop_H6LUT_SLICEM_I5_O)
+                                                      0.153    94.369 r  inst/g2_b6__137/O
+                         net (fo=1, routed)           0.020    94.389    inst/genblk3[14].round_inst/sb_inst/genblk1[2].aes_sbox_inst/sb_inst/output_block_reg[86]_i_2_1
+    SLICE_X81Y196        MUXF7 (Prop_F7MUX_GH_SLICEM_I0_O)
+                                                      0.125    94.514 r  inst/genblk3[14].round_inst/sb_inst/genblk1[2].aes_sbox_inst/output_block_reg_reg[86]_i_3/O
+                         net (fo=1, routed)           0.270    94.784    inst/genblk3[14].round_inst_n_229
+    SLICE_X81Y196        LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.251    95.035 r  inst/sb_inst/output_block_reg[86]_i_2/O
+                         net (fo=1, routed)           0.312    95.347    inst/sb_to_sr_block_211[22]
+    SLICE_X81Y193        LUT4 (Prop_B6LUT_SLICEM_I3_O)
+                                                      0.059    95.406 r  inst/output_block_reg[86]_i_1/O
+                         net (fo=1, routed)           0.090    95.496    inst/output_block__1[86]
+    SLICE_X81Y193        FDRE                                         r  inst/output_block_reg_reg[86]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)       96.000    96.000 r  
+                                                      0.000    96.000 r  Clk (IN)
+                         net (fo=647, unset)          0.035    96.035    inst/Clk
+    SLICE_X81Y193        FDRE                                         r  inst/output_block_reg_reg[86]/C
+                         clock pessimism              0.000    96.035    
+                         clock uncertainty           -0.035    96.000    
+    SLICE_X81Y193        FDRE (Setup_BFF_SLICEM_C_D)
+                                                      0.042    96.042    inst/output_block_reg_reg[86]
+  -------------------------------------------------------------------
+                         required time                         96.042    
+                         arrival time                         -95.496    
+  -------------------------------------------------------------------
+                         slack                                  0.545    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.101ns  (arrival time - required time)
+  Source:                 inst/input_text_reg_reg[21]/C
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@48.000ns period=96.000ns})
+  Destination:            inst/iv_reg_reg[21]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@48.000ns period=96.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.151ns  (logic 0.105ns (69.541%)  route 0.046ns (30.459%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        0.006ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.020ns
+    Source Clock Delay      (SCD):    0.014ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  Clk (IN)
+                         net (fo=647, unset)          0.014     0.014    inst/Clk
+    SLICE_X90Y190        FDRE                                         r  inst/input_text_reg_reg[21]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X90Y190        FDRE (Prop_AFF_SLICEL_C_Q)
+                                                      0.084     0.098 r  inst/input_text_reg_reg[21]/Q
+                         net (fo=2, routed)           0.026     0.124    inst/input_text_reg[21]
+    SLICE_X90Y190        LUT5 (Prop_F6LUT_SLICEL_I4_O)
+                                                      0.021     0.145 r  inst/iv_reg[21]_i_1/O
+                         net (fo=1, routed)           0.020     0.165    inst/iv_reg[21]_i_1_n_0
+    SLICE_X90Y190        FDRE                                         r  inst/iv_reg_reg[21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  Clk (IN)
+                         net (fo=647, unset)          0.020     0.020    inst/Clk
+    SLICE_X90Y190        FDRE                                         r  inst/iv_reg_reg[21]/C
+                         clock pessimism              0.000     0.020    
+    SLICE_X90Y190        FDRE (Hold_FFF_SLICEL_C_D)
+                                                      0.044     0.064    inst/iv_reg_reg[21]
+  -------------------------------------------------------------------
+                         required time                         -0.064    
+                         arrival time                           0.165    
+  -------------------------------------------------------------------
+                         slack                                  0.101    
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clk
+Waveform(ns):       { 0.000 48.000 }
+Period(ns):         96.000
+Sources:            { Clk }
+
+Check Type        Corner  Lib Pin  Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location       Pin
+Min Period        n/a     FDRE/C   n/a            0.550         96.000      95.450     SLICE_X75Y157  inst/block_last_reg_reg/C
+Low Pulse Width   Slow    FDRE/C   n/a            0.275         48.000      47.725     SLICE_X75Y157  inst/block_last_reg_reg/C
+High Pulse Width  Slow    FDRE/C   n/a            0.275         48.000      47.725     SLICE_X75Y157  inst/block_last_reg_reg/C
+
+
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date              : Sun Jan 18 20:54:52 2026
+| Host              : laptop running 64-bit Ubuntu 24.04.3 LTS
+| Command           : report_clock_utilization -file aes256_cbc_comb_encdec.rpt -append
+| Design            : synth_wrapper
+| Device            : xczu7ev-ffvf1517
+| Speed File        : -1LV  PRODUCTION 1.30 05-15-2022
+| Temperature Grade : I
+| Design State      : Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Clock Utilization Report
+
+Table of Contents
+-----------------
+1. Clock Primitive Utilization
+2. Global Clock Resources
+3. Global Clock Source Details
+4. Clock Regions : Clock Primitives
+5. Clock Regions : Load Primitives
+6. Clock Regions : Global Clock Summary
+7. Clock Regions : Routing Resource Utilization
+
+1. Clock Primitive Utilization
+------------------------------
+
++------------+------+-----------+-----+--------------+--------+
+| Type       | Used | Available | LOC | Clock Region | Pblock |
++------------+------+-----------+-----+--------------+--------+
+| BUFGCE     |    0 |       208 |   0 |            0 |      0 |
+| BUFGCE_DIV |    0 |        32 |   0 |            0 |      0 |
+| BUFGCTRL   |    0 |        64 |   0 |            0 |      0 |
+| BUFG_GT    |    0 |       144 |   0 |            0 |      0 |
+| BUFG_PS    |    0 |        96 |   0 |            0 |      0 |
+| MMCM       |    0 |         8 |   0 |            0 |      0 |
+| PLL        |    0 |        16 |   0 |            0 |      0 |
++------------+------+-----------+-----+--------------+--------+
+
+
+2. Global Clock Resources
+-------------------------
+
++-----------+-----------+-----------------+------------+------+--------------+------+-------------------+------------------+-------------------+-------------+-----------------+--------------+-------+------------+-----+
+| Global Id | Source Id | Driver Type/Pin | Constraint | Site | Clock Region | Root | Clock Delay Group | Clock Low Fanout | Load Clock Region | Clock Loads | Non-Clock Loads | Clock Period | Clock | Driver Pin | Net |
++-----------+-----------+-----------------+------------+------+--------------+------+-------------------+------------------+-------------------+-------------+-----------------+--------------+-------+------------+-----+
+* Clock Loads column represents cell count of net connects that connect to a clock pin. Internal cell leaf pins are not considered
+** Non-Clock Loads column represents cell count of non-clock pin loads
+
+
+3. Global Clock Source Details
+------------------------------
+
++-----------+-----------+-----------------+------------+------+--------------+-------------+-----------------+---------------------+--------------+------------+-----+
+| Source Id | Global Id | Driver Type/Pin | Constraint | Site | Clock Region | Clock Loads | Non-Clock Loads | Source Clock Period | Source Clock | Driver Pin | Net |
++-----------+-----------+-----------------+------------+------+--------------+-------------+-----------------+---------------------+--------------+------------+-----+
+* Clock Loads column represents cell count of net connects that connect to a clock pin. Internal cell leaf pins are not considered
+** Non-Clock Loads column represents cell count of non-clock pin loads
+
+
+4. Clock Regions : Clock Primitives
+-----------------------------------
+
++-------------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+
+|                   |  Global Clock |     BUFGCE    |   BUFGCE_DIV  |    BUFGCTRL   |    BUFG_GT    |    BUFG_PS    |      MMCM     |      PLL      |
++-------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| Clock Region Name | Used  | Avail | Used  | Avail | Used  | Avail | Used  | Avail | Used  | Avail | Used  | Avail | Used  | Avail | Used  | Avail |
++-------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| X0Y0              |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X1Y0              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |
+| X2Y0              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y0              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X0Y1              |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X1Y1              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |
+| X2Y1              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y1              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X0Y2              |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X1Y2              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |
+| X2Y2              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y2              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X0Y3              |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X1Y3              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |
+| X2Y3              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y3              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X0Y4              |     0 |    24 |     0 |    28 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X1Y4              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X2Y4              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y4              |     0 |    24 |     0 |     4 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X0Y5              |     0 |    24 |     0 |    28 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X1Y5              |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |     0 |
+| X2Y5              |     0 |    24 |     0 |    24 |     0 |     4 |     0 |     8 |     0 |     0 |     0 |     0 |     0 |     1 |     0 |     2 |
+| X3Y5              |     0 |    24 |     0 |     4 |     0 |     0 |     0 |     0 |     0 |    24 |     0 |     0 |     0 |     0 |     0 |     0 |
++-------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+* Global Clock column represents track count; while other columns represents cell counts
+
+
+5. Clock Regions : Load Primitives
+----------------------------------
+
++-------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|                   |   Global Clock   |        FF        |      LUTRAM      |  Block RAM (18K) |       URAM       |        DSP       |        GT        |      HARD IP     |
++-------------------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+
+| Clock Region Name | Used   | Avail   | Used   | Avail   | Used   | Avail   | Used   | Avail   | Used   | Avail   | Used   | Avail   | Used   | Avail   | Used   | Avail   |
++-------------------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+
+| X0Y0              |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |
+| X1Y0              |      0 |      24 |      0 |   17280 |      0 |    4320 |      0 |      24 |      0 |      16 |      0 |      96 |      0 |       0 |      0 |       0 |
+| X2Y0              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y0              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       1 |
+| X0Y1              |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |
+| X1Y1              |      0 |      24 |      0 |   17280 |      0 |    4320 |      0 |      24 |      0 |      16 |      0 |      96 |      0 |       0 |      0 |       0 |
+| X2Y1              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y1              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       1 |
+| X0Y2              |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |
+| X1Y2              |      0 |      24 |      0 |   17280 |      0 |    4320 |      0 |      24 |      0 |      16 |      0 |      96 |      0 |       0 |      0 |       0 |
+| X2Y2              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y2              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       0 |
+| X0Y3              |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |      0 |       0 |
+| X1Y3              |      0 |      24 |      0 |   17280 |      0 |    4320 |      0 |      24 |      0 |      16 |      0 |      96 |      0 |       0 |      0 |       0 |
+| X2Y3              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y3              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       0 |
+| X0Y4              |      0 |      24 |      0 |   40320 |      0 |    9120 |      0 |      24 |      0 |       0 |      0 |      48 |      0 |       0 |      0 |       0 |
+| X1Y4              |      0 |      24 |      0 |   23040 |      0 |    5760 |      0 |      24 |      0 |      16 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X2Y4              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y4              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       0 |
+| X0Y5              |      0 |      24 |      0 |   40320 |      0 |    9120 |      0 |      24 |      0 |       0 |      0 |      48 |      0 |       0 |      0 |       0 |
+| X1Y5              |      0 |      24 |      0 |   23040 |      0 |    5760 |      0 |      24 |      0 |      16 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X2Y5              |      0 |      24 |      0 |   22080 |      0 |    5760 |      0 |      24 |      0 |       0 |      0 |     120 |      0 |       0 |      0 |       0 |
+| X3Y5              |      0 |      24 |      0 |   22080 |      0 |    3360 |      0 |      48 |      0 |       0 |      0 |      48 |      0 |       4 |      0 |       0 |
++-------------------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+--------+---------+
+* Global Clock column represents track count; while other columns represents cell counts
+
+
+6. Clock Regions : Global Clock Summary
+---------------------------------------
+
+All Modules
++----+----+----+----+----+
+|    | X0 | X1 | X2 | X3 |
++----+----+----+----+----+
+| Y5 |  0 |  0 |  0 |  0 |
+| Y4 |  0 |  0 |  0 |  0 |
+| Y3 |  0 |  0 |  0 |  0 |
+| Y2 |  0 |  0 |  0 |  0 |
+| Y1 |  0 |  0 |  0 |  0 |
+| Y0 |  0 |  0 |  0 |  0 |
++----+----+----+----+----+
+
+
+7. Clock Regions : Routing Resource Utilization
+-----------------------------------------------
+
+All Modules
++-------------------+----------------------+----------------------+----------------------+----------------------+
+|                   |        HROUTES       |        HDISTRS       |        VROUTES       |        VDISTRS       |
++-------------------+------+-------+-------+------+-------+-------+------+-------+-------+------+-------+-------+
+| Clock Region Name | Used | Avail | Util% | Used | Avail | Util% | Used | Avail | Util% | Used | Avail | Util% |
++-------------------+------+-------+-------+------+-------+-------+------+-------+-------+------+-------+-------+
+| X0Y0              |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |
+| X1Y0              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y0              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y0              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X0Y1              |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |
+| X1Y1              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y1              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y1              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X0Y2              |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |
+| X1Y2              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y2              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y2              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X0Y3              |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |    0 |     0 |  0.00 |
+| X1Y3              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y3              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y3              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X0Y4              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X1Y4              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y4              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y4              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X0Y5              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X1Y5              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X2Y5              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
+| X3Y5              |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |    0 |    24 |  0.00 |
++-------------------+------+-------+-------+------+-------+-------+------+-------+-------+------+-------+-------+
+
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Sun Jan 18 20:54:57 2026
+| Host         : laptop running 64-bit Ubuntu 24.04.3 LTS
+| Command      : report_drc -file aes256_cbc_comb_encdec.rpt -append
+| Design       : synth_wrapper
+| Device       : xczu7ev-ffvf1517-1LV-i
+| Speed File   : -1LV
+| Design State : Fully Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: impl_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 0
++------+----------+-------------+--------+
+| Rule | Severity | Description | Checks |
++------+----------+-------------+--------+
++------+----------+-------------+--------+
+
+2. REPORT DETAILS
+-----------------
+
+Design Route Status
+                                               :      # nets :
+   ------------------------------------------- : ----------- :
+   # of logical nets.......................... :       41752 :
+       # of nets not needing routing.......... :       19196 :
+           # of internally routed nets........ :       18931 :
+           # of implicitly routed ports....... :         265 :
+       # of routable nets..................... :       22556 :
+           # of fully routed nets............. :       22556 :
+       # of nets with routing errors.......... :           0 :
+   ------------------------------------------- : ----------- :
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version     : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date             : Sun Jan 18 20:55:20 2026
+| Host             : laptop running 64-bit Ubuntu 24.04.3 LTS
+| Command          : report_power -file aes256_cbc_comb_encdec.rpt -append
+| Design           : synth_wrapper
+| Device           : xczu7ev-ffvf1517-1LV-i
+| Design State     : routed
+| Grade            : industrial
+| Process          : typical
+| Characterization : Production
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Power Report
+
+Table of Contents
+-----------------
+1. Summary
+1.1 On-Chip Components
+1.2 Power Supply Summary
+1.3 Confidence Level
+2. Settings
+2.1 Environment
+2.2 Clock Constraints
+3. Detailed Reports
+3.1 By Hierarchy
+
+1. Summary
+----------
+
++--------------------------+--------------+
+| Total On-Chip Power (W)  | 0.823        |
+| Design Power Budget (W)  | Unspecified* |
+| Power Budget Margin (W)  | NA           |
+| Dynamic (W)              | 0.260        |
+| Device Static (W)        | 0.563        |
+| Effective TJA (C/W)      | 0.9          |
+| Max Ambient (C)          | 99.3         |
+| Junction Temperature (C) | 25.7         |
+| Confidence Level         | Medium       |
+| Setting File             | ---          |
+| Simulation Activity File | ---          |
+| Design Nets Matched      | NA           |
++--------------------------+--------------+
+* Specify Design Power Budget using, set_operating_conditions -design_power_budget <value in Watts>
+
+
+1.1 On-Chip Components
+----------------------
+
++----------------+-----------+----------+-----------+-----------------+
+| On-Chip        | Power (W) | Used     | Available | Utilization (%) |
++----------------+-----------+----------+-----------+-----------------+
+| Clocks         |    <0.001 |        3 |       --- |             --- |
+| CLB Logic      |     0.121 |    41618 |       --- |             --- |
+|   LUT as Logic |     0.121 |    29397 |    230400 |           12.76 |
+|   Register     |    <0.001 |      648 |    460800 |            0.14 |
+|   Others       |     0.000 |        2 |       --- |             --- |
+|   F7/F8 Muxes  |     0.000 |    10064 |    230400 |            4.37 |
+| Signals        |     0.139 |    22555 |       --- |             --- |
+| Static Power   |     0.563 |          |           |                 |
+| Total          |     0.823 |          |           |                 |
++----------------+-----------+----------+-----------+-----------------+
+
+
+1.2 Power Supply Summary
+------------------------
+
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Source          | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Vccint          |       0.720 |     0.481 |       0.361 |      0.120 |       NA    | Unspecified | NA         |
+| Vccint_io       |       0.850 |     0.070 |       0.000 |      0.070 |       NA    | Unspecified | NA         |
+| Vccbram         |       0.850 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| Vccaux          |       1.800 |     0.148 |       0.000 |      0.148 |       NA    | Unspecified | NA         |
+| Vccaux_io       |       1.800 |     0.055 |       0.000 |      0.055 |       NA    | Unspecified | NA         |
+| Vcco33          |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco25          |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco18          |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco15          |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco135         |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco12          |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco10          |       1.000 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccadc          |       1.800 |     0.008 |       0.000 |      0.008 |       NA    | Unspecified | NA         |
+| VCC_PSINTFP     |       0.850 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSINTLP     |       0.850 |     0.005 |       0.000 |      0.005 |       NA    | Unspecified | NA         |
+| VPS_MGTRAVCC    |       0.850 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSINTFP_DDR |       0.850 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSPLL       |       1.200 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| VPS_MGTRAVTT    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCCO_PSDDR_504  |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSAUX       |       1.800 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| VCC_PSBATT      |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSDDR_PLL   |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCCO_PSIO0_500  |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCCO_PSIO1_501  |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCCO_PSIO2_502  |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCCO_PSIO3_503  |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSADC       |       1.800 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| VCCINT_VCU      |       0.900 |     0.025 |       0.000 |      0.025 |       NA    | Unspecified | NA         |
+| MGTAVcc         |       0.900 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTAVtt         |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTVccaux       |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+
+
+1.3 Confidence Level
+--------------------
+
++-----------------------------+------------+------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+| User Input Data             | Confidence | Details                                        | Action                                                                                                     |
++-----------------------------+------------+------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+| Design implementation state | High       | Design is routed                               |                                                                                                            |
+| Clock nodes activity        | High       | User specified more than 95% of clocks         |                                                                                                            |
+| I/O nodes activity          | High       | User specified more than 95% of inputs         |                                                                                                            |
+| Internal nodes activity     | Medium     | User specified less than 25% of internal nodes | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views |
+| Device models               | High       | Device models are Production                   |                                                                                                            |
+|                             |            |                                                |                                                                                                            |
+| Overall confidence level    | Medium     |                                                |                                                                                                            |
++-----------------------------+------------+------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+
+
+2. Settings
+-----------
+
+2.1 Environment
+---------------
+
++-----------------------+--------------------------+
+| Ambient Temp (C)      | 25.0                     |
+| ThetaJA (C/W)         | 0.9                      |
+| Airflow (LFM)         | 250                      |
+| Heat Sink             | medium (Medium Profile)  |
+| ThetaSA (C/W)         | 1.2                      |
+| Board Selection       | medium (10"x10")         |
+| # of Board Layers     | 12to15 (12 to 15 Layers) |
+| Board Temperature (C) | 25.0                     |
++-----------------------+--------------------------+
+
+
+2.2 Clock Constraints
+---------------------
+
++-------+--------+-----------------+
+| Clock | Domain | Constraint (ns) |
++-------+--------+-----------------+
+| clk   | Clk    |            96.0 |
++-------+--------+-----------------+
+
+
+3. Detailed Reports
+-------------------
+
+3.1 By Hierarchy
+----------------
+
++------------------------+-----------+
+| Name                   | Power (W) |
++------------------------+-----------+
+| synth_wrapper          |     0.260 |
+|   inst                 |     0.260 |
+|     genblk2[0].mc_inst |     0.003 |
+|     genblk2[1].mc_inst |     0.003 |
+|     genblk2[2].mc_inst |     0.003 |
+|     genblk2[3].mc_inst |     0.003 |
+|     genblk2[4].mc_inst |     0.003 |
+|     genblk2[5].mc_inst |     0.002 |
+|     genblk2[6].mc_inst |     0.002 |
+|     genblk2[7].mc_inst |     0.001 |
+|     genblk2[8].mc_inst |     0.001 |
++------------------------+-----------+
+
+

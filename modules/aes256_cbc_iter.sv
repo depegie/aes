@@ -296,14 +296,14 @@ always_comb
     endcase
 
 always @(posedge Clk)
-    if (Rst) begin
-        encrypt_reg <= 1'b0;
-        block_last_reg <= 1'b0;
-    end
-    else if (S_axis_tvalid & S_axis_tready) begin
+    if (S_axis_tvalid & S_axis_tready)
         encrypt_reg <= S_axis_tuser;
+
+always_ff @(posedge Clk)
+    if (Rst)
+        block_last_reg <= 128'b0;
+    else if (S_axis_tvalid & S_axis_tready)
         block_last_reg <= S_axis_tlast;
-    end
 
 always_ff @(posedge Clk)
     if (Rst) begin

@@ -25,6 +25,7 @@ localparam int NUMBER_OF_ROUNDS = `AES_NUMBER_OF_ROUNDS;
 logic                      [KEY_LENGTH-1 : 0] key_reg;
 logic                      [BLOCK_SIZE-1 : 0] iv_reg;
 logic                      [BLOCK_SIZE-1 : 0] input_text_reg;
+logic                      [BLOCK_SIZE-1 : 0] output_block_reg;
 
 logic                                         encrypt_reg;
 logic                                         block_last_reg;
@@ -44,7 +45,7 @@ logic [BLOCK_SIZE-1 : 0] output_block;
 logic [BLOCK_SIZE-1 : 0] output_text;
 
 assign input_block = encrypt_reg ? input_text_reg ^ iv_reg : input_text_reg;
-assign output_text = encrypt_reg ? output_block : output_block ^ iv_reg;
+assign output_text = encrypt_reg ? output_block_reg : output_block_reg ^ iv_reg;
 
 enum logic [4:0] {
     ST_KEY         = 5'b1 << 0,
@@ -97,7 +98,7 @@ always_comb
         end
 
         default: begin
-                next_state = state_reg;
+            next_state = state_reg;
         end
     endcase
 
@@ -168,15 +169,21 @@ always_ff @(posedge Clk)
         input_text_reg <= S_axis_tdata;
     end
 
+always_ff @(posedge Clk)
+    if (Rst)
+        output_block_reg <= 128'h0;
+    else if (state_reg == ST_CIPHER)
+        output_block_reg <= output_block;
+
 always @(posedge Clk)
-    if (Rst) begin
-        encrypt_reg <= 1'b0;
-        block_last_reg <= 1'b0;
-    end
-    else if (S_axis_tvalid & S_axis_tready) begin
+    if (S_axis_tvalid & S_axis_tready)
         encrypt_reg <= S_axis_tuser;
+
+always_ff @(posedge Clk)
+    if (Rst)
+        block_last_reg <= 128'b0;
+    else if (S_axis_tvalid & S_axis_tready)
         block_last_reg <= S_axis_tlast;
-    end
 
 always_comb begin
     key_expansion_key[ 0] = key_reg;
@@ -231,7 +238,7 @@ end
 
 generate
     for (genvar k=2; k<=NUMBER_OF_ROUNDS; k++) begin
-        aes_key_expander key_expansion_inst_11 (
+        aes_key_expander key_expansion_inst (
             .Round_number ( k                          ),
             .Input_key    ( key_expansion_key[k-2]     ),
             .Output_key   ( key_expansion_new_key[k-2] ) 

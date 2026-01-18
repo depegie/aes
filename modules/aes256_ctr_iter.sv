@@ -30,7 +30,6 @@ logic   [BLOCK_SIZE-1 : 0] input_text_reg;
 logic [BLOCK_SIZE/8-1 : 0] input_keep_reg;
 logic   [BLOCK_SIZE-1 : 0] output_block_reg;
 
-logic                    encrypt_reg;
 logic                    block_last_reg;
 logic                    most_sig_halfkey_reg;
 logic [KEY_LENGTH-1 : 0] key_expansion_key_reg;
@@ -218,11 +217,9 @@ always_ff @(posedge Clk)
 
 always @(posedge Clk)
     if (Rst) begin
-        encrypt_reg <= 1'b0;
         block_last_reg <= 1'b0;
     end
     else if (S_axis_tvalid & S_axis_tready) begin
-        encrypt_reg <= S_axis_tuser;
         block_last_reg <= S_axis_tlast;
     end
 

@@ -22,19 +22,20 @@ localparam int KEY_LENGTH       = `AES_KEY_LENGTH;
 localparam int BLOCK_SIZE       = `AES_BLOCK_SIZE;
 localparam int NUMBER_OF_ROUNDS = `AES_NUMBER_OF_ROUNDS;
 
-logic                      most_sig_halfkey_reg;
-logic                      encrypt_reg;
 logic   [KEY_LENGTH-1 : 0] key_reg;
 logic   [BLOCK_SIZE-1 : 0] counter_reg;
 logic   [BLOCK_SIZE-1 : 0] input_text_reg;
 logic [BLOCK_SIZE/8-1 : 0] input_text_keep_reg;
 logic                      input_text_last_reg;
+logic                      most_sig_halfkey_reg;
 
 logic [BLOCK_SIZE-1 : 0] input_block;
-logic                    input_block_valid_reg;
-logic                    input_block_ready_reg;
+logic                    input_text_valid_reg;
+logic                    input_text_ready;
+logic [BLOCK_SIZE-1 : 0] ark_output_block;
 
 logic [BLOCK_SIZE-1 : 0] key_expansion_reg[NUMBER_OF_ROUNDS-1];
+logic [KEY_LENGTH-1 : 0] key_expansion_key[NUMBER_OF_ROUNDS-1];
 logic [BLOCK_SIZE-1 : 0] key_expansion_new_key[NUMBER_OF_ROUNDS-1];
 
 logic [NUMBER_OF_ROUNDS-1 : 0] stage_valid_reg;
@@ -48,7 +49,7 @@ logic [BLOCK_SIZE-1 : 0] round_output_block[NUMBER_OF_ROUNDS];
 logic [BLOCK_SIZE-1 : 0] output_text;
 
 assign input_block                     = invert_bytes(counter_reg);
-assign input_block_ready_reg           = (M_axis_tvalid & M_axis_tready) | ~&stage_valid_reg;
+assign input_text_ready                = (M_axis_tvalid & M_axis_tready) | ~&stage_valid_reg;
 assign stage_ready[NUMBER_OF_ROUNDS-1] = (M_axis_tvalid & M_axis_tready);
 assign output_text                     = stage_text_reg[NUMBER_OF_ROUNDS-1] ^ stage_block_reg[NUMBER_OF_ROUNDS-1];
 
@@ -106,7 +107,7 @@ always_comb
             S_axis_tready = 1'b1;
         
         ST_INPUT_TEXT:
-            S_axis_tready = input_block_ready_reg;
+            S_axis_tready = input_text_ready;
 
         ST_WAIT:
             S_axis_tready = 1'b0;
@@ -124,7 +125,7 @@ always_ff @(posedge Clk)
         stage_keep_reg[0]  <= 16'b0;
         stage_last_reg[0]  <= 1'b0;
     end
-    else if (input_block_valid_reg & input_block_ready_reg) begin
+    else if (input_text_valid_reg & input_text_ready) begin
         stage_valid_reg[0] <= 1'b1;
         stage_text_reg[0]  <= input_text_reg;
         stage_block_reg[0] <= round_output_block[0];
@@ -194,7 +195,7 @@ always_ff @(posedge Clk)
     else if (state_reg == ST_COUNTER & S_axis_tvalid & S_axis_tready) begin
         counter_reg <= invert_bytes(S_axis_tdata);
     end
-    else if (input_block_valid_reg & input_block_ready_reg) begin
+    else if (input_text_valid_reg & input_text_ready) begin
         counter_reg <= counter_reg + 1;
     end
 
@@ -213,26 +214,24 @@ always_ff @(posedge Clk)
     else if (state_reg == ST_INPUT_TEXT & S_axis_tvalid & S_axis_tready) begin
         input_text_keep_reg <= S_axis_tkeep;
     end
-    else if (input_block_valid_reg & input_block_ready_reg) begin
+    else if (input_text_valid_reg & input_text_ready) begin
         input_text_keep_reg <= 16'b0;
     end
 
 always_ff @(posedge Clk) begin
     if (Rst)
-        input_block_valid_reg <= 1'b0;
+        input_text_valid_reg <= 1'b0;
     else if (state_reg == ST_INPUT_TEXT & S_axis_tvalid & S_axis_tready)
-        input_block_valid_reg <= 1'b1;
-    else if (input_block_valid_reg & input_block_ready_reg)
-        input_block_valid_reg <= 1'b0;
+        input_text_valid_reg <= 1'b1;
+    else if (input_text_valid_reg & input_text_ready)
+        input_text_valid_reg <= 1'b0;
 end
 
 always @(posedge Clk)
     if (Rst) begin
-        encrypt_reg         <= 1'b0;
         input_text_last_reg <= 1'b0;
     end
     else if (S_axis_tvalid & S_axis_tready) begin
-        encrypt_reg         <= S_axis_tuser;
         input_text_last_reg <= S_axis_tlast;
     end
 
@@ -252,89 +251,111 @@ generate
     end
 endgenerate
 
+always_comb begin
+    key_expansion_key[ 0] = key_reg;
+    key_expansion_key[ 1] = { key_expansion_reg[ 0], key_reg[255:128]        };
+    key_expansion_key[ 2] = { key_expansion_reg[ 1], key_expansion_reg[ 0]   };
+    key_expansion_key[ 3] = { key_expansion_reg[ 2], key_expansion_reg[ 1]   };
+    key_expansion_key[ 4] = { key_expansion_reg[ 3], key_expansion_reg[ 2]   };
+    key_expansion_key[ 5] = { key_expansion_reg[ 4], key_expansion_reg[ 3]   };
+    key_expansion_key[ 6] = { key_expansion_reg[ 5], key_expansion_reg[ 4]   };
+    key_expansion_key[ 7] = { key_expansion_reg[ 6], key_expansion_reg[ 5]   };
+    key_expansion_key[ 8] = { key_expansion_reg[ 7], key_expansion_reg[ 6]   };
+    key_expansion_key[ 9] = { key_expansion_reg[ 8], key_expansion_reg[ 7]   };
+    key_expansion_key[10] = { key_expansion_reg[ 9], key_expansion_reg[ 8]   };
+    key_expansion_key[11] = { key_expansion_reg[10], key_expansion_reg[ 9]   };
+    key_expansion_key[12] = { key_expansion_reg[11], key_expansion_reg[10]   };
+end
+
 aes_key_expander key_expansion_inst_0 (
     .Round_number ( 2 ),
-    .Input_key    ( key_reg ),
+    .Input_key    ( key_expansion_key[0] ),
     .Output_key   ( key_expansion_new_key[0] ) 
 );
 
 aes_key_expander key_expansion_inst_1 (
     .Round_number ( 3 ),
-    .Input_key    ( {key_expansion_reg[0], key_reg[255:128]} ),
+    .Input_key    ( key_expansion_key[1] ),
     .Output_key   ( key_expansion_new_key[1] ) 
 );
 
 aes_key_expander key_expansion_inst_2 (
     .Round_number ( 4 ),
-    .Input_key    ( {key_expansion_reg[1], key_expansion_reg[0]} ),
+    .Input_key    ( key_expansion_key[2] ),
     .Output_key   ( key_expansion_new_key[2] ) 
 );
 
 aes_key_expander key_expansion_inst_3 (
     .Round_number ( 5 ),
-    .Input_key    ( {key_expansion_reg[2], key_expansion_reg[1]} ),
+    .Input_key    ( key_expansion_key[3] ),
     .Output_key   ( key_expansion_new_key[3] ) 
 );
 
 aes_key_expander key_expansion_inst_4 (
     .Round_number ( 6 ),
-    .Input_key    ( {key_expansion_reg[3], key_expansion_reg[2]} ),
+    .Input_key    ( key_expansion_key[4] ),
     .Output_key   ( key_expansion_new_key[4] ) 
 );
 
 aes_key_expander key_expansion_inst_5 (
     .Round_number ( 7 ),
-    .Input_key    ( {key_expansion_reg[4], key_expansion_reg[3]} ),
+    .Input_key    ( key_expansion_key[5] ),
     .Output_key   ( key_expansion_new_key[5] ) 
 );
 
 aes_key_expander key_expansion_inst_6 (
     .Round_number ( 8 ),
-    .Input_key    ( {key_expansion_reg[5], key_expansion_reg[4]} ),
+    .Input_key    ( key_expansion_key[6] ),
     .Output_key   ( key_expansion_new_key[6] ) 
 );
 
 aes_key_expander key_expansion_inst_7 (
     .Round_number ( 9 ),
-    .Input_key    ( {key_expansion_reg[6], key_expansion_reg[5]} ),
+    .Input_key    ( key_expansion_key[7] ),
     .Output_key   ( key_expansion_new_key[7] ) 
 );
 
 aes_key_expander key_expansion_inst_8 (
     .Round_number ( 10 ),
-    .Input_key    ( {key_expansion_reg[7], key_expansion_reg[6]} ),
+    .Input_key    ( key_expansion_key[8] ),
     .Output_key   ( key_expansion_new_key[8] ) 
 );
 
 aes_key_expander key_expansion_inst_9 (
     .Round_number ( 11 ),
-    .Input_key    ( {key_expansion_reg[8], key_expansion_reg[7]} ),
+    .Input_key    ( key_expansion_key[9] ),
     .Output_key   ( key_expansion_new_key[9] ) 
 );
 
 aes_key_expander key_expansion_inst_10 (
     .Round_number ( 12 ),
-    .Input_key    ( {key_expansion_reg[9], key_expansion_reg[8]} ),
+    .Input_key    ( key_expansion_key[10] ),
     .Output_key   ( key_expansion_new_key[10] ) 
 );
 
 aes_key_expander key_expansion_inst_11 (
     .Round_number ( 13 ),
-    .Input_key    ( {key_expansion_reg[10], key_expansion_reg[9]} ),
+    .Input_key    ( key_expansion_key[11] ),
     .Output_key   ( key_expansion_new_key[11] ) 
 );
 
 aes_key_expander key_expansion_inst_12 (
     .Round_number ( 14 ),
-    .Input_key    ( {key_expansion_reg[11], key_expansion_reg[10]} ),
+    .Input_key    ( key_expansion_key[12] ),
     .Output_key   ( key_expansion_new_key[12] ) 
+);
+
+aes_round_key_adder add_round_key_inst (
+    .Input_block  ( input_block ),
+    .Round_key    ( key_reg[127:0] ),
+    .Output_block ( ark_output_block )
 );
 
 aes_round round_inst_1 (
     .Encrypt      ( 1'b1 ),
     .Last         ( 1'b0 ),
     .Key          ( key_reg[255:128] ),
-    .Input_block  ( input_block ^ key_reg[127:0] ),
+    .Input_block  ( ark_output_block ),
     .Output_block ( round_output_block[0] )
 );
 

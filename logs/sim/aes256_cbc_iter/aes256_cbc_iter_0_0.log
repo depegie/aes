@@ -1,0 +1,236 @@
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-12493] Simulation top is 'tb'
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from '/tools/Xilinx/Vivado/2024.2/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim/pkts_in.txt'
+INFO: [SIM-utils-43] Exported '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim/pkts_out.txt'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
+xvlog --incr --relax -L uvm -prj tb_vlog.prj
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/aes256_cbc_iter.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes256_cbc_iter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_bytes_substitutor.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_bytes_substitutor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_columns_mixer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_inv_sbox
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_key_expander
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_round.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_round
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_round_key_adder
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_rows_shifter.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_rows_shifter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_sbox
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/testbench/tb_pkg.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/testbench/tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb
+Waiting for jobs to finish...
+No pending jobs, compilation finished.
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
+xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_behav xil_defaultlib.tb xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator v2024.2.0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: /tools/Xilinx/Vivado/2024.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_behav xil_defaultlib.tb xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/tb_pkg.sv" Line 1. Module tb_pkg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/tb_pkg.sv" Line 1. Module tb_pkg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes256_cbc_iter.sv" Line 3. Module aes256_cbc_iter doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" Line 3. Module aes_key_expander_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" Line 3. Module aes_columns_mixer doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" Line 3. Module aes_round_key_adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round.sv" Line 3. Module aes_round doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_bytes_substitutor.sv" Line 3. Module aes_bytes_substitutor_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_rows_shifter.sv" Line 3. Module aes_rows_shifter doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" Line 3. Module aes_columns_mixer doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" Line 3. Module aes_round_key_adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes256_cbc_iter.sv" Line 3. Module aes256_cbc_iter doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" Line 3. Module aes_key_expander_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" Line 3. Module aes_columns_mixer doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" Line 3. Module aes_round_key_adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round.sv" Line 3. Module aes_round doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_bytes_substitutor.sv" Line 3. Module aes_bytes_substitutor_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" Line 1. Module aes_inv_sbox doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_rows_shifter.sv" Line 3. Module aes_rows_shifter doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" Line 3. Module aes_columns_mixer doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" Line 3. Module aes_round_key_adder doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package xil_defaultlib.$unit_aes256_cbc_iter_sv_1120255...
+WARNING: [XSIM 43-3373] "../../../../../aes/testbench/include/generator.svh" Line 23. System function $sscanf is used as system task. This system function should have a LHS e.g. x=$sscanf().
+WARNING: [XSIM 43-3373] "../../../../../aes/testbench/include/generator.svh" Line 29. System function $sscanf is used as system task. This system function should have a LHS e.g. x=$sscanf().
+Compiling package xil_defaultlib.tb_pkg
+Compiling package std.std
+Compiling module xil_defaultlib.cb
+Compiling module xil_defaultlib.axis_if_default
+Compiling module xil_defaultlib.aes_sbox
+Compiling module xil_defaultlib.aes_key_expander_default
+Compiling module xil_defaultlib.aes_columns_mixer
+Compiling module xil_defaultlib.aes_round_key_adder
+Compiling module xil_defaultlib.aes_inv_sbox
+Compiling module xil_defaultlib.aes_bytes_substitutor_default
+Compiling module xil_defaultlib.aes_rows_shifter
+Compiling module xil_defaultlib.aes_round
+Compiling module xil_defaultlib.aes256_cbc_iter
+Compiling module xil_defaultlib.tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_behav -key {Behavioral:sim_1:Functional:tb} -tclbatch {tb.tcl} -view {/home/danilo/Documents/mgr/project_1/tb_behav.wcfg} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+open_wave_config /home/danilo/Documents/mgr/project_1/tb_behav.wcfg
+WARNING: Simulation object /tb/dut/key_reg was not found in the design.
+WARNING: Simulation object /tb/dut/counter_reg was not found in the design.
+WARNING: Simulation object /tb/dut/input_keep_reg was not found in the design.
+WARNING: Simulation object /tb/dut/key_expansion_key_reg was not found in the design.
+source tb.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+run all
+[Driver]     Time:     2583ns, id:   0, data: 12337a44a03b666a5a1403d02a9b47ca8e8d774af1da9148d2621e1a310320c5eb59af548e4d382ad54bd2b021896e9838e11eaccd110dc0a736946232de6778
+[Monitor]    Time:     2713ns, id:   0, data: d4205032614a48a21bc0631bdb3a878a
+[Driver]     Time:     2868ns, id:   1, data: 65a86b50542b74e095efd762dfc8f7849b05cfb72400d4a464bcb52f0cef6a54c1e6e7ffa4b5bb61f3393336611c0bca9dcbfb9f64f7dbdd04db2ca6a63ab8a5a117a80354a73f16ada3f0e5048a8c21
+[Monitor]    Time:     2943ns, id:   1, data: 57eec108cb52c99bd1cdfbc71baf7a794065fa3018abcc958060419cc79432f1
+[Driver]     Time:     3178ns, id:   2, data: 9ad558456ba0c6b75616a8a0bec99bc5c2b1b8bfc5d95936a1065fc92fbe489880a22cdcf57202e66625eec2abc14bc3c1628fce788747fde7f610782338e3e320d3ce33a3c67e1cf3fdc1244968f1a6cfb620d09ec79ed70648c8b54e4d6f46
+[Monitor]    Time:     3253ns, id:   2, data: cd0c047d07989ec2c7af5804a0d96f3c8cf0407368847c861eefc80616b4edc8d4b2d44655d877961f0a2e0c9276fdd9
+[Driver]     Time:     3568ns, id:   3, data: 4f9ba1d5450f5caf466d6b70ddf731ce999796f62d8465041be967e954bfba1907f54da804729183ca2c128e69f4fb82cf1b3d22939bf4bbf83459a73b612376e8ddfd4d8dffbf1232ea988701b7e7885df41be540276258b627b2ffc8e52610b4b58fab231151222e1fca0745da7c56
+[Monitor]    Time:     3643ns, id:   3, data: d6952d0be2661b2dfeab366491c387e29ade339dd16c1734a23fe89b3ec935f55543cf0c040094af25032e9804f6984d84e4788e1119a257747557092d31e715
+[Driver]     Time:     4038ns, id:   4, data: 6bb075e43a9006bbeaa8b03d41d76e9deaf5b6b52e91235faf9c615885d88e0f60fa17849c79fce70460dead6a2e0313244b3453f68126ab7a558bdad23a8ae7aedfbb2e2578a259fff7332aadb46946a9640c8e7d569db60a08e1f70c2171d8b38ae4db895724e32c62b21fd1957e21561831120134053aa16c9beaa76624c4
+[Monitor]    Time:     4113ns, id:   4, data: 0a3aa1f41d8f673be6c10914f907e9417689e3033ee2227733246567035a4a6c2a567d150531bd2df4d6c4763d4e67dc4fda71c0657a9e2a4e846509fd0b1efd2ab7483c593abb47e51e91824a38607c
+[Driver]     Time:     4588ns, id:   5, data: 94f8948be14230f1540a872af03f62a515b83838b8403ddae9754344fa863cb080976b0e7f05414334bbbffc1e08cedc440833b83e0e87c574cc12e933be35f73e070277ce84a60bb47b744bc1424e0c5a498e1e46d3a94482a25e88abc94c3629758264cc9f75b0d75c2e3589f8ea76aa37a6b485507a8d2a20a82874fa7e64ca604a8da67f9725ac31b969d5855cc2
+[Monitor]    Time:     4663ns, id:   5, data: 7f618758ccd06f959fb7c164d4aade844ed2de04e02a6c7cfe27968719cc28c055030012be8d632fc504afbb7c33a6acabbac4d4883fec71e3c0789a00be2e78af9ae58463869024d61d75363b8dbed81d93f40ecd0636031c745ca4b3f44dac
+[Driver]     Time:     5218ns, id:   6, data: a511b1771799f257fa0cda16bbec1f50e900df47d0bcd66f913a39124003bd5ee7af8de200d3fc9bd1037265fcb6618688634aeafc6aa00ca6db415c09c169029cf9b79a5b6ef9e08602e6f35bd75531f17ee1282bb33baaa6441d6bd9de87454aeb9d70ef542868a61f835a85870557f092eb97809554b0a78d49ed27b38b62526c67989527cfa9742aeed62b7e2f04eb6f920b1a44f0d32d2b13f1ec2231ee
+[Monitor]    Time:     5293ns, id:   6, data: 34ca0f1c10d944121362613c3982bc090444b0f71154182e909fb3be1bfb510d01d178f1c86b013376e2fbc621d79645ad194c9a90724607ebebe24e7616b3a5954e1cd16cd5a5651281a1bd28ddcb2ba2f7bd188764e64db06690f4447ff79337ae106c8f770f86a145521f09660cba
+[Driver]     Time:     5928ns, id:   7, data: 2f9c69137fbf0b88fbdce0f93f9261fd2f42e56aeed4a2ca24eac2ade71f4637a92b6837ce8cf51c43490ffc5fb96c56e9666bf2012674f4c30e82910f5c5ce0a33c8c8a3bdddc13401a9afff6ec966d013ff890f0e7ba411337a2c2f8449c9f888ca620e2ea790cf6fa97c13404fadd9c38bf9a032e2cd55b5fbb32679ffdfaf0bc8122657d45d119438645177d37665292f649f8cb0d2254683c156d577b2fe6acfa72496f2ee3206db35e12fa9b7d
+[Monitor]    Time:     6003ns, id:   7, data: 7ac6b2ec291ba6e4b0a363b89a9134e6ae8c4c1e13fa22f983f49416751dbeb0d44e9b228c19559c2c9be9767f2acf294d3814a3129a4dfcc849e7c5f4df83dbb6d21da053584330094a779578afce12538f5cc6460b16b6258fde8decb03c6edb6e803460d62eee5890ab602ab72ccf60f372af32c790a5db408fd2ff7d794d
+[Driver]     Time:     6718ns, id:   8, data: 700f376d866b098fb96518f988efda42b6e14b5731cfe8fa71cb2338b108813c1b36e46352bbeaa652f10b65c3b6d55648160a3ef8180ec6bd000bcf26fe114a2b5cbe0c6af7c5baba03e2da023b231c8dd61bcd85f68d58a7ac58104eaccd316f414c34cc3cdbcea74e4d15159f0705374fe0dc3a2e2f9dddcfa2083d36d68b7d73990d2c6ea3e0c484de3f18825d9dbf42feb1ea9967a3ea617eb3174d6eede64de437cfe312e51e603d7948bf7e62591b100e5942a4ee322d78c04aa7a945
+[Monitor]    Time:     6793ns, id:   8, data: c7eedcf4ac36d63f37f5ad7c1611ce9cffc875593c2a54518ecf762fd38854451e9b851165a84ee43c2984b29592086dc0cd5e2ad5db65115af6438c7ea26fa42ba5448d3fc60ae0fb4fd85c6547f190d10252ebaa23b4576f2f002ea453a98868f0a9b1421f73f6bff1b4e0ee3b566c55393f47c868f5766f38a9f8ebcb27be5cd2cd69207c7a8d0ba6bc4f66fec7e6
+[Driver]     Time:     7588ns, id:   9, data: 3a7fa2d5ca9e504ebd7f7766fa40c77dd71a99d4857fd633fa8885430e3bbf2812f56a6d85ebf661aa56ab2ae288f2733c7d8e2958382a45c61217174b375a3c915d24983e275c83c071eadcdbbbae0feb250d1411b2690737358b77f10ccb273c897512f6baef6f94fdbab89dcd85eceda5dec2d98ad7bc0ad3f87e02c97b20962b09d129e85aa63ff1312fb0b11d196983179872c9f1d4dbf2fed9d1522dc87d526e5af9b099ed3ba2bab1b347962eb41c085aeb99b11c880f3ebee179f53aa1cd8aa0b374b6ebd85395ca1e7e3269
+[Monitor]    Time:     7663ns, id:   9, data: 5da52b6745d92335930b135a8b395ffce7b2ba00beb67aa190a9f918b8a73702733b075310d18503593e3c0947274b442b7e39c45b7fb0039d5083bff01c7bfdefe4a6681cd1901b77d87b6a70b349de16ab4f840d3a79e176a2b200df48cec880863730412290a8242731f05da9245054041e63c5b6534206227f622f793d60f07586c73899f4462bd6fa107c20dbf04021ed103592d77932b61757cd8f94a9
+[Driver]     Time:     8538ns, id:  10, data: 8e38494fa13f5c975db6d64c5ca1df6c0cf299063376ca401f9e5ee2a68bc734abd8037eb52d08ca68f38997f1fac946403823011c0a76ea0da31f3b63a88e669076b18ab63ab7c408d75d3eaedeec5103d85c1fbadc854af9cdae4be8af1877b424bc68245ba3919e9b9d7d5207299e419bb286f2c2bacab68dde325cf3c9572a0354add231ea2b214358accc4af9f1607ee8ce9e3b522bddc5e202dd8afcfea646d4bef690425b3cc56a137007ceede6373fbe7e3b10bdd02a21911480c6c150ba78de7141280f5973abd96cfd449a036baa8501e0865fba434b9136e1e8c1
+[Monitor]    Time:     8613ns, id:  10, data: dfb61f11a6a631f212186df8440d1f386fe7dcef69d8b8546201fcdef95aea289898117942ece9eccaebd5283f0a009b6b80af78cf116036cc469aa4254bb00a310f2e8c08d37e5ebea5849284b886a83a824386051379b010ab458737b534ac77f93da03c8338aac3abf1563a3560cb1bf9fb95688480f729e59c8cec4d2a50a012ce0c0c3d59f55f955d091ebfa2ed32457ab568c765a0da6a548e235ddcad3671201d8168f98d9074e30fabb99062
+[Driver]     Time:     9568ns, id:  11, data: 04cc93bb2346e2c0fb8325d0a9084010e1c9689169f43ab4af50dd7d5010ad8e23076aa49bd6be9d2d590935d93000374c58d21b295d9f1c985c389589a94a2bbe56f6e137c37c6430a39042469ecfd36de5c55ca80069df78bd5e75c5b583960bf1b901b66d6970d0bf87778c5b8a47cfebe8c368ebef15c74647b7cd1dc556116c4a29a0cf3ced8e9aba3ff9fda8616f686d58a95cb8dd1b2db85a7234697a0a07e513149bbf4f0b1dc87d5f46dffc503e29c2fe6c40cb211542ed19d1471f9cadaa1a912342a0d809de7c7a36cc9dfb0b8ad7994181cb13337342f849be09e78b88dafb978e1fa740057678e85ec6
+[Monitor]    Time:     9643ns, id:  11, data: b0c8b04513fce51cd52152ec570dd2a979172c4938c5289f4e4097e7b4d2ec9a636e97fe363c75511eeb23a28b4283940c674085a1cfdd5aa96f5b6e4665cccb6124203c32c8611a248e5e2ede98d5d64ebb9066a453458460a6623466d0a6f6611dbcf98deb6dd4485b1f305425909b7fd1acdeef907092cffc3fd601157e4ffe2ccb0e5195f8c5b682a46de545debf306650061136d88483a7e38e352332fc77743318d30e18106d13410632284806da6a13e4472b1ea7f8287e19f76e7b8f
+[Driver]     Time:    10678ns, id:  12, data: 0629fde276458d625f246f6cfe2d22628899d65d4edfe045e50558e8d9ad2ceecfdc6131713d616a64d9a199cb7b081e6537a98a18dcd4a551f6c754c6b527bea64f38c9830d9dc365e79144e178cdd5a65a69e13688b6a1e8d71d141c8767db938a183d5e9bfa86f8eaa9d7cf38c02bc664532b0e4c53ed69735520bb495ef0641049cd4535a746b5fab9647ee94d1b37eeaed1005abf2e4da05ea9ef4e3a0e34b98468439ab3b0ac82d2d2f78c8e862e6acf86a6c991e781a6efd290c37dc043803e392f73e94e522d5e23d094d890aad74a1595e721b951b17456cc7bb0d5a63f6ef3bcda77fd1fb6f39cfd073ebe13d1bae16b2a25b0f9ce440453e752e6
+[Monitor]    Time:    10753ns, id:  12, data: db9fee381b9fca9055f3b1260b8e4da41f3763fdaf3779899c5799d39ee855b3b1115b406df0fe4db0f7cba8d6a433a86e7b84c9d5eda54df6f10a3b30f0b69bb86d5d001a1a518f5c5e45703d4f97c32259389873b61defbf0a715b79590ed70c7480e14c9e4ce9ab24316dca98c47f742a0ebbf488e1cec087c2be4ff8577d0ef07fe26399d9893ed841c9891b763f5dd1200295dfc47cf7128b3053ec66c51935ce5d8f8a6e6c05b1d3821ae7e338f250eecd49d15128b022242f5daef236d426d1dcf234281a3cae27dd00c37cde
+[Driver]     Time:    11868ns, id:  13, data: efc3da543360a7d7dd18e869adb210f39c0142e7c6d12a4a39cafc1d9ad9b4cc8af852a9d156873f6984fb600335a0de72061d83f9d086a20205d7d3451e1b56cb31cb8fa4849cf9511fee89c35b8edc848c677757002efebc92b9c893b349ae6722dd50cc1dc7883f5c3d3b7d0c408f474ffe13170c9fa9a0f36246141a0ac346de69ae50829e3cba82583b72c996720b1b6c4e3cd9ea8d11f64dec21613a02f7285e8ee77271006b118719b6641d4538202a743bc6390b02916eb51d79c99c5bda1f7a05476627d6e002bd95c4580ebd2f61df6288a88e1b2c84862ac093c14990c27db305ef6f68137aed4369441217b2f32d90c9c328b00a3a9769c0122bdcfa5ad2b29954be60b91e7ee8a4a688
+[Monitor]    Time:    11943ns, id:  13, data: 360555a2d551e60a9720c1047de03ea203de4a4df316a3598b8f27340e76b6727c2ec39d7a2eabaf017883ffe3df516beb427900b1fe6f8104b69c3d294249e38e1b3a7e302376868ca643496049c6d7c4efb6d40cf341649a0952f4ef963dd5ad5d8585846f2a1d3b575564f6c98d4d573573a2e038c4b92f1a3fbce018eef49242d250b16f45b16a6e6bcaa3dbed8618764df08e881deb62f57263ac89faa7b125de833fa7ba15abd68dd993913943417a365f8585f638640fa9c1c2c84920e49c7df07c0453093291dea15b37046d4a3186767c4e55ddc77b51f03c6e576f
+[Driver]     Time:    13138ns, id:  14, data: 6789764c8add6bdacc9b31a9c0b90ae152529836f0c58a0843050f9b9a4e54b2f3f93f3857aa663d100c0103c5c0c1239626ac33f5a8b0a87f6fa00d9c6702c301dd63a94bceea8eb18224ff7b6e6247916527e95973d93fef426b3bdd1b4b65fa8a05a8d2979021f04172bf2403402988df7ff75cb9a1edd71b85cfc2edce71fffddd7672380c6ff58467b8e3e4c8fc7f8c1f102d5c1c4b94ca5c7e6f9640953b31b6bf1e7245734fda0cc96b205796fa74f2c70642f8497c6faf7483f9100cf8d845d96b5a84e6d2eff95989a115523dff334a8fc19d40fe59afbe355e5deb1e740ab2ea1dfb1af93b3b5a10b24fc72ddf75f598a8b24f14cb653784d3045e8034b9e3f8cc1db7feb7b41e85f94e5d41572f9061b0157c52678e4d0e348907
+[Monitor]    Time:    13213ns, id:  14, data: bbd59f3c12e4b1a8eaa12b85975edd3ba42378742f6a121fc79c251bd0583f9dd435130cf0d658827abcde0267c4984d7f40181cd5b300545bd3f04c760810743fd364f75e0ff4ab061bdfe68690e19ad4c8b3a8fbe566f445538052bb624fb4694d55f377af57031918ed95ceeafadba161b0311e9f63ce666f6051e42d84c11b78935d2a629702c0680edd67d5a3fd3b20035e1f6a8db96c6f7d0723bb9d3da06b9edee352c80eb2cd5736167d63e43a5d1f0ad01f9b62429a88e15162a68014ebd0c8bc14a9f9c5705be0d8577c95df3f8df7483556051a3849fe86dfac844ca2a17477b2c601b6834709456aa1c0
+[Driver]     Time:    14488ns, id:  15, data: 98362789efc9433028b6e4a8220017f3cb94271564f949a127f8384d7cbb6990e263a09eba669e11ca957bf6450c47ceb21710a5414bffe215f90cb9e46626e3e2ee619f341f5799cd6e3f36aa11cc68b9cc5216b6a76eb03007ab4cb0ae206935dd5992a8f9423af584ac0c7871952f8604c25f8426d0f08bf41adf74e7f1d63bf03a061ddf395b38ab1986eb7d97b66d7070ddd575ba2e4692e213eba834077d00718b3247a4b4e2c7414002c97424a058d0ac862178c6b1266553b87fc7fa172e990135eccb14765450c85090d47bca22ffd55bb75d9bea34a30ee7fe48a684435b85178aaaa5b1b5e15a3c59bfa311009f776363d8f875438c2b4b4c503cc0239f315a07f4c4e2641cbc954c358144a675a12af762356252ebaf54181b0166937330c42387016aeff73f552ea26c
+[Monitor]    Time:    14563ns, id:  15, data: 8293fd01945748a22cf63e273c56dea143ca613e9be91fe1a96b01c5d65e0e1a9f808bfb7bdbe4371ccab7cc25e325376e0236b50bce6aab15656a105dde2a18681ffa28ac8f9282fbdb154e534bf2443d18266bfaf9b17ff7077ca0ff3518ea107e54c80b572042684d62e348ea6d6277f8c6b4f797ed2d5455e5c472b6d6fb3a4dc8068a07d725041748a5e8fcf3856efee4a3b36d54418a0ff28a6d31fb3d338a4817d177d92d91656eaadf6c6dd178d71818972b9249158cc2e900202471bffc1666d8c7ff6f19635d9ab9b5d5d07e8bddcfa8457f91112fadb4ea86320aa64488ecda4047ebd90691211a98d90bdae2bba4c9d02e5067e2c97fde2503b3
+
+TEST COMPLETED.
+$finish called at time : 14567500 ps : File "/home/danilo/Documents/mgr/aes/testbench/tb.sv" Line 96
+
