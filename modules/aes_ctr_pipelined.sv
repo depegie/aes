@@ -1,6 +1,6 @@
 `include "aes_defines.svh"
 
-module aes256_ctr_pipe (
+module aes_ctr_pipelined (
     input  logic                           Clk,
     input  logic                           Rst,
 

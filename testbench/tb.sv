@@ -31,16 +31,16 @@ module tb;
     event mon2scb_receive_ev;
     event scb2mon_finish_ev;
 
-`ifdef AES256_CBC_ITER
-    aes256_cbc_iter
-`elsif AES256_CBC_COMB
-    aes256_cbc_comb
-`elsif AES256_CTR_ITER
-    aes256_ctr_iter
-`elsif AES256_CTR_COMB
-    aes256_ctr_comb
-`elsif AES256_CTR_PIPE
-    aes256_ctr_pipe
+`ifdef AES_CBC_ITERATIVE
+    aes_cbc_iterative
+`elsif AES_CBC_UNROLLED
+    aes_cbc_unrolled
+`elsif AES_CTR_ITERATIVE
+    aes_ctr_iterative
+`elsif AES_CTR_UNROLLED
+    aes_ctr_unrolled
+`elsif AES_CTR_PIPELINED
+    aes_ctr_pipelined
 `endif
     dut (
         .Clk           ( clk           ),

@@ -1,6 +1,6 @@
 `include "aes_defines.svh"
 
-module aes256_ctr_iter (
+module aes_ctr_iterative (
     input  logic                           Clk,
     input  logic                           Rst,
 

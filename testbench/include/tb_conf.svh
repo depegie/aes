@@ -1,5 +1,3 @@
-`define AES256_CBC_COMB
-`define S_AXIS_WIDTH 128
-`define M_AXIS_WIDTH 128
+`define AES_CBC_ITERATIVE
 `define S_AXIS_DELAY 0
 `define M_AXIS_DELAY 0

@@ -137,7 +137,7 @@ def aes256_ctr(number:int, one_packet:bool, bad_packet:bool):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='AES Stimulus Generator')
 
-    parser.add_argument('-m', type=str, default='aes256_cbc_iter', help='pass module version')
+    parser.add_argument('-m', type=str, default='aes_cbc_iterative', help='pass module version')
     parser.add_argument('-n', type=int, default=1, help='pass number of test vectors')
     parser.add_argument('--slave-delay', type=int, default=0, help='pass driver delay in clock periods')
     parser.add_argument('--master-delay', type=int, default=0, help='pass monitor delay in clock periods')
@@ -154,15 +154,15 @@ if __name__ == "__main__":
     bad_packet = args.bad_packet
 
     match module:
-        case 'aes256_cbc_iter':
+        case 'aes_cbc_iterative':
             aes256_cbc(number, one_packet, bad_packet)
-        case 'aes256_cbc_comb':
+        case 'aes_cbc_unrolled':
             aes256_cbc(number, one_packet, bad_packet)
-        case 'aes256_ctr_iter':
+        case 'aes_ctr_iterative':
             aes256_ctr(number, one_packet, bad_packet)
-        case 'aes256_ctr_comb':
+        case 'aes_ctr_unrolled':
             aes256_ctr(number, one_packet, bad_packet)
-        case 'aes256_ctr_pipe':
+        case 'aes_ctr_pipelined':
             aes256_ctr(number, one_packet, bad_packet)
         case _:
             sys.exit('Invalid module type')
