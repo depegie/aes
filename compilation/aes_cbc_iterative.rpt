@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Sun Jan 18 20:12:54 2026
+| Date         : Fri Feb 20 21:25:17 2026
 | Host         : laptop running 64-bit Ubuntu 24.04.3 LTS
-| Command      : report_utilization -file aes256_cbc_iter_enc.rpt -append
-| Design       : synth_wrapper
+| Command      : report_utilization -file aes_cbc_iterative.rpt -append
+| Design       : aes_cbc_iterative
 | Device       : xczu7ev-ffvf1517-1LV-i
 | Speed File   : -1LV
 | Design State : Routed
@@ -33,15 +33,15 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| CLB LUTs                | 2822 |     0 |          0 |    230400 |  1.22 |
-|   LUT as Logic          | 2822 |     0 |          0 |    230400 |  1.22 |
+| CLB LUTs                | 5648 |     0 |          0 |    230400 |  2.45 |
+|   LUT as Logic          | 5648 |     0 |          0 |    230400 |  2.45 |
 |   LUT as Memory         |    0 |     0 |          0 |    101760 |  0.00 |
-| CLB Registers           | 2348 |     0 |          0 |    460800 |  0.51 |
-|   Register as Flip Flop | 2348 |     0 |          0 |    460800 |  0.51 |
+| CLB Registers           | 2385 |     0 |          0 |    460800 |  0.52 |
+|   Register as Flip Flop | 2385 |     0 |          0 |    460800 |  0.52 |
 |   Register as Latch     |    0 |     0 |          0 |    460800 |  0.00 |
 | CARRY8                  |    0 |     0 |          0 |     28800 |  0.00 |
-| F7 Muxes                |  627 |     0 |          0 |    115200 |  0.54 |
-| F8 Muxes                |  256 |     0 |          0 |     57600 |  0.44 |
+| F7 Muxes                |  736 |     0 |          0 |    115200 |  0.64 |
+| F8 Muxes                |   76 |     0 |          0 |     57600 |  0.13 |
 | F9 Muxes                |    0 |     0 |          0 |     28800 |  0.00 |
 +-------------------------+------+-------+------------+-----------+-------+
 * Warning! LUT value is adjusted to account for LUT combining.
@@ -61,8 +61,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 7     |          Yes |         Set |            - |
-| 2341  |          Yes |       Reset |            - |
+| 20    |          Yes |         Set |            - |
+| 2365  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -72,13 +72,13 @@ Table of Contents
 +--------------------------------------------+------+-------+------------+-----------+-------+
 |                  Site Type                 | Used | Fixed | Prohibited | Available | Util% |
 +--------------------------------------------+------+-------+------------+-----------+-------+
-| CLB                                        |  657 |     0 |          0 |     28800 |  2.28 |
-|   CLBL                                     |  329 |     0 |            |           |       |
-|   CLBM                                     |  328 |     0 |            |           |       |
-| LUT as Logic                               | 2822 |     0 |          0 |    230400 |  1.22 |
-|   using O5 output only                     |    4 |       |            |           |       |
-|   using O6 output only                     | 2658 |       |            |           |       |
-|   using O5 and O6                          |  160 |       |            |           |       |
+| CLB                                        | 1145 |     0 |          0 |     28800 |  3.98 |
+|   CLBL                                     |  544 |     0 |            |           |       |
+|   CLBM                                     |  601 |     0 |            |           |       |
+| LUT as Logic                               | 5648 |     0 |          0 |    230400 |  2.45 |
+|   using O5 output only                     |   13 |       |            |           |       |
+|   using O6 output only                     | 5538 |       |            |           |       |
+|   using O5 and O6                          |   97 |       |            |           |       |
 | LUT as Memory                              |    0 |     0 |          0 |    101760 |  0.00 |
 |   LUT as Distributed RAM                   |    0 |     0 |            |           |       |
 |     using O5 output only                   |    0 |       |            |           |       |
@@ -88,11 +88,11 @@ Table of Contents
 |     using O5 output only                   |    0 |       |            |           |       |
 |     using O6 output only                   |    0 |       |            |           |       |
 |     using O5 and O6                        |    0 |       |            |           |       |
-| CLB Registers                              | 2348 |     0 |          0 |    460800 |  0.51 |
-|   Register driven from within the CLB      |  480 |       |            |           |       |
-|   Register driven from outside the CLB     | 1868 |       |            |           |       |
-|     LUT in front of the register is unused |  587 |       |            |           |       |
-|     LUT in front of the register is used   | 1281 |       |            |           |       |
+| CLB Registers                              | 2385 |     0 |          0 |    460800 |  0.52 |
+|   Register driven from within the CLB      |  422 |       |            |           |       |
+|   Register driven from outside the CLB     | 1963 |       |            |           |       |
+|     LUT in front of the register is unused |  470 |       |            |           |       |
+|     LUT in front of the register is used   | 1493 |       |            |           |       |
 | Unique Control Sets                        |   23 |       |          0 |     57600 |  0.04 |
 +--------------------------------------------+------+-------+------------+-----------+-------+
 * * Note: Available Control Sets calculated as Slices * 2, Review the Control Sets Report for more information regarding control sets.
@@ -200,16 +200,16 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 2341 |            Register |
-| LUT6     | 1583 |                 CLB |
-| LUT5     |  928 |                 CLB |
-| MUXF7    |  627 |                 CLB |
-| LUT3     |  289 |                 CLB |
-| MUXF8    |  256 |                 CLB |
-| LUT2     |  155 |                 CLB |
-| LUT4     |   17 |                 CLB |
-| LUT1     |   10 |                 CLB |
-| FDSE     |    7 |            Register |
+| LUT6     | 3117 |                 CLB |
+| FDRE     | 2365 |            Register |
+| LUT5     | 1589 |                 CLB |
+| MUXF7    |  736 |                 CLB |
+| LUT3     |  503 |                 CLB |
+| LUT4     |  266 |                 CLB |
+| LUT2     |  247 |                 CLB |
+| MUXF8    |   76 |                 CLB |
+| LUT1     |   23 |                 CLB |
+| FDSE     |   20 |            Register |
 +----------+------+---------------------+
 
 
@@ -232,10 +232,10 @@ Table of Contents
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date              : Sun Jan 18 20:12:59 2026
+| Date              : Fri Feb 20 21:25:24 2026
 | Host              : laptop running 64-bit Ubuntu 24.04.3 LTS
-| Command           : report_timing_summary -file aes256_cbc_iter_enc.rpt -append
-| Design            : synth_wrapper
+| Command           : report_timing_summary -file aes_cbc_iterative.rpt -append
+| Design            : aes_cbc_iterative
 | Device            : xczu7ev-ffvf1517
 | Speed File        : -1LV  PRODUCTION 1.30 05-15-2022
 | Design State      : Routed
@@ -275,7 +275,7 @@ Timing Summary Report
 
 Rule       Severity  Description                    Violations  
 ---------  --------  -----------------------------  ----------  
-TIMING-18  Warning   Missing input or output delay  279         
+TIMING-18  Warning   Missing input or output delay  280         
 
 Note: This report is based on the most recent report_methodology run and may not be up-to-date. Run report_methodology on the current design for the latest report.
 
@@ -289,7 +289,7 @@ Table of Contents
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
 4. checking unconstrained_internal_endpoints (0)
-5. checking no_input_delay (132)
+5. checking no_input_delay (133)
 6. checking no_output_delay (147)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
@@ -320,9 +320,9 @@ Table of Contents
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
-5. checking no_input_delay (132)
+5. checking no_input_delay (133)
 --------------------------------
- There are 132 input ports with no input delay specified. (HIGH)
+ There are 133 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 
@@ -374,7 +374,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      0.205        0.000                      0                 4318        0.092        0.000                      0                 4318        2.125        0.000                       0                  2348  
+      0.075        0.000                      0                 4377        0.100        0.000                      0                 4377        1.925        0.000                       0                  2385  
 
 
 All user specified timing constraints are met.
@@ -387,7 +387,7 @@ All user specified timing constraints are met.
 
 Clock  Waveform(ns)         Period(ns)      Frequency(MHz)
 -----  ------------         ----------      --------------
-clk    {0.000 2.400}        4.800           208.333         
+clk    {0.000 2.200}        4.400           227.273         
 
 
 ------------------------------------------------------------------------------------------------
@@ -397,7 +397,7 @@ clk    {0.000 2.400}        4.800           208.333
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-clk                 0.205        0.000                      0                 4318        0.092        0.000                      0                 4318        2.125        0.000                       0                  2348  
+clk                 0.075        0.000                      0                 4377        0.100        0.000                      0                 4377        1.925        0.000                       0                  2385  
 
 
 ------------------------------------------------------------------------------------------------
@@ -428,27 +428,27 @@ Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing 
 From Clock:  clk
   To Clock:  clk
 
-Setup :            0  Failing Endpoints,  Worst Slack        0.205ns,  Total Violation        0.000ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.092ns,  Total Violation        0.000ns
-PW    :            0  Failing Endpoints,  Worst Slack        2.125ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.075ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.100ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        1.925ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.205ns  (required time - arrival time)
-  Source:                 inst/key_expansion_cnt_reg[1]/C
-                            (rising edge-triggered cell FDSE clocked by clk  {rise@0.000ns fall@2.400ns period=4.800ns})
-  Destination:            inst/genblk1[5].key_expansion_reg_reg[929]/D
-                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.400ns period=4.800ns})
+Slack (MET) :             0.075ns  (required time - arrival time)
+  Source:                 key_expansion_cnt_reg[1]/C
+                            (rising edge-triggered cell FDSE clocked by clk  {rise@0.000ns fall@2.200ns period=4.400ns})
+  Destination:            genblk1[8].key_expansion_reg_reg[1357]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.200ns period=4.400ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            4.800ns  (clk rise@4.800ns - clk rise@0.000ns)
-  Data Path Delay:        4.587ns  (logic 1.221ns (26.619%)  route 3.366ns (73.381%))
-  Logic Levels:           7  (LUT3=1 LUT5=2 LUT6=4)
-  Clock Path Skew:        -0.017ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.033ns = ( 4.833 - 4.800 ) 
-    Source Clock Delay      (SCD):    0.050ns
+  Requirement:            4.400ns  (clk rise@4.400ns - clk rise@0.000ns)
+  Data Path Delay:        4.315ns  (logic 1.220ns (28.272%)  route 3.095ns (71.728%))
+  Logic Levels:           8  (LUT3=1 LUT5=1 LUT6=5 MUXF7=1)
+  Clock Path Skew:        -0.016ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.035ns = ( 4.435 - 4.400 ) 
+    Source Clock Delay      (SCD):    0.051ns
     Clock Pessimism Removal (CPR):    0.000ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -460,49 +460,52 @@ Slack (MET) :             0.205ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
                                                       0.000     0.000 r  Clk (IN)
-                         net (fo=2347, unset)         0.050     0.050    inst/Clk
-    SLICE_X59Y165        FDSE                                         r  inst/key_expansion_cnt_reg[1]/C
+                         net (fo=2384, unset)         0.051     0.051    Clk
+    SLICE_X93Y189        FDSE                                         r  key_expansion_cnt_reg[1]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X59Y165        FDSE (Prop_GFF2_SLICEL_C_Q)
-                                                      0.137     0.187 r  inst/key_expansion_cnt_reg[1]/Q
-                         net (fo=494, routed)         0.697     0.884    inst/key_expansion_cnt_reg[1]
-    SLICE_X54Y178        LUT6 (Prop_F6LUT_SLICEM_I2_O)
-                                                      0.214     1.098 r  inst/g0_b0_i_60/O
-                         net (fo=1, routed)           0.061     1.159    inst/g0_b0_i_60_n_0
-    SLICE_X54Y178        LUT5 (Prop_E6LUT_SLICEM_I0_O)
-                                                      0.153     1.312 r  inst/g0_b0_i_36/O
-                         net (fo=1, routed)           0.066     1.378    inst/g0_b0_i_36_n_0
-    SLICE_X54Y178        LUT5 (Prop_C6LUT_SLICEM_I4_O)
-                                                      0.149     1.527 r  inst/g0_b0_i_12/O
-                         net (fo=2, routed)           0.510     2.037    inst/key_expansion_key[234]
-    SLICE_X61Y170        LUT3 (Prop_C5LUT_SLICEM_I2_O)
-                                                      0.167     2.204 r  inst/g0_b0_i_3/O
-                         net (fo=32, routed)          0.699     2.902    inst/g0_b0_i_3_n_0
-    SLICE_X62Y165        LUT6 (Prop_D6LUT_SLICEL_I2_O)
-                                                      0.248     3.150 r  inst/g2_b1/O
-                         net (fo=1, routed)           0.295     3.445    inst/key_expansion_inst/genblk1[0].aes_sbox_inst/genblk1[0].key_expansion_reg_reg[321]_0
-    SLICE_X62Y159        LUT6 (Prop_E6LUT_SLICEL_I1_O)
-                                                      0.059     3.504 r  inst/key_expansion_inst/genblk1[0].aes_sbox_inst/genblk1[12].key_expansion_reg[1889]_i_3/O
-                         net (fo=4, routed)           0.298     3.802    inst/after_subword[1]
-    SLICE_X62Y154        LUT6 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.094     3.896 r  inst/genblk1[12].key_expansion_reg[1825]_i_1/O
-                         net (fo=13, routed)          0.741     4.637    inst/key_expansion_new_key[33]
-    SLICE_X59Y152        FDRE                                         r  inst/genblk1[5].key_expansion_reg_reg[929]/D
+    SLICE_X93Y189        FDSE (Prop_AFF_SLICEM_C_Q)
+                                                      0.134     0.185 r  key_expansion_cnt_reg[1]/Q
+                         net (fo=541, routed)         0.650     0.835    key_expansion_inst/genblk1[0].aes_sbox_inst/Q[1]
+    SLICE_X92Y198        LUT5 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.216     1.051 r  key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0_i_39/O
+                         net (fo=1, routed)           0.144     1.195    key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0_i_39_n_0
+    SLICE_X92Y198        LUT6 (Prop_A6LUT_SLICEL_I0_O)
+                                                      0.217     1.412 r  key_expansion_inst/genblk1[0].aes_sbox_inst/g0_b0_i_12/O
+                         net (fo=2, routed)           0.123     1.535    key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[0].key_expansion_reg_reg[271]_0[2]
+    SLICE_X91Y197        LUT3 (Prop_E6LUT_SLICEL_I0_O)
+                                                      0.094     1.629 r  key_expansion_inst/genblk1[1].aes_sbox_inst/g0_b0__0_i_3/O
+                         net (fo=32, routed)          0.534     2.163    key_expansion_inst/genblk1[1].aes_sbox_inst/sel[2]
+    SLICE_X94Y208        LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.247     2.410 r  key_expansion_inst/genblk1[1].aes_sbox_inst/g3_b5__0/O
+                         net (fo=1, routed)           0.029     2.439    key_expansion_inst/genblk1[1].aes_sbox_inst/g3_b5__0_n_0
+    SLICE_X94Y208        MUXF7 (Prop_F7MUX_CD_SLICEM_I1_O)
+                                                      0.132     2.571 r  key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[12].key_expansion_reg_reg[1805]_i_3/O
+                         net (fo=1, routed)           0.263     2.834    key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[12].key_expansion_reg_reg[1805]_i_3_n_0
+    SLICE_X94Y208        LUT6 (Prop_H6LUT_SLICEM_I2_O)
+                                                      0.061     2.895 r  key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[12].key_expansion_reg[1805]_i_1/O
+                         net (fo=14, routed)          0.317     3.212    key_expansion_inst/genblk1[1].aes_sbox_inst/D[5]
+    SLICE_X90Y206        LUT6 (Prop_H6LUT_SLICEL_I0_O)
+                                                      0.060     3.272 r  key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[12].key_expansion_reg[1837]_i_1/O
+                         net (fo=15, routed)          0.605     3.877    key_expansion_inst/genblk1[1].aes_sbox_inst/D[13]
+    SLICE_X73Y194        LUT6 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.059     3.936 r  key_expansion_inst/genblk1[1].aes_sbox_inst/genblk1[12].key_expansion_reg[1869]_i_1/O
+                         net (fo=13, routed)          0.431     4.366    key_expansion_new_key[77]
+    SLICE_X73Y195        FDRE                                         r  genblk1[8].key_expansion_reg_reg[1357]/D
   -------------------------------------------------------------------    -------------------
 
-                         (clock clk rise edge)        4.800     4.800 r  
-                                                      0.000     4.800 r  Clk (IN)
-                         net (fo=2347, unset)         0.033     4.833    inst/Clk
-    SLICE_X59Y152        FDRE                                         r  inst/genblk1[5].key_expansion_reg_reg[929]/C
-                         clock pessimism              0.000     4.833    
-                         clock uncertainty           -0.035     4.798    
-    SLICE_X59Y152        FDRE (Setup_DFF2_SLICEL_C_D)
-                                                      0.044     4.842    inst/genblk1[5].key_expansion_reg_reg[929]
+                         (clock clk rise edge)        4.400     4.400 r  
+                                                      0.000     4.400 r  Clk (IN)
+                         net (fo=2384, unset)         0.035     4.435    Clk
+    SLICE_X73Y195        FDRE                                         r  genblk1[8].key_expansion_reg_reg[1357]/C
+                         clock pessimism              0.000     4.435    
+                         clock uncertainty           -0.035     4.400    
+    SLICE_X73Y195        FDRE (Setup_HFF_SLICEM_C_D)
+                                                      0.042     4.442    genblk1[8].key_expansion_reg_reg[1357]
   -------------------------------------------------------------------
-                         required time                          4.842    
-                         arrival time                          -4.637    
+                         required time                          4.442    
+                         arrival time                          -4.366    
   -------------------------------------------------------------------
-                         slack                                  0.205    
+                         slack                                  0.075    
 
 
 
@@ -510,18 +513,18 @@ Slack (MET) :             0.205ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.092ns  (arrival time - required time)
-  Source:                 inst/key_expansion_write_enable_reg_reg[8]/C
-                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.400ns period=4.800ns})
-  Destination:            inst/key_expansion_write_enable_reg_reg[9]/D
-                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.400ns period=4.800ns})
+Slack (MET) :             0.100ns  (arrival time - required time)
+  Source:                 key_expansion_write_enable_reg_reg[8]/C
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.200ns period=4.400ns})
+  Destination:            key_expansion_write_enable_reg_reg[9]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@2.200ns period=4.400ns})
   Path Group:             clk
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
-  Data Path Delay:        0.143ns  (logic 0.084ns (58.636%)  route 0.059ns (41.364%))
+  Data Path Delay:        0.152ns  (logic 0.083ns (54.544%)  route 0.069ns (45.456%))
   Logic Levels:           0  
-  Clock Path Skew:        0.006ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    0.020ns
+  Clock Path Skew:        0.007ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.021ns
     Source Clock Delay      (SCD):    0.014ns
     Clock Pessimism Removal (CPR):    -0.000ns
 
@@ -529,27 +532,27 @@ Slack (MET) :             0.092ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
                                                       0.000     0.000 r  Clk (IN)
-                         net (fo=2347, unset)         0.014     0.014    inst/Clk
-    SLICE_X62Y141        FDRE                                         r  inst/key_expansion_write_enable_reg_reg[8]/C
+                         net (fo=2384, unset)         0.014     0.014    Clk
+    SLICE_X88Y172        FDRE                                         r  key_expansion_write_enable_reg_reg[8]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X62Y141        FDRE (Prop_HFF_SLICEL_C_Q)
-                                                      0.084     0.098 r  inst/key_expansion_write_enable_reg_reg[8]/Q
-                         net (fo=2, routed)           0.059     0.157    inst/p_0_in8_in
-    SLICE_X62Y142        FDRE                                         r  inst/key_expansion_write_enable_reg_reg[9]/D
+    SLICE_X88Y172        FDRE (Prop_CFF_SLICEM_C_Q)
+                                                      0.083     0.097 r  key_expansion_write_enable_reg_reg[8]/Q
+                         net (fo=2, routed)           0.069     0.166    p_0_in8_in
+    SLICE_X88Y172        FDRE                                         r  key_expansion_write_enable_reg_reg[9]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        0.000     0.000 r  
                                                       0.000     0.000 r  Clk (IN)
-                         net (fo=2347, unset)         0.020     0.020    inst/Clk
-    SLICE_X62Y142        FDRE                                         r  inst/key_expansion_write_enable_reg_reg[9]/C
-                         clock pessimism              0.000     0.020    
-    SLICE_X62Y142        FDRE (Hold_GFF2_SLICEL_C_D)
-                                                      0.045     0.065    inst/key_expansion_write_enable_reg_reg[9]
+                         net (fo=2384, unset)         0.021     0.021    Clk
+    SLICE_X88Y172        FDRE                                         r  key_expansion_write_enable_reg_reg[9]/C
+                         clock pessimism              0.000     0.021    
+    SLICE_X88Y172        FDRE (Hold_CFF2_SLICEM_C_D)
+                                                      0.045     0.066    key_expansion_write_enable_reg_reg[9]
   -------------------------------------------------------------------
-                         required time                         -0.065    
-                         arrival time                           0.157    
+                         required time                         -0.066    
+                         arrival time                           0.166    
   -------------------------------------------------------------------
-                         slack                                  0.092    
+                         slack                                  0.100    
 
 
 
@@ -558,24 +561,24 @@ Slack (MET) :             0.092ns  (arrival time - required time)
 Pulse Width Checks
 --------------------------------------------------------------------------------------
 Clock Name:         clk
-Waveform(ns):       { 0.000 2.400 }
-Period(ns):         4.800
+Waveform(ns):       { 0.000 2.200 }
+Period(ns):         4.400
 Sources:            { Clk }
 
 Check Type        Corner  Lib Pin  Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location       Pin
-Min Period        n/a     FDRE/C   n/a            0.550         4.800       4.250      SLICE_X58Y152  inst/block_last_reg_reg/C
-Low Pulse Width   Slow    FDRE/C   n/a            0.275         2.400       2.125      SLICE_X58Y152  inst/block_last_reg_reg/C
-High Pulse Width  Slow    FDRE/C   n/a            0.275         2.400       2.125      SLICE_X58Y152  inst/block_last_reg_reg/C
+Min Period        n/a     FDRE/C   n/a            0.550         4.400       3.850      SLICE_X95Y168  block_last_reg_reg/C
+Low Pulse Width   Slow    FDRE/C   n/a            0.275         2.200       1.925      SLICE_X95Y168  block_last_reg_reg/C
+High Pulse Width  Slow    FDRE/C   n/a            0.275         2.200       1.925      SLICE_X95Y168  block_last_reg_reg/C
 
 
 
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date              : Sun Jan 18 20:13:09 2026
+| Date              : Fri Feb 20 21:25:32 2026
 | Host              : laptop running 64-bit Ubuntu 24.04.3 LTS
-| Command           : report_clock_utilization -file aes256_cbc_iter_enc.rpt -append
-| Design            : synth_wrapper
+| Command           : report_clock_utilization -file aes_cbc_iterative.rpt -append
+| Design            : aes_cbc_iterative
 | Device            : xczu7ev-ffvf1517
 | Speed File        : -1LV  PRODUCTION 1.30 05-15-2022
 | Temperature Grade : I
@@ -757,10 +760,10 @@ All Modules
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Sun Jan 18 20:13:19 2026
+| Date         : Fri Feb 20 21:25:38 2026
 | Host         : laptop running 64-bit Ubuntu 24.04.3 LTS
-| Command      : report_drc -file aes256_cbc_iter_enc.rpt -append
-| Design       : synth_wrapper
+| Command      : report_drc -file aes_cbc_iterative.rpt -append
+| Design       : aes_cbc_iterative
 | Device       : xczu7ev-ffvf1517-1LV-i
 | Speed File   : -1LV
 | Design State : Fully Routed
@@ -776,7 +779,7 @@ Table of Contents
 1. REPORT SUMMARY
 -----------------
             Netlist: netlist
-          Floorplan: impl_1
+          Floorplan: checkpoint_aes_cbc_iterative
       Design limits: <entire design considered>
            Ruledeck: default
              Max checks: <unlimited>
@@ -792,22 +795,22 @@ Table of Contents
 Design Route Status
                                                :      # nets :
    ------------------------------------------- : ----------- :
-   # of logical nets.......................... :        6348 :
-       # of nets not needing routing.......... :        1860 :
-           # of internally routed nets........ :        1596 :
+   # of logical nets.......................... :        9078 :
+       # of nets not needing routing.......... :        2056 :
+           # of internally routed nets........ :        1792 :
            # of implicitly routed ports....... :         264 :
-       # of routable nets..................... :        4488 :
-           # of fully routed nets............. :        4488 :
+       # of routable nets..................... :        7022 :
+           # of fully routed nets............. :        7022 :
        # of nets with routing errors.......... :           0 :
    ------------------------------------------- : ----------- :
 
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date             : Sun Jan 18 20:13:34 2026
+| Date             : Fri Feb 20 21:25:48 2026
 | Host             : laptop running 64-bit Ubuntu 24.04.3 LTS
-| Command          : report_power -file aes256_cbc_iter_enc.rpt -append
-| Design           : synth_wrapper
+| Command          : report_power -file aes_cbc_iterative.rpt -append
+| Design           : aes_cbc_iterative
 | Device           : xczu7ev-ffvf1517-1LV-i
 | Design State     : routed
 | Grade            : industrial
@@ -833,14 +836,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.613        |
+| Total On-Chip Power (W)  | 0.668        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.051        |
+| Dynamic (W)              | 0.106        |
 | Device Static (W)        | 0.562        |
 | Effective TJA (C/W)      | 0.9          |
-| Max Ambient (C)          | 99.5         |
-| Junction Temperature (C) | 25.5         |
+| Max Ambient (C)          | 99.4         |
+| Junction Temperature (C) | 25.6         |
 | Confidence Level         | Medium       |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -855,15 +858,15 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.011 |        3 |       --- |             --- |
-| CLB Logic      |     0.015 |     6215 |       --- |             --- |
-|   LUT as Logic |     0.015 |     2822 |    230400 |            1.22 |
-|   Register     |    <0.001 |     2348 |    460800 |            0.51 |
+| Clocks         |     0.012 |        3 |       --- |             --- |
+| CLB Logic      |     0.038 |     8944 |       --- |             --- |
+|   LUT as Logic |     0.038 |     5648 |    230400 |            2.45 |
+|   Register     |    <0.001 |     2385 |    460800 |            0.52 |
 |   Others       |     0.000 |        2 |       --- |             --- |
-|   F7/F8 Muxes  |     0.000 |      883 |    230400 |            0.38 |
-| Signals        |     0.025 |     4487 |       --- |             --- |
+|   F7/F8 Muxes  |     0.000 |      812 |    230400 |            0.35 |
+| Signals        |     0.056 |     7021 |       --- |             --- |
 | Static Power   |     0.562 |          |           |                 |
-| Total          |     0.613 |          |           |                 |
+| Total          |     0.668 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -873,10 +876,10 @@ Table of Contents
 +-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source          | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint          |       0.720 |     0.189 |       0.070 |      0.119 |       NA    | Unspecified | NA         |
+| Vccint          |       0.720 |     0.266 |       0.147 |      0.119 |       NA    | Unspecified | NA         |
 | Vccint_io       |       0.850 |     0.070 |       0.000 |      0.070 |       NA    | Unspecified | NA         |
 | Vccbram         |       0.850 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
-| Vccaux          |       1.800 |     0.149 |       0.000 |      0.149 |       NA    | Unspecified | NA         |
+| Vccaux          |       1.800 |     0.148 |       0.000 |      0.148 |       NA    | Unspecified | NA         |
 | Vccaux_io       |       1.800 |     0.055 |       0.000 |      0.055 |       NA    | Unspecified | NA         |
 | Vcco33          |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco25          |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -948,7 +951,7 @@ Table of Contents
 +-------+--------+-----------------+
 | Clock | Domain | Constraint (ns) |
 +-------+--------+-----------------+
-| clk   | Clk    |             4.8 |
+| clk   | Clk    |             4.4 |
 +-------+--------+-----------------+
 
 
@@ -958,14 +961,38 @@ Table of Contents
 3.1 By Hierarchy
 ----------------
 
-+------------------------+-----------+
-| Name                   | Power (W) |
-+------------------------+-----------+
-| synth_wrapper          |     0.051 |
-|   inst                 |     0.051 |
-|     key_expansion_inst |     0.002 |
-|     round_inst         |     0.002 |
-|       sb_inst          |     0.002 |
-+------------------------+-----------+
++-------------------------------------+-----------+
+| Name                                | Power (W) |
++-------------------------------------+-----------+
+| aes_cbc_iterative                   |     0.106 |
+|   key_expansion_inst                |     0.029 |
+|     genblk1[0].aes_sbox_inst        |     0.008 |
+|     genblk1[1].aes_sbox_inst        |     0.007 |
+|     genblk1[2].aes_sbox_inst        |     0.007 |
+|     genblk1[3].aes_sbox_inst        |     0.007 |
+|   round_inst                        |     0.058 |
+|     sb_inst                         |     0.058 |
+|       genblk1[0].aes_sbox_inst      |     0.003 |
+|       genblk1[10].aes_sbox_inst     |     0.003 |
+|       genblk1[11].aes_sbox_inst     |     0.002 |
+|       genblk1[12].aes_sbox_inst     |     0.004 |
+|       genblk1[13].aes_inv_sbox_inst |     0.003 |
+|       genblk1[13].aes_sbox_inst     |     0.002 |
+|       genblk1[14].aes_inv_sbox_inst |     0.001 |
+|       genblk1[14].aes_sbox_inst     |     0.002 |
+|       genblk1[15].aes_inv_sbox_inst |     0.002 |
+|       genblk1[15].aes_sbox_inst     |     0.001 |
+|       genblk1[1].aes_sbox_inst      |     0.002 |
+|       genblk1[2].aes_sbox_inst      |     0.004 |
+|       genblk1[3].aes_sbox_inst      |     0.004 |
+|       genblk1[4].aes_sbox_inst      |     0.003 |
+|       genblk1[5].aes_inv_sbox_inst  |     0.001 |
+|       genblk1[5].aes_sbox_inst      |     0.001 |
+|       genblk1[6].aes_sbox_inst      |     0.003 |
+|       genblk1[7].aes_inv_sbox_inst  |     0.002 |
+|       genblk1[7].aes_sbox_inst      |     0.002 |
+|       genblk1[8].aes_sbox_inst      |     0.002 |
+|       genblk1[9].aes_sbox_inst      |     0.003 |
++-------------------------------------+-----------+
 
 

@@ -12,12 +12,12 @@ INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
 INFO: [USF-XSim-2] XSim::Compile design
 INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
 xvlog --incr --relax -L uvm -prj tb_vlog.prj
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/aes256_ctr_comb.sv" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module aes256_ctr_comb
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_bytes_substitutor.sv" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module aes_bytes_substitutor
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_columns_mixer.sv" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module aes_columns_mixer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/aes_ctr_unrolled.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module aes_ctr_unrolled
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_inv_sbox.sv" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module aes_inv_sbox
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" into library xil_defaultlib
@@ -47,7 +47,7 @@ Running: /tools/Xilinx/Vivado/2024.2/bin/unwrapped/lnx64.o/xelab --incr --debug 
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 4 for port 'Round_number' [/home/danilo/Documents/mgr/aes/modules/aes256_ctr_comb.sv:232]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 4 for port 'Round_number' [/home/danilo/Documents/mgr/aes/modules/aes_ctr_unrolled.sv:232]
 Completed static elaboration
 Starting simulation data flow analysis
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/tb_pkg.sv" Line 1. Module tb_pkg doesn't have a timescale but at least one module in design has a timescale.
@@ -56,7 +56,7 @@ WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Li
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes256_ctr_comb.sv" Line 3. Module aes256_ctr_comb_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes_ctr_unrolled.sv" Line 3. Module aes_ctr_unrolled_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" Line 3. Module aes_key_expander_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
@@ -647,7 +647,7 @@ WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Li
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 1. Module axis_if_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/testbench/axis_if.sv" Line 23. Module cb doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes256_ctr_comb.sv" Line 3. Module aes256_ctr_comb_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/aes_ctr_unrolled.sv" Line 3. Module aes_ctr_unrolled_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_key_expander.sv" Line 3. Module aes_key_expander_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_sbox.sv" Line 1. Module aes_sbox doesn't have a timescale but at least one module in design has a timescale.
@@ -1234,7 +1234,7 @@ WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_colum
 WARNING: [XSIM 43-4099] "/home/danilo/Documents/mgr/aes/modules/common/aes_round_key_adder.sv" Line 3. Module aes_round_key_adder doesn't have a timescale but at least one module in design has a timescale.
 Completed simulation data flow analysis
 Time Resolution for simulation is 1ps
-Compiling package xil_defaultlib.$unit_aes256_ctr_comb_sv_2126949...
+Compiling package xil_defaultlib.$unit_aes_bytes_substitutor_sv_1...
 WARNING: [XSIM 43-3373] "../../../../../aes/testbench/include/generator.svh" Line 23. System function $sscanf is used as system task. This system function should have a LHS e.g. x=$sscanf().
 WARNING: [XSIM 43-3373] "../../../../../aes/testbench/include/generator.svh" Line 29. System function $sscanf is used as system task. This system function should have a LHS e.g. x=$sscanf().
 Compiling package xil_defaultlib.tb_pkg
@@ -1249,25 +1249,17 @@ Compiling module xil_defaultlib.aes_bytes_substitutor_default
 Compiling module xil_defaultlib.aes_rows_shifter
 Compiling module xil_defaultlib.aes_columns_mixer
 Compiling module xil_defaultlib.aes_round
-Compiling module xil_defaultlib.aes256_ctr_comb_default
+Compiling module xil_defaultlib.aes_ctr_unrolled_default
 Compiling module xil_defaultlib.tb
 Compiling module xil_defaultlib.glbl
 Built simulation snapshot tb_behav
-INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
 INFO: [USF-XSim-4] XSim::Simulate design
 INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/danilo/Documents/mgr/project_1/project_1.sim/sim_1/behav/xsim'
 INFO: [USF-XSim-98] *** Running xsim
-   with args "tb_behav -key {Behavioral:sim_1:Functional:tb} -tclbatch {tb.tcl} -view {/home/danilo/Documents/mgr/project_1/tb_behav.wcfg} -log {simulate.log}"
+   with args "tb_behav -key {Behavioral:sim_1:Functional:tb} -tclbatch {tb.tcl} -log {simulate.log}"
 INFO: [USF-XSim-8] Loading simulator feature
 Time resolution is 1 ps
-open_wave_config /home/danilo/Documents/mgr/project_1/tb_behav.wcfg
-WARNING: Simulation object /tb/dut/round_cnt was not found in the design.
-WARNING: Simulation object /tb/dut/encrypt_reg was not found in the design.
-WARNING: Simulation object /tb/dut/key_expansion_key_reg was not found in the design.
-WARNING: Simulation object /tb/dut/ark_output_block was not found in the design.
-WARNING: Simulation object /tb/dut/round_last was not found in the design.
-WARNING: Simulation object /tb/dut/round_input_block was not found in the design.
-WARNING: Simulation object /tb/dut/round_output_block was not found in the design.
 source tb.tcl
 # set curr_wave [current_wave_config]
 # if { [string length $curr_wave] == 0 } {
@@ -1278,77 +1270,103 @@ source tb.tcl
 #      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
 #   }
 # }
+WARNING: Simulation object /tb/gen was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/drv was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/mon was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/scb was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/gen2drv_mbx was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/gen2scb_mbx was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/mon2scb_mbx was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of System Verilog Dynamic Type object.
+WARNING: Simulation object /tb/drv2gen_receive_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
+WARNING: Simulation object /tb/gen2drv_finish_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
+WARNING: Simulation object /tb/scb2gen_receive_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
+WARNING: Simulation object /tb/gen2scb_finish_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
+WARNING: Simulation object /tb/mon2scb_receive_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
+WARNING: Simulation object /tb/scb2mon_finish_ev was not traceable in the design for the following reason:
+Vivado Simulator does not support tracing of event type object.
 # run 1000ns
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 12733.730 ; gain = 0.000 ; free physical = 3796 ; free virtual = 34742
 run all
-[Driver]     Time:     2603ns, id:   0, data: 80d7a887089d2ac4b181b2b52566ac51b30cd9cf85b01a2a8fefcd85b400636b1a0f78140d437ffb3db62deae55d3a0cc5
-[Monitor]    Time:     2618ns, id:   0, data: 25
-[Driver]     Time:     2653ns, id:   1, data: 28902ab9742537d6d16b9aadfcb18a7ead1fa2f110f692713d3e8b788323ef07e022997b3b0cf1fb1e5cfa64fef68d113f76
-[Monitor]    Time:     2668ns, id:   1, data: 9d82
-[Driver]     Time:     2703ns, id:   2, data: 0b9aaa102a9f7c4303e609d6f2d3bffc08adea181aabda8c8b980407d7f92f7aa09b28c2d358ae23f6c0aa30bffc697de64744
-[Monitor]    Time:     2718ns, id:   2, data: db9354
-[Driver]     Time:     2753ns, id:   3, data: 5bd3a98e9899410054a34ea9b4aa38c5f88f95c872f61a813b0b072c91cca234ec1bca731a72e26a61fbcca93fdad8a941c0fe79
-[Monitor]    Time:     2768ns, id:   3, data: fb62a47b
-[Driver]     Time:     2803ns, id:   4, data: 51f145d57580e282ddf46a514c829e19ab3a3465fc4c6f7f24b07ffff0e9816b2b6ad90a9c31d0951ee064b7b8960c8bf84ca2a7f9
-[Monitor]    Time:     2818ns, id:   4, data: 0690722c08
-[Driver]     Time:     2853ns, id:   5, data: 41247ad858c73f7fcb6eee74ff5e3b4509a49f0cdaebb72d8cc0b99242a75bea4099f69d07a4eee418e6321961207bad3f1d75dc7993
-[Monitor]    Time:     2868ns, id:   5, data: 7b845aeb6294
-[Driver]     Time:     2903ns, id:   6, data: d4a0c5e1bb4a9d6d63a25d3aa4d840c855c97bd0bbb28b0582084f0d3d20a821e25c7205b8860552ad387de75bc85dba205fe9d80811cc
-[Monitor]    Time:     2918ns, id:   6, data: 504715779b7869
-[Driver]     Time:     2953ns, id:   7, data: fffbbf449d61780c4c501bfa025a21857c74f815584ea5eeb691a7d70e6bee461af77e4adc2484de313a9eaa1ee44c804d4794a1495d9730
-[Monitor]    Time:     2968ns, id:   7, data: d78d6a545ecacb13
-[Driver]     Time:     3003ns, id:   8, data: 03e6ebdc5487866719f6614d073908d49f3151c68099a2f530201bbec22eb7b734bc6809b78cd24654a9ad1f7b21d5f0a2ad255ca1a186bce2
-[Monitor]    Time:     3018ns, id:   8, data: 0fa58850a415d4bf79
-[Driver]     Time:     3053ns, id:   9, data: a2974d3b12e6c48c502f38030b8a7e597691c92370a60257962782798cf91e9baf79c4fe693135a5ef734605bd33d87720a3d7282c36ae7033f8
-[Monitor]    Time:     3068ns, id:   9, data: 6d2075cf990ea8503e71
-[Driver]     Time:     3103ns, id:  10, data: 655523b366c06ae96cd9c4f0e7aad6e7d80ff0958ad15ee49f4b2e53818e23513cf12bb88527783d1667985ba26ae362975282be23e9f9fc93c624
-[Monitor]    Time:     3118ns, id:  10, data: f5e33f2edbc9bca3001a86
-[Driver]     Time:     3153ns, id:  11, data: fb11d0d1399e2f7742fa6ff079eb6a4febc0899887d93f0b40858449e89043411f1bf19611f250b589d16d8c18c94fffb2b41428a2a8f4199d942fb1
-[Monitor]    Time:     3168ns, id:  11, data: 177a27cddd9298885bf8084b
-[Driver]     Time:     3203ns, id:  12, data: 06e85cb8e14561a056406f6907a127044c0221ea627abceef1a31789a209d5851a76010969d13c75767f8103374cc6da35f72e0f731ae7a9720883cb49
-[Monitor]    Time:     3218ns, id:  12, data: 0e6101caa960dbd8cc826fdc94
-[Driver]     Time:     3253ns, id:  13, data: e14a8d4335ec604e0623d6f7957f9656a6fe305a0bc30a06427f064a11eb3f3fae82c3f108f8a9b2e92a1ab9f030cb81fdc46b43d74a3d5fe71a5ee807cb
-[Monitor]    Time:     3268ns, id:  13, data: 0c964d9bbd2ca9c72d881e9beb15
-[Driver]     Time:     3303ns, id:  14, data: 77858a2dcf1993be5d7e4db033c72dab927ab34f411a5e3536ce8cefaebe3209518c6d58e99fbb20e524d53c85dbf7350d921ad63c63d03875f6dd3fd1247f
-[Monitor]    Time:     3318ns, id:  14, data: d3249ff2693b4cb7cbb7cc69c13ba9
-[Driver]     Time:     3353ns, id:  15, data: 047dee1df01076739b91cfeee79897bdcc397ade6a98bc50657f12d28b2d832d0b28b088dbc0be1226a954ed06316b8f75aa1cbbe52a70836080aa8f8d57dd8e
-[Monitor]    Time:     3368ns, id:  15, data: 605254224b50eeb003f71595ee09ca21
-[Driver]     Time:     3423ns, id:  16, data: 118c657d90db40a1f2c1be74cabea3cf213276a137a543862b1fe65f706da907efcfb5c6b8d084efaefc8b406ed515f45905242abb4eabb5300edb7a58ea92341f
-[Monitor]    Time:     3438ns, id:  16, data: 2e143b8471c080576968eb138770210a85
-[Driver]     Time:     3493ns, id:  17, data: 0dd3a5fcfa99ae3815e6d2f34d80deb7d8c134bea628fee3f03cb8977b648f320017a0432c772d5672064abc4dbc37027f15efd899776b39e658761f3ecd2d66dbcf
-[Monitor]    Time:     3508ns, id:  17, data: 7022a7fc7a790a95cbf07bf35096d93f4c73
-[Driver]     Time:     3563ns, id:  18, data: 869a3ff74dda8ec2850f63715916f85cb2a08d0d9766bb98a02fb1057f0248e88e9ac2ee5066302af044e75f32946ab78c362d4608752b8063e0658a36e4dc37e205e1
-[Monitor]    Time:     3578ns, id:  18, data: 64b2e702c17c317688336d5355cc08da690c69
-[Driver]     Time:     3633ns, id:  19, data: 780f827f408efdb71700910c3f4af8b53ccad1575f5dfd989f32ce2c49f274462cff87ef51e5697fe1d31bb6eea1ee205b3436e030f59a6f15b38ce70be6e07718ba5c75
-[Monitor]    Time:     3648ns, id:  19, data: 99f60a18f16ad978495b6c0f305d6f2d0afc4826
-[Driver]     Time:     3703ns, id:  20, data: 239d079a2f283a1e0298050357fac44b84e90a698b87e39c4e81b2ef60c94aae3c6a8900482535e506846ea3aeb2208b8d3f3109500f00e78501df0476ae9a9517b4d71fa1
-[Monitor]    Time:     3718ns, id:  20, data: 74d812533574e4aa40402f5bae669e35a8e922778c
-[Driver]     Time:     3773ns, id:  21, data: d78b7a8ad5c9b5ddaea18878cda20e0cc4b06e418fc3f137887ff30994f8e6168e8597779f7d11a0f33bd7391eedbaf9a1702c9f071b916370021a08f8bf07ef9191dc67f08d
-[Monitor]    Time:     3788ns, id:  21, data: 1ae6d7774968907db822ba44c185a9cbe49a2aa361e8
-[Driver]     Time:     3843ns, id:  22, data: bf9c61f80f134fd60828126a034aab15ec0db9718cb11aeefc1681841a93da13d07ff78f1d59cb7b5db12705f2d649d263de66e0e3e060e192aa345dd46767412c0f6e3a582ca2
-[Monitor]    Time:     3858ns, id:  22, data: 481c12312f581fb809c03589c017527c80333f710a491f
-[Driver]     Time:     3913ns, id:  23, data: ece7e1e175259642d58307011ffce0cd146965d79619fa0a456b6a49b7583994c8f1cf056fde11c20e37e1352273d0dd17e4517cef2d58ee5c5c874cd9cc858c37bf21436d0b049e
-[Monitor]    Time:     3928ns, id:  23, data: ab65e8554ad42d77a25964093552e3f0b764e61d2a13db60
-[Driver]     Time:     3983ns, id:  24, data: fe7debb023ab1378d5e55be54397baec2f0d32c1aacdb604a870d76ce18be6bb4dca3c10077fb3e08e9f4eb9c72fa4eaad7bb8db9788cf15fdfa7421ba3e62ef19d4a01510ccee00ae
-[Monitor]    Time:     3998ns, id:  24, data: 1dbcfd1aeb04451881cd8f6e62448c8bd2f4c3ccbc4fe26b9a
-[Driver]     Time:     4053ns, id:  25, data: 1ca8ee04746d8c3c4db92dc4b8e3cfb29ccc20bc5f15ed9025dc9f9c5da9b1d65a041f34b6d8fdc483425685d6605579364e7b5e2ae6852a5d6862ed20ef3556a97526f13578e3001b0f
-[Monitor]    Time:     4068ns, id:  25, data: 31d36de25edbfe4f0320d479ae943937531f8f3823ceebe459c3
-[Driver]     Time:     4123ns, id:  26, data: 875d1c7e9a087a16e7c726cd78463b93b00b396316f6ab43e95ed9554926a87a4b19712b6003360f57c52aacfed9e98201c8fb359f1a1a59194384c7741e9bbaffd9699612da5511d601b5
-[Monitor]    Time:     4138ns, id:  26, data: beb267b682acb65da165810391051682ed34cde7b5ecc8223e3a68
-[Driver]     Time:     4193ns, id:  27, data: 9576e53b79853f134c0ee2e4a2baf2cd5409f427981b61d898a329a3f108ed483ab3bb05138a7aff220d59caf81d8715f275cea2fee7b3f2cd9825b9d30c9fcba78833adeba707fe3a1d90f0
-[Monitor]    Time:     4208ns, id:  27, data: 17e8aa5db61c9dac49db4d7663e44214dc3c51e808db0acdceb86e46
-[Driver]     Time:     4263ns, id:  28, data: 482a50a1fc8ca1e1c574f60fe0b9136ac6fe6ffbfebe28133ab5bf7ecb1cbfd82a224c48fb1bd9940451dee38d97da833437679a5cf597babec534a3ca53ced1ebff6adc626c1e9d669c16be34
-[Monitor]    Time:     4278ns, id:  28, data: fad1cacc818994cc8d58097471fcbdb65a612b87a6c88938f79e41d34f
-[Driver]     Time:     4333ns, id:  29, data: ec425238efb769c694e6f65b8efe75981c4b642072b94e69e6c2a3c115df63665497acf7cde7834ac51f2fcb5564d0f8ab09b425b5867db6a1b42786f395f0903e6dbd73ef251d3ed07ad56cadb7
-[Monitor]    Time:     4348ns, id:  29, data: e513ba24602ec8fb10e0753a8f6c9de532d0929b5af8426683f435c229b3
-[Driver]     Time:     4403ns, id:  30, data: 1e255097138d265cb1aa7993e46ccc579f8e73af20426c7ead5ef25aeaecadb429749abd2c1d0a9bb40c8aa5be478d1369c36bf7b32dc06159a14e1c14eb8d3cd1639298631c3cc80b006fa1968bbf
-[Monitor]    Time:     4418ns, id:  30, data: b41895703974b040167fa8f585806ef4fba5afe4e55a748f514be2c41bd86e
-[Driver]     Time:     4473ns, id:  31, data: c1da0ee701a1390036273b5e3b3f8b16cfede58e80e6cc7a86d4392ccf014bc12e970de29c4cb9a91231b0289c0af16b2861fec0718735b969448ce73d685f34e04cd92792beb7f6c6350977697fb3fd
-[Monitor]    Time:     4488ns, id:  31, data: 250f837cf8074a40f0f8f667668f77174b666c41f16839d48f114503c8fcf47e
-[Driver]     Time:     4563ns, id:  32, data: 73de406180de638e980e4d83b82b76a3e9dc75d28109d3e760569ce46d67cbc82985f907789eef61ea91f602bff9895c93979fb3a18b174713c1688ee69673f37498518785a943e6d13ffb6e93baa1e81f
-[Monitor]    Time:     4578ns, id:  32, data: df1291893d94ad98bf1b927d3ce14e8316f1f6e2c69055daa653ce860bcc558a99
+[Driver]     Time:     2996ns, id:   0, data: ed66f8a1c0cb2fd314189a890c297da33d099b3c611921a80c4eb0435f8d046fc631e08b950530355bbfd335751ade25e7
+[Monitor]    Time:     3013ns, id:   0, data: a2
+[Driver]     Time:     3036ns, id:   1, data: 4237a3f76e7a11c827c510b20ea5d948108578935b6ab8a4dc473c91d64137943f034d22f23e7a1de8132294cf4b7bf066f8
+[Monitor]    Time:     3054ns, id:   1, data: 8c1a
+[Driver]     Time:     3077ns, id:   2, data: 59095e0405f3c84ab5e57ab533fda6769fc6584829ee714716f42c69b7b7ec87b75a26c958cfdd4963e715bfd5d2aaeaccd507
+[Monitor]    Time:     3094ns, id:   2, data: 827905
+[Driver]     Time:     3118ns, id:   3, data: 726b9dac9d133bc85907a99f67b6e9270967589459942025231e3d93d42df25474df9ec057a16b1360d6e3beb8d5cfa73980fdc0
+[Monitor]    Time:     3135ns, id:   3, data: ff731831
+[Driver]     Time:     3158ns, id:   4, data: 4f0fa1ceabfb804c4e5e43184b45d632bea713ae4993974dfb63ac54abfe99c66fca5b1c943d7e090e08f9410760056d8f957fa5e1
+[Monitor]    Time:     3176ns, id:   4, data: 2967f028d0
+[Driver]     Time:     3199ns, id:   5, data: d618154bb3d6dffa5248aa0545198204b16bbb0890a8df4e5cc441d192c9ea69a03352f460f9200669e30d19ae498e9c57d95ebaac6f
+[Monitor]    Time:     3216ns, id:   5, data: 7962d8f8e818
+[Driver]     Time:     3239ns, id:   6, data: 6fac962876bb28fad51bec643ee5c32581bd0e0b4c595daeb7811e7fca76cb13f48c906c2ac9c655807618a487f54923994902f0f21bdb
+[Monitor]    Time:     3257ns, id:   6, data: 58d75c75e5f9a6
+[Driver]     Time:     3280ns, id:   7, data: c116c2aa2142c505a3c0a799aaef520dd833082b26ae7fcdf8ba721f1abfefe88a09584d6ba7bc67c24c40f71222515edf9b4184c70a632d
+[Monitor]    Time:     3297ns, id:   7, data: fd30ddcae7eef004
+[Driver]     Time:     3321ns, id:   8, data: e627750bf7d02014f3644987216544b7da44ba3657fb18a85e42f14a6c62ebe4ac0f1a47154585f3c541f7f240ad14c7339478663349773a7f
+[Monitor]    Time:     3338ns, id:   8, data: 938f4aed19c96995e3
+[Driver]     Time:     3361ns, id:   9, data: e405381c5ed825de23bdbfc6928bfeb682810363779450849eed4ac4c20c16a4fb7fa19f20825c06a459593d598e0abcc32706e1c48517f6d362
+[Monitor]    Time:     3379ns, id:   9, data: 9c75ea6b35fc7de428ae
+[Driver]     Time:     3402ns, id:  10, data: f84b79d7edfdad5c3d3140d67f7e02e37e53a263a8aef8e03bad75c0980c6f1b997ba8b0a09f87fcaa7cf3d2ae4cdb95affd68939b82df09b28020
+[Monitor]    Time:     3419ns, id:  10, data: f6976ccc599b8461be09b6
+[Driver]     Time:     3442ns, id:  11, data: 1aa1baa71c4ca1f088fa24f370afd9b9c1a0be801b434237f2694e55c10a3f357e585f726ea70860a36152392b84bbc6175da7afbf1cf761704eda7f
+[Monitor]    Time:     3460ns, id:  11, data: 5a5a88c0e5cca41316ba90ff
+[Driver]     Time:     3483ns, id:  12, data: e24e0fb791007d50ff99451d580b8b421785d79694596c8c7542316c3e0fbd8120fdbecc92eafeadfb98109f651aadb7621592d9a497d32ce0e6933697
+[Monitor]    Time:     3500ns, id:  12, data: e0d2b902599147f04f71736622
+[Driver]     Time:     3524ns, id:  13, data: 8d815cc0c0d404932c42172875e116bd91ae46979981d717d035d3bdd41a5022a084254c2fb11c3939f08ce20feaf444a442cddfe13df50c8460dcb418d6
+[Monitor]    Time:     3541ns, id:  13, data: 41ab993cedca45ced467b394dc38
+[Driver]     Time:     3564ns, id:  14, data: 31023e5149162b1273ec2a4914edb4067b62a7ab9628197c493bd94f49eeaab0117ef7556751f6365c855ad02d77eec70b86ae831953595a0f9e138fab83dc
+[Monitor]    Time:     3582ns, id:  14, data: fac2b46ef380c7f0bd74d1472dbc3a
+[Driver]     Time:     3605ns, id:  15, data: aa968a60423c6adae909a89f1f0c568cde96c4c40dc6dde779cde3e9ecdeb8d22626e060f9ff265d35bd6907a43cb62a530f858c3b353468b192331d6df5de6a
+[Monitor]    Time:     3622ns, id:  15, data: c909b4a33871483119227ab91cda985e
+[Driver]     Time:     3669ns, id:  16, data: 84de75c4c84c1d6991431dba03aa4b69e1d40ce6e5417fe515ae081590aeb53d0182a926f0d1139e39637e08e7f946605a9691dcce2e86d9276c3d0595ac3981e4
+[Monitor]    Time:     3686ns, id:  16, data: 660a63d6fa5bcfaff5056b6b4e7fb3c76f
+[Driver]     Time:     3732ns, id:  17, data: 1661f2b761c2696f7e605659cc74d13473d34894a6c40fd11655af5a0f1f8f6462b61fb959bbb453d2755aa7edf095d181a64cc6fcdbc08a76cbbd191c5f26bb40f8
+[Monitor]    Time:     3750ns, id:  17, data: c6ef63f55b6b333086a71147ec3772d2eb15
+[Driver]     Time:     3796ns, id:  18, data: 22748058d7f52a1cae2be672168d6876dbe4c8d44bbf4919070fccd04f908a7676cf4ee31a62d42133a0e68eb8a80ae4499626cc30f296a8e29226aff344a7ec0e24cc
+[Monitor]    Time:     3814ns, id:  18, data: 8b82b2ad109e7fe5e926fb08524f2104687115
+[Driver]     Time:     3860ns, id:  19, data: b7909388bb978c4c2b0972fd91cfa5c662f9e171dc594e0f5ecc0d3801cdbb18d150da5f698aa6071b4936bf55f7ff0ed33b786ed4657c11e05c9c3c3ab98e00a1406307
+[Monitor]    Time:     3877ns, id:  19, data: 2ef662f21489552622327ade985f1c3d2c8fa065
+[Driver]     Time:     3924ns, id:  20, data: dd8e454933cd723c09da9bc12ebf290484c44af747341bf99616a60c4876ba16fb45d651f347ecdb80622e060f76c2aea25a1b1010dbb013373eaccc00b246fb2e7b5ee3f8
+[Monitor]    Time:     3941ns, id:  20, data: 337d010b37948873d7212349b8dc6bb4fc138cd740
+[Driver]     Time:     3988ns, id:  21, data: af0b201799adcb65accd113562b2cb8e842b3441a1c5d9ef06cad843105c0ef21a16510fd0d7b1d2665863187bbf05fbdc35b0b157d20edea10ce0d62539315538fd59c0544b
+[Monitor]    Time:     4005ns, id:  21, data: 23165854fa6781092c4370e10bc26a0edeb08135c538
+[Driver]     Time:     4051ns, id:  22, data: 0e9331857018b0ca415b69b49cbb22613a7a6e78d28c73274632bc68cfb3092539c6beb85b22ea565d89f111471362aca23fd6d29a89867f09b7f0a26e934d2c233c611f9511df
+[Monitor]    Time:     4069ns, id:  22, data: 37bedcc8f55cf60896398babe3cec3c8a4b5d390ec6a43
+[Driver]     Time:     4115ns, id:  23, data: 83adc9a9a553aebff601c88cbe189d50c488ed8c70770ba8387214f101e4f826724bb30375e91d390ba484b556a01a397c699cb563d12dcc881e81e4deaac9fcc867427980b19361
+[Monitor]    Time:     4133ns, id:  23, data: 123eaa3bbb1b5954e791cc4cd98bd05768bd2f974af4ec97
+[Driver]     Time:     4179ns, id:  24, data: 3014e98025ecfb30becf761d6db09074e16c0f6550cff2002e9d623c3a9aff1109b4b1425b7e7d1f47464fcf425acab2c529e2a973eddcef4b65a78889670d20e35e077c0b03301ff8
+[Monitor]    Time:     4196ns, id:  24, data: 0d536392cb8345f960cce38f27e7efe5163fdf4f7a276059a2
+[Driver]     Time:     4243ns, id:  25, data: b59508db24af77165ee2efd0da3a22a06ae168c6450727f1b2f3f0a2909a5868cb2f79c06c453d8b182a641e05737c33cd749d6446f78cf88b6724f5ca47bb6a1575c9c325ad32c3f914
+[Monitor]    Time:     4260ns, id:  25, data: e080024dfad229d1409ce91c7d54193c2fd89f57d7f258c4c848
+[Driver]     Time:     4307ns, id:  26, data: 75799ab31df8f548897e8e485084d702748afa8b9808beee06e3fc9f70400b4b12da3c2dc352aaf4f24df2446d1ed71e6ae1a4da0316a6de9bcb3cc36540b8a5f9c1cacb4376f654a3f60b
+[Monitor]    Time:     4324ns, id:  26, data: d8729b57b741bbf629c109f52de68b0170a35c5d493b981a386be0
+[Driver]     Time:     4370ns, id:  27, data: 1b8e3d1ec3025571e488132fbf52c6509b07429599ea1b41bfd520a2f6170a0eef3db687d5d9ed3ade78e91943d7c643d8589514910261bb68bea3a7007487534cf7d07be58f92eb9d43f96c
+[Monitor]    Time:     4388ns, id:  27, data: 2f296be2e40bae822522333aeda0d0e0ad82eb91ec70d665ed2819a2
+[Driver]     Time:     4434ns, id:  28, data: cc550c9190dfd48ec3afa8971bdb5d157260398ef8c2ae63bbd3fd0cc9121944c6dc109264297d45bd7726b862aaa0d0c9afc118245fe036d7ff25cae87469942ce99ea25c36d3a2bc1a1090d6
+[Monitor]    Time:     4452ns, id:  28, data: c6d913e88771a8b183ef29a7cd60c263b1ab6a061e8a6edce23f673db0
+[Driver]     Time:     4498ns, id:  29, data: 3e7c126178e58340509cfd9155c2223631c688a87cabc6ebd422db059e2f3a7a2e8677dfe199df5a8465659d1b7934200877cdc7a55a3acefc70093b69e7a24058cad83f54d4909fb731d607cabb
+[Monitor]    Time:     4515ns, id:  29, data: 072bde2dee8ac3e6b62cc680b5921506e16b56494b2feb6c8014ad62ba18
+[Driver]     Time:     4562ns, id:  30, data: a6917785f9b92a3a95d29775a2b470fbaee51021a82b4c57d8fb857a642471937c8740ca73753a06d78f95667f4e082cd07fd31b417c204c4ed2fb15501ae2ccc953d7d17f03a455cb2e884d3999c1
+[Monitor]    Time:     4579ns, id:  30, data: 17f4b763ebb5c54ff75471dd166dd517c70f14d943fc5e0929d95973cb1039
+[Driver]     Time:     4626ns, id:  31, data: a5e966b85959a0466f986ab24956bc863238c945c0563162222bfe0aad39702767e123a36b93dd69ce029f90d2f72011721f5a8fdd0111647311ee5e5cfaafbfb8e66885f09f46ff2b0ffca1f98c7fd1
+[Monitor]    Time:     4643ns, id:  31, data: 46bdb9fce4716678ace9dd6bced10bc2f6eda44b8a8159e20af7de89a8de73a6
+[Driver]     Time:     4713ns, id:  32, data: 0a72688638d2a8be2ee76c2b96d9845b439fab9d96e277d973c47afc2354b14f98c2cc358764bdd59866af28a7ad46f1a37d1cc57de1235c5a7a01d8a7c33ce3606e05c87d7312bea3a5d3a667e2763372
+[Monitor]    Time:     4730ns, id:  32, data: 50f3e74a97f914dd0728eb24242dff867380d5a17774d6cc2464815f3091facea4
 
 TEST COMPLETED.
-$finish called at time : 4582500 ps : File "/home/danilo/Documents/mgr/aes/testbench/tb.sv" Line 96
-
+$finish called at time : 4735700 ps : File "/home/danilo/Documents/mgr/aes/testbench/tb.sv" Line 96
